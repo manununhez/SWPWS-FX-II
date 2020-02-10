@@ -1,32 +1,32 @@
 package pl.swpws.controller;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
-import pl.swpws.Main;
+import javafx.stage.Stage;
+import pl.swpws.model.SceneName;
 
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TaskPage {
-    private static final String VIEW_FIRST_TASK_FXML = "view/FirstTask.fxml";
+    /**
+     * Holds the various scenes to switch between
+     */
+    private static Map<SceneName, Node> scenes = new HashMap<>();
 
-    public void setScene(BorderPane parent) {
-        try {
-            // Load the fxml file and create a new stage for the popup dialog.
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource(VIEW_FIRST_TASK_FXML));
-            AnchorPane page = loader.load();
-
-            parent.setCenter(page);
+    /**
+     * Returns a Map of the scenes by {@link SceneName}
+     */
+    public static Map<SceneName, Node> getScenes() {
+        return scenes;
+    }
 
 
-            // Set the participant into the controller.
-            FirstTask controller = loader.getController();
-            controller.setParent(parent);
+    public void initScenes(Stage stage, BorderPane parent) {
+        scenes.put(SceneName.USER_FORM, new UserForm(stage).getNodeScene());
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        parent.setCenter(getScenes().get(SceneName.USER_FORM));
+
     }
 
 }

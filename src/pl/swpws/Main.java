@@ -25,9 +25,10 @@ public class Main extends Application {
     private double xOffset = 0;
     private double yOffset = 0;
 
+
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        mPrimaryStage = primaryStage;
+    public void start(Stage stage) throws Exception {
+        mPrimaryStage = stage;
         mPrimaryStage.setTitle(PRIMARY_STAGE_TITLE);
 
         //you can use underdecorated or transparent.
@@ -103,7 +104,8 @@ public class Main extends Application {
 
             // Set the participant into the controller.
             TaskPage controller = loader.getController();
-            controller.setScene(borderPane);
+            //controller.setStage(mPrimaryStage);
+            controller.initScenes(mSecondaryStage, borderPane);
 
             // Show the dialog and wait until the user closes it
             mSecondaryStage.showAndWait();
