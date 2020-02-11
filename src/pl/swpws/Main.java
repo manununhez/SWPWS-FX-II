@@ -16,9 +16,8 @@ import java.io.IOException;
 public class Main extends Application {
     private static final String VIEW_ROOT_LAYOUT_FXML = "view/MainPage.fxml";
     private static final String VIEW_TASK_PAGE_FXML = "view/TaskPage.fxml";
-    private static final String VIEW_FIRST_TASK_PAGE_FXML = "view/SecondTask.fxml";
 
-    private static final String PRIMARY_STAGE_TITLE = "SWSP University App";
+    public static final String PRIMARY_STAGE_TITLE = "SWPS University App";
     private static final String FIRST_TASK_STAGE_TITLE = "FirstTask";
     private Stage mPrimaryStage;
     private VBox rootLayout;

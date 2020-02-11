@@ -16,7 +16,6 @@ public class TaskPage {
      * Holds the various scenes to switch between
      */
     private static Map<SceneName, Node> scenes = new HashMap<>();
-    private BorderPane mParent;
 
     /**
      * Returns a Map of the scenes by {@link SceneName}
@@ -32,14 +31,15 @@ public class TaskPage {
     );
 
     public void initScenes(Stage stage, BorderPane parent) {
-        mParent = parent;
 
         scenes.put(SceneName.USER_FORM, new UserForm(stage, parent).getNodeScene());
         //This first task will be generated 60 times
         scenes.put(SceneName.FIRST_TASK, new FirstTask(stage, parent).getNodeScene(applianceAttributeList));
+        scenes.put(SceneName.SECOND_TASK, new SecondTask(stage, parent).getNodeScene());
 
         //Set first scene/page -- UserForm
-        mParent.setCenter(getScenes().get(SceneName.USER_FORM));
+        parent.setCenter(getScenes().get(SceneName.USER_FORM));
+        stage.setTitle(UserForm.MAIN_TITLE);
 
     }
 

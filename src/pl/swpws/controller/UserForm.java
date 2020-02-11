@@ -181,7 +181,8 @@ public class UserForm implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent event) {
 
-        if (event.getEventType() == KeyEvent.KEY_RELEASED && event.getCode() == KeyCode.SPACE) {
+        if (event.getEventType() == KeyEvent.KEY_RELEASED &&
+                (event.getCode() == KeyCode.SPACE || event.getCode() == KeyCode.ENTER)) {
             //keyBoardEvent();
             if (formValidate())//TODO go to next page
                 goToNextPage();
@@ -200,6 +201,7 @@ public class UserForm implements EventHandler<KeyEvent> {
 
     private void goToNextPage() {
         mParent.setCenter(TaskPage.getScenes().get(SceneName.FIRST_TASK));
+        mStage.setTitle(FirstTask.MAIN_TITLE);
     }
 
 

@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import pl.swpws.common.rating.RatingPlus;
 import pl.swpws.model.ApplianceAttribute;
 import pl.swpws.model.ApplianceAttribute.AttributesName;
+import pl.swpws.model.SceneName;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,8 +28,8 @@ public class FirstTask implements EventHandler<KeyEvent> {
 
     public static final String GRID_CSS_PATH = "pl/swpws/common/grid/grid-with-borders.css";
     public static final String APPLIANCE_DEFAULT_NAME = "Pralka ";
-    public static final String MAIN_TITLE = "Wybierz najlepszą pralkę, naciskając jeden zklawiszy\n" +
-            " na klawiaturze: 1,2 lub 3.";
+    public static final String MAIN_TITLE = "Wybierz najlepszą pralkę, naciskając jeden zklawiszy" +
+            " na klawiaturze:\n 1,2 lub 3.";
     private Stage mStage;
     private BorderPane mParent;
     private ToggleGroup toggleGroup = new ToggleGroup();
@@ -44,7 +45,7 @@ public class FirstTask implements EventHandler<KeyEvent> {
         mAttributeList = attributeList;
 
         Label labelMainTitle = new Label(MAIN_TITLE);
-        labelMainTitle.setFont(new Font(50.0));
+        labelMainTitle.setFont(new Font(40.0));
         labelMainTitle.setWrapText(true);
         labelMainTitle.setPadding(new Insets(0, 100, 0, 100));
 
@@ -238,7 +239,8 @@ public class FirstTask implements EventHandler<KeyEvent> {
 
         }
 
-        if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED && keyEvent.getCode() == KeyCode.SPACE) {
+        if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED &&
+                (keyEvent.getCode() == KeyCode.SPACE || keyEvent.getCode() == KeyCode.ENTER)) {
             RadioButton radioButton = (RadioButton) toggleGroup.getSelectedToggle();
             if (radioButton == null) {
                 new Alert(Alert.AlertType.INFORMATION, "Please select something!").show();
@@ -246,7 +248,15 @@ public class FirstTask implements EventHandler<KeyEvent> {
                 new Alert(Alert.AlertType.INFORMATION, "Ok! Selected: " + radioButton.getId()).show();
                 int index = Integer.parseInt(radioButton.getId()) - 1;
                 System.out.println(mAttributeList.get(index));
+
+                goToNextPage();
+
             }
         }
+    }
+
+    private void goToNextPage() {
+        mParent.setCenter(TaskPage.getScenes().get(SceneName.SECOND_TASK));
+        mStage.setTitle(SecondTask.MAIN_TITLE);
     }
 }
