@@ -16,6 +16,8 @@ import java.io.IOException;
 public class Main extends Application {
     private static final String VIEW_ROOT_LAYOUT_FXML = "view/MainPage.fxml";
     private static final String VIEW_TASK_PAGE_FXML = "view/TaskPage.fxml";
+    private static final String VIEW_FIRST_TASK_PAGE_FXML = "view/SecondTask.fxml";
+
     private static final String PRIMARY_STAGE_TITLE = "SWSP University App";
     private static final String FIRST_TASK_STAGE_TITLE = "FirstTask";
     private Stage mPrimaryStage;
@@ -84,11 +86,12 @@ public class Main extends Application {
     }
 
 
-    public void goToFirstTask() {
+    public void goToTaskPage() {
         try {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource(VIEW_TASK_PAGE_FXML));
+//            AnchorPane borderPane = loader.load();
             BorderPane borderPane = loader.load();
 
             // Create the dialog Stage.
@@ -104,6 +107,7 @@ public class Main extends Application {
 
             // Set the participant into the controller.
             TaskPage controller = loader.getController();
+//            TestingFirstTask controller = loader.getController();
             //controller.setStage(mPrimaryStage);
             controller.initScenes(mSecondaryStage, borderPane);
 

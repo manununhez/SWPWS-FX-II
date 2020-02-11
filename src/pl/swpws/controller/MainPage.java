@@ -12,7 +12,7 @@ public class MainPage {
     }
 
     public void handleFirstTask(ActionEvent actionEvent) {
-        mMain.goToFirstTask();
+        mMain.goToTaskPage();
     }
 
     public void handleCloseMenuItem(ActionEvent actionEvent) {
