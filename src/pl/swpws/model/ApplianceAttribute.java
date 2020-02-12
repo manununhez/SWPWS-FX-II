@@ -3,11 +3,11 @@ package pl.swpws.model;
 public class ApplianceAttribute {
     public enum EnergyClass {
         A("A"),
-        APLUS("A++"),
-        APLUS2("A+++"),
+        APLUS("A+"),
+        APLUS2("A++"),
         APLUS3("A+++");
 
-        private final String label;
+        public final String label;
 
         EnergyClass(String label) {
             this.label = label;
@@ -29,15 +29,44 @@ public class ApplianceAttribute {
         }
     }
 
+    public enum AttributesMeasurementUnit{
+        SPIN_SPEED("obr/min"),
+        DRUM_CAPACITY("kg"),
+        NOISE_LEVEL("db"),
+        WATER_CONSUMPTION("l");
+
+        public final String label;
+
+        AttributesMeasurementUnit(String s) {
+            this.label = s;
+        }
+    }
+
     public enum FastProgram {
-        YES("Jest"),
-        NO("Brak");
+        YES("jest"),
+        NO("brak");
 
         public String label;
 
         FastProgram(String label) {
 
             this.label = label;
+        }
+    }
+
+    public enum AttributeImportanceLevel {
+        SPIN_SPEED(6),
+        DRUM_CAPACITY(5),
+        ENERGY_CLASS(4),
+        NOISE_LEVEL(3),
+        WATER_CONSUMPTION(2),
+        FAST_PROGRAM(1);
+
+        public int value;
+
+        AttributeImportanceLevel(int value) {
+
+            this.value = value;
         }
     }
 
@@ -58,26 +87,6 @@ public class ApplianceAttribute {
         this.noiseLevel = noiseLevel;
         this.waterConsumption = waterConsumption;
         this.fastProgram = fastProgram;
-    }
-
-
-    public static int getAttributeImportanceLevel(AttributesName attributesName) {
-        switch (attributesName) {
-            case SPIN_SPEED:
-                return 6;
-            case DRUM_CAPACITY:
-                return 5;
-            case ENERGY_CLASS:
-                return 4;
-            case NOISE_LEVEL:
-                return 3;
-            case WATER_CONSUMPTION:
-                return 2;
-            case FAST_PROGRAM:
-                return 1;
-            default:
-                return 0;
-        }
     }
 
 

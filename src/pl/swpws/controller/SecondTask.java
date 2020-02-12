@@ -4,7 +4,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -15,7 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import pl.swpws.common.rating.RatingPlus;
-import pl.swpws.model.ApplianceAttribute;
+import pl.swpws.model.SceneName;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,11 +23,8 @@ import static pl.swpws.model.ApplianceAttribute.*;
 import static pl.swpws.model.ApplianceAttribute.AttributesName.*;
 
 public class SecondTask implements EventHandler<KeyEvent> {
-    private Stage mStage;
-    private BorderPane mParent;
-    private HashMap<AttributesName, RatingPlus> ratingPlusHashMap = new HashMap<>();
-
-    public static final String MAIN_TITLE = "Jesteśmy ciekawi na co zwróciłaby Pani uwagę przy zakupie pralki.\n\n"
+    public static final String MAIN_TITLE = "second task";
+    private static final String MAIN_PAGE_INSTRUCTION = "Jesteśmy ciekawi na co zwróciłaby Pani uwagę przy zakupie pralki.\n\n"
             + "Prosimy o ocenienie ważności właściwości pralek posługując się plusami. Im" +
             "większa liczba plusów, tym ważniejsza jest dla Pani dana właściwość. Może" +
             "Pani przyznać tę samą liczbę plusów kilku właściwościom. Każda właściwość" +
@@ -36,6 +32,9 @@ public class SecondTask implements EventHandler<KeyEvent> {
             "sześć plusów.\n"
             + "Nie ma tu dobrych ani złych odpowiedzi, proszę się kierować własnymi" +
             "preferencjami.";
+    private Stage mStage;
+    private BorderPane mParent;
+    private HashMap<AttributesName, RatingPlus> ratingPlusHashMap = new HashMap<>();
     private Label labelAlert;
 
     public SecondTask(Stage stage, BorderPane parent) {
@@ -45,23 +44,19 @@ public class SecondTask implements EventHandler<KeyEvent> {
     }
 
     public Node getNodeScene() {
-        VBox vBox = new VBox();
 
-        Label labelMainTitle = new Label(MAIN_TITLE);
+        Label labelMainTitle = new Label(MAIN_PAGE_INSTRUCTION);
         labelMainTitle.setFont(new Font(30.0));
         labelMainTitle.setWrapText(true);
-        labelMainTitle.setPadding(new Insets(0, 100, 0, 100));
 
         labelAlert = new Label();
         labelAlert.setTextFill(Color.RED);
 
+        VBox vBox = new VBox();
         vBox.getChildren().add(labelMainTitle);
         vBox.getChildren().add(labelAlert);
         vBox.getChildren().add(getGridPaneDescription());
-
-        vBox.setAlignment(Pos.CENTER);
-        vBox.setSpacing(20.0);
-
+        vBox.setAlignment(Pos.TOP_CENTER);
         vBox.setOnKeyReleased(this);
         vBox.setOnKeyPressed(this);
 
@@ -98,7 +93,8 @@ public class SecondTask implements EventHandler<KeyEvent> {
     private RatingPlus getRating(AttributesName attributesName) {
         RatingPlus ratingPlus = new RatingPlus(6);
         ratingPlus.setPadding(new Insets(10, 0, 10, 0));
-        ratingPlus.setRating(0.0);
+        //ratingPlus.setRating(0.0);
+        ratingPlus.setRating(2.0); //TODO debugging only
 
         ratingPlusHashMap.put(attributesName, ratingPlus);
 
@@ -118,6 +114,7 @@ public class SecondTask implements EventHandler<KeyEvent> {
                 (keyEvent.getCode() == KeyCode.SPACE || keyEvent.getCode() == KeyCode.ENTER)) {
             int b = 0;
 
+            //loop through values of selected rating per attribute
             for (Map.Entry<AttributesName, RatingPlus> entry : ratingPlusHashMap.entrySet()) {
                 RatingPlus ratingPlus = entry.getValue();
                 if (ratingPlus.getRating() <= 0.0) {
@@ -125,7 +122,8 @@ public class SecondTask implements EventHandler<KeyEvent> {
                 }
             }
 
-            if (b > 0) labelAlert.setText("Please select all the attributes rating! Total left:(" + b + ")");
+            if (b > 0)
+                labelAlert.setText("Please select all the attributes rating! Total left:(" + b + ")");
             else {
                 labelAlert.setText("");
                 goToNextPage();
@@ -134,6 +132,7 @@ public class SecondTask implements EventHandler<KeyEvent> {
     }
 
     private void goToNextPage() {
-
+        mParent.setCenter(TaskPage.getScenes().get(SceneName.FINAL_TASK));
+        mStage.setTitle(FinalTask.MAIN_TITLE);
     }
 }

@@ -7,10 +7,7 @@ import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -70,6 +67,7 @@ public class UserForm implements EventHandler<KeyEvent> {
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(30);
+
 
         //#######
         Text scenetitle = new Text(MAIN_TITLE);
@@ -159,21 +157,20 @@ public class UserForm implements EventHandler<KeyEvent> {
         grid.add(educationAlert, 2, 5);
 
         //#######
-        Group root = new Group();
 
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.TOP_LEFT);
         vBox.setSpacing(30);
         vBox.getChildren().add(scenetitle);
         vBox.getChildren().add(grid);
-        vBox.setPadding(new Insets(80, 125, 0, 125));
+        //vBox.setPadding(new Insets(80, 125, 0, 125));
 
         //Set keyboard listener
         vBox.setOnKeyPressed(this);
         vBox.setOnKeyReleased(this);
 
-        root.getChildren().add(vBox);
-        vBox.requestFocus();
+//        Group root = new Group();
+//        root.getChildren().add(vBox);
 
         return vBox;
     }

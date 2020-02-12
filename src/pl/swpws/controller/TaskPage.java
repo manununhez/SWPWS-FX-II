@@ -33,14 +33,19 @@ public class TaskPage {
     public void initScenes(Stage stage, BorderPane parent) {
 
         scenes.put(SceneName.USER_FORM, new UserForm(stage, parent).getNodeScene());
-        //This first task will be generated 60 times
+        //TODO This first task will be generated 60 times
         scenes.put(SceneName.FIRST_TASK, new FirstTask(stage, parent).getNodeScene(applianceAttributeList));
         scenes.put(SceneName.SECOND_TASK, new SecondTask(stage, parent).getNodeScene());
+        scenes.put(SceneName.FINAL_TASK, new FinalTask(stage, parent).getNodeScene());
 
+        goToFirstPage(stage, parent);
+
+    }
+
+    private void goToFirstPage(Stage stage, BorderPane parent) {
         //Set first scene/page -- UserForm
         parent.setCenter(getScenes().get(SceneName.USER_FORM));
         stage.setTitle(UserForm.MAIN_TITLE);
-
     }
 
 

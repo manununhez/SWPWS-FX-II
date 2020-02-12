@@ -4,19 +4,33 @@
     cell-border-color: black ;
 }
 .grid {
-    /* 1 pixel border around the grid: */
+    /* 1 pixel border around the grid except right side: */
     -fx-background-color: cell-border-color, cell-color ;
     -fx-background-insets: 0, 1 0 1 1 ;
     -fx-padding: 1 ;
 }
+
+.grid2 {
+    /* 1 pixel border around the grid except right and bottom: */
+    -fx-background-color: cell-border-color, cell-color ;
+    -fx-background-insets: 0, 1 0 0 1 ;
+    -fx-padding: 1 ;
+}
+
 .cell {
-    /* 1 pixel border around the left and bottom of each cell: */
+    /* 1 pixel border around the right of each cell: */
     -fx-background-color: cell-border-color, cell-color ;
     -fx-background-insets: 0, 0 1 0 0 ;
 }
 
+.cell2 {
+    /* 1 pixel border around the bottom of each cell: */
+    -fx-background-color: cell-border-color, cell-color ;
+    -fx-background-insets: 0, 0 1 1 0 ;
+}
+
 .cell-title {
-    /* 1 pixel border around the left and bottom of each cell: */
+    /* 1 pixel border around the right and bottom of each cell: */
     -fx-background-color: cell-border-color, cell-color ;
     -fx-background-insets: 0, 0 1 1 0 ;
 }

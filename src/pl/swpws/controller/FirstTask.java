@@ -4,9 +4,11 @@ import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -15,6 +17,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import pl.swpws.common.rating.RatingPlus;
 import pl.swpws.model.ApplianceAttribute;
+import pl.swpws.model.ApplianceAttribute.AttributeImportanceLevel;
 import pl.swpws.model.ApplianceAttribute.AttributesName;
 import pl.swpws.model.SceneName;
 
@@ -22,14 +25,14 @@ import java.util.HashMap;
 import java.util.List;
 
 import static pl.swpws.model.ApplianceAttribute.AttributesName.*;
-import static pl.swpws.model.ApplianceAttribute.getAttributeImportanceLevel;
 
 public class FirstTask implements EventHandler<KeyEvent> {
 
-    public static final String GRID_CSS_PATH = "pl/swpws/common/grid/grid-with-borders.css";
-    public static final String APPLIANCE_DEFAULT_NAME = "Pralka ";
-    public static final String MAIN_TITLE = "Wybierz najlepszą pralkę, naciskając jeden zklawiszy" +
-            " na klawiaturze:\n 1,2 lub 3.";
+    public static final String MAIN_TITLE = "first task";
+    private static final String GRID_CSS_PATH = "pl/swpws/common/grid/grid-with-borders.css";
+    private static final String APPLIANCE_DEFAULT_NAME = "Pralka ";
+    private static final String MAIN_PAGE_INSTRUCTION = "Wybierz najlepszą pralkę, naciskając jeden zklawiszy" +
+            " na klawiaturze: 1,2 lub 3.";
     private Stage mStage;
     private BorderPane mParent;
     private ToggleGroup toggleGroup = new ToggleGroup();
@@ -44,17 +47,19 @@ public class FirstTask implements EventHandler<KeyEvent> {
     public Node getNodeScene(List<ApplianceAttribute> attributeList) {
         mAttributeList = attributeList;
 
-        Label labelMainTitle = new Label(MAIN_TITLE);
+        mParent.getStylesheets().add(GRID_CSS_PATH);
+
+
+        Label labelMainTitle = new Label(MAIN_PAGE_INSTRUCTION);
         labelMainTitle.setFont(new Font(40.0));
         labelMainTitle.setWrapText(true);
-        labelMainTitle.setPadding(new Insets(0, 100, 0, 100));
-
 
         //**********
         GridPane gridPaneTask = getGridPaneAttrValues(); //Grid with appliance attributes values
 
         //Loading data into the grid
         for (int i = 0; i < attributeList.size(); i++) {
+
             int keyIndex = i + 1;
             RadioButton radioButton = getRadioButton(keyIndex);
             radioButtonHashMap.put(String.valueOf(keyIndex), radioButton);
@@ -75,34 +80,26 @@ public class FirstTask implements EventHandler<KeyEvent> {
         }
 
         //**********
-        VBox vBox = new VBox();
-        vBox.setSpacing(50.0);
-        vBox.setAlignment(Pos.TOP_LEFT);
-        vBox.setPadding(new Insets(0, 50, 50, 50));
-
         HBox hBox = new HBox();
         hBox.getChildren().add(getGridPaneDescription()); //Grid with appliance attributes description
         hBox.getChildren().add(gridPaneTask);
+        hBox.setAlignment(Pos.CENTER);
         hBox.setSpacing(100.0);
 
-
+        VBox vBox = new VBox();
+        vBox.setSpacing(50.0);
+        vBox.setAlignment(Pos.TOP_CENTER);
         vBox.getChildren().add(labelMainTitle);
         vBox.getChildren().add(hBox);
+        vBox.addEventFilter(MouseEvent.ANY, MouseEvent::consume);//block mouseEvents, only keyboard allow
 
-
-        Group root = new Group(); //with group() we keep the scene dimension after windows resize
-
-        root.getChildren().add(vBox);
-        root.addEventFilter(MouseEvent.ANY, MouseEvent::consume);//block mouseEvents, only keyboard allow
-
-        return root;
+        return vBox;
     }
 
     private GridPane getGridPaneAttrValues() {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
 
-        mParent.getStylesheets().add(GRID_CSS_PATH);
         gridPane.getStyleClass().add("grid");
 
         ColumnConstraints column = new ColumnConstraints();
@@ -111,21 +108,15 @@ public class FirstTask implements EventHandler<KeyEvent> {
         column.setHgrow(Priority.ALWAYS);
 
         //3 columns -> 3 possible options
-        gridPane.getColumnConstraints().add(column);
-        gridPane.getColumnConstraints().add(column);
-        gridPane.getColumnConstraints().add(column);
+        gridPane.getColumnConstraints().addAll(column, column, column);
 
         //7 rows -> 7 appliance attributes
         RowConstraints rowConstraints = new RowConstraints();
         rowConstraints.setFillHeight(true);
         rowConstraints.setVgrow(Priority.ALWAYS);
-        gridPane.getRowConstraints().add(rowConstraints);
-        gridPane.getRowConstraints().add(rowConstraints);
-        gridPane.getRowConstraints().add(rowConstraints);
-        gridPane.getRowConstraints().add(rowConstraints);
-        gridPane.getRowConstraints().add(rowConstraints);
-        gridPane.getRowConstraints().add(rowConstraints);
-        gridPane.getRowConstraints().add(rowConstraints);
+
+        gridPane.getRowConstraints().addAll(rowConstraints, rowConstraints, rowConstraints,
+                rowConstraints, rowConstraints, rowConstraints, rowConstraints);
 
         return gridPane;
     }
@@ -141,22 +132,22 @@ public class FirstTask implements EventHandler<KeyEvent> {
         gridPane.add(gridTitle2, 2, 0);
 
         gridPane.add(getParamLabel(SPIN_SPEED.label), 1, 1);
-        gridPane.add(getDisabledRating(SPIN_SPEED), 2, 1);
+        gridPane.add(getDisabledRating(AttributeImportanceLevel.SPIN_SPEED.value), 2, 1);
 
         gridPane.add(getParamLabel(DRUM_CAPACITY.label), 1, 2);
-        gridPane.add(getDisabledRating(DRUM_CAPACITY), 2, 2);
+        gridPane.add(getDisabledRating(AttributeImportanceLevel.DRUM_CAPACITY.value), 2, 2);
 
         gridPane.add(getParamLabel(ENERGY_CLASS.label), 1, 3);
-        gridPane.add(getDisabledRating(ENERGY_CLASS), 2, 3);
+        gridPane.add(getDisabledRating(AttributeImportanceLevel.ENERGY_CLASS.value), 2, 3);
 
         gridPane.add(getParamLabel(NOISE_LEVEL.label), 1, 4);
-        gridPane.add(getDisabledRating(NOISE_LEVEL), 2, 4);
+        gridPane.add(getDisabledRating(AttributeImportanceLevel.NOISE_LEVEL.value), 2, 4);
 
         gridPane.add(getParamLabel(WATER_CONSUMPTION.label), 1, 5);
-        gridPane.add(getDisabledRating(WATER_CONSUMPTION), 2, 5);
+        gridPane.add(getDisabledRating(AttributeImportanceLevel.WATER_CONSUMPTION.value), 2, 5);
 
         gridPane.add(getParamLabel(FAST_PROGRAM.label), 1, 6);
-        gridPane.add(getDisabledRating(FAST_PROGRAM), 2, 6);
+        gridPane.add(getDisabledRating(AttributeImportanceLevel.FAST_PROGRAM.value), 2, 6);
 
         return gridPane;
     }
@@ -173,9 +164,9 @@ public class FirstTask implements EventHandler<KeyEvent> {
         return radioButton;
     }
 
-    private RatingPlus getDisabledRating(AttributesName attributesName) {
+    private RatingPlus getDisabledRating(int value) {
         RatingPlus ratingPlus = new RatingPlus(6);
-        ratingPlus.setRating(getAttributeImportanceLevel(attributesName));
+        ratingPlus.setRating(value);
         ratingPlus.setDisable(true);
 
         ratingPlus.setPadding(new Insets(10, 0, 10, 0));

@@ -31,6 +31,8 @@ public class RatingPlus extends Rating {
         this.setRating(rating == -1 ? (double)((int)Math.floor((double)max / 2.0D)) : (double)rating);
     }
 
+
+
     @Override
     protected Skin<?> createDefaultSkin() {
         return new RatingSkin(this);
