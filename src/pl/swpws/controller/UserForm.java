@@ -1,9 +1,7 @@
 package pl.swpws.controller;
 
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -192,8 +190,8 @@ public class UserForm implements EventHandler<KeyEvent> {
     }
 
     private void goToNextPage() {
-        mParent.setCenter(TaskPage.getScenes().get(SceneName.FIRST_TASK));
-        mStage.setTitle(FirstTask.MAIN_TITLE);
+        mParent.setCenter(TaskPage.getScenes().get(SceneName.FIRST_INSTR));
+        mStage.setTitle(InstructionTasks.FirstInstruction.MAIN_TITLE);
     }
 
 

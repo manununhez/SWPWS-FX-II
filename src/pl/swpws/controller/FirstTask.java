@@ -235,7 +235,6 @@ public class FirstTask implements EventHandler<KeyEvent> {
             if (radioButton == null) {
                 new Alert(Alert.AlertType.INFORMATION, "Please select something!").show();
             } else {
-                new Alert(Alert.AlertType.INFORMATION, "Ok! Selected: " + radioButton.getId()).show();
                 int index = Integer.parseInt(radioButton.getId()) - 1;
                 System.out.println(mAttributeList.get(index));
 

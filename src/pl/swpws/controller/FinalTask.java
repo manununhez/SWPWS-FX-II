@@ -74,7 +74,7 @@ public class FinalTask implements EventHandler<KeyEvent> {
         mParent.getStylesheets().add(GRID_CSS_PATH);
 
         Label labelMainTitle = new Label(MAIN_PAGE_INSTRUCTION);
-        labelMainTitle.setFont(new Font(40.0));
+        labelMainTitle.setFont(new Font(30.0));
         labelMainTitle.setWrapText(true);
 
 
