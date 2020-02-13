@@ -15,7 +15,7 @@ public class TaskPage {
     /**
      * Holds the various scenes to switch between
      */
-    private static Map<SceneName, Node> scenes = new HashMap<>();
+    private static final Map<SceneName, Node> scenes = new HashMap<>();
 
     /**
      * Returns a Map of the scenes by {@link SceneName}
@@ -24,7 +24,7 @@ public class TaskPage {
         return scenes;
     }
 
-    private List<ApplianceAttribute> applianceAttributeList = List.of(
+    private final List<ApplianceAttribute> applianceAttributeList = List.of(
             new ApplianceAttribute(1000, 4, EnergyClass.APLUS2, 60, 65, false),
             new ApplianceAttribute(1000, 8, EnergyClass.APLUS, 70, 65, false),
             new ApplianceAttribute(1000, 4, EnergyClass.APLUS, 60, 45, true)
@@ -38,6 +38,7 @@ public class TaskPage {
         scenes.put(SceneName.THIRD_INSTR, new InstructionTasks.ThirdInstruction(stage, parent).getNodeScene());
         scenes.put(SceneName.FOURTH_INSTR, new InstructionTasks.FourthInstruction(stage, parent).getNodeScene());
         scenes.put(SceneName.FIFTH_INSTR, new InstructionTasks.FifthInstruction(stage, parent).getNodeScene());
+        scenes.put(SceneName.FINAL_INSTR, new InstructionTasks.FinalInstruction(stage, parent).getNodeScene());
         //TODO This first task will be generated 60 times
         scenes.put(SceneName.FIRST_TASK, new FirstTask(stage, parent).getNodeScene(applianceAttributeList));
         scenes.put(SceneName.SECOND_TASK, new SecondTask(stage, parent).getNodeScene());

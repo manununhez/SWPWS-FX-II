@@ -7,11 +7,11 @@ import javafx.scene.control.Skin;
 import org.controlsfx.control.Rating;
 
 public class RatingPlus extends Rating {
-    private DoubleProperty rating;
-    private IntegerProperty max;
+    private final DoubleProperty rating;
+    private final IntegerProperty max;
     private ObjectProperty<Orientation> orientation;
-    private BooleanProperty partialRating;
-    private BooleanProperty updateOnHover;
+    private final BooleanProperty partialRating;
+    private final BooleanProperty updateOnHover;
 
     public RatingPlus() {
         this(5);
@@ -26,7 +26,7 @@ public class RatingPlus extends Rating {
         this.max = new SimpleIntegerProperty(this, "max", 5);
         this.partialRating = new SimpleBooleanProperty(this, "partialRating", false);
         this.updateOnHover = new SimpleBooleanProperty(this, "updateOnHover", false);
-        this.getStyleClass().setAll(new String[]{"rating"});
+        this.getStyleClass().setAll("rating");
         this.setMax(max);
         this.setRating(rating == -1 ? (double)((int)Math.floor((double)max / 2.0D)) : (double)rating);
     }

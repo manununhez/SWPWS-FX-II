@@ -18,7 +18,6 @@ import pl.swpws.model.ApplianceAttribute;
 import pl.swpws.model.SceneName;
 
 import static pl.swpws.model.ApplianceAttribute.AttributesName.*;
-import static pl.swpws.model.ApplianceAttribute.AttributesName.FAST_PROGRAM;
 
 public class InstructionTasks {
 
@@ -30,8 +29,8 @@ public class InstructionTasks {
                 "\n" +
                 "Zależy nam, aby za każdym razem wybrała Pani najlepszą z trzech\n" +
                 "pralek.";
-        private Stage mStage;
-        private BorderPane mParent;
+        private final Stage mStage;
+        private final BorderPane mParent;
 
         public FirstInstruction(Stage stage, BorderPane parent) {
             mStage = stage;
@@ -42,11 +41,19 @@ public class InstructionTasks {
             Label labelMainTitle = new Label(TEXT);
             labelMainTitle.setFont(new Font(30.0));
             labelMainTitle.setWrapText(true);
+            labelMainTitle.setAlignment(Pos.TOP_CENTER);
 
             labelMainTitle.setFocusTraversable(true);//To detect keyEvents!
             labelMainTitle.setOnKeyPressed(this);
             labelMainTitle.setOnKeyReleased(this);
-            return labelMainTitle;
+
+            VBox vBox = new VBox();
+            vBox.setSpacing(50.0);
+            vBox.setAlignment(Pos.TOP_CENTER);
+            vBox.getChildren().add(labelMainTitle);
+            vBox.setPadding(new Insets(80, 125, 80, 125));
+
+            return vBox;
         }
 
         @Override
@@ -56,11 +63,6 @@ public class InstructionTasks {
                 goToNextPage();
             }
         }
-
-//        private void goToNextPage() {
-//            mParent.setCenter(TaskPage.getScenes().get(SceneName.FIRST_TASK));
-//            mStage.setTitle(FirstTask.MAIN_TITLE);
-//        }
 
         private void goToNextPage() {
             mParent.setCenter(TaskPage.getScenes().get(SceneName.SECOND_INSTR));
@@ -76,8 +78,8 @@ public class InstructionTasks {
                 "właściwość. Prosimy, aby dokonując wyboru produktu kierowała się Pani\n" +
                 "ważnością podanych właściwości.";
 
-        private Stage mStage;
-        private BorderPane mParent;
+        private final Stage mStage;
+        private final BorderPane mParent;
 
         public SecondInstruction(Stage stage, BorderPane parent) {
             mStage = stage;
@@ -88,6 +90,7 @@ public class InstructionTasks {
             Label labelMainTitle = new Label(TEXT);
             labelMainTitle.setFont(new Font(30.0));
             labelMainTitle.setWrapText(true);
+            labelMainTitle.setAlignment(Pos.TOP_CENTER);
 
             labelMainTitle.setFocusTraversable(true);//To detect keyEvents!
             labelMainTitle.setOnKeyPressed(this);
@@ -98,6 +101,7 @@ public class InstructionTasks {
             vBox.setAlignment(Pos.TOP_CENTER);
             vBox.getChildren().add(labelMainTitle);
             vBox.getChildren().add(getGridPaneDescription());
+            vBox.setPadding(new Insets(80, 125, 80, 125));
 
             return vBox;
         }
@@ -136,7 +140,7 @@ public class InstructionTasks {
 
         private Label getTableTitleLabel(String name) {
             Label titleLabel = new Label(name);
-            titleLabel.setFont(new Font(30.0));
+            titleLabel.setFont(new Font(25.0));
             titleLabel.setPadding(new Insets(5, 0, 5, 0));
             return titleLabel;
         }
@@ -186,8 +190,8 @@ public class InstructionTasks {
                 "wyrażona w symbolach od A do A+++, gdzie większa liczba plusów przy" +
                 "literze „A” wskazuje na wyższą klasę energetyczną.";
 
-        private Stage mStage;
-        private BorderPane mParent;
+        private final Stage mStage;
+        private final BorderPane mParent;
 
         public ThirdInstruction(Stage stage, BorderPane parent) {
             mStage = stage;
@@ -198,11 +202,20 @@ public class InstructionTasks {
             Label labelMainTitle = new Label(TEXT);
             labelMainTitle.setFont(new Font(30.0));
             labelMainTitle.setWrapText(true);
+            labelMainTitle.setAlignment(Pos.TOP_CENTER);
+
 
             labelMainTitle.setFocusTraversable(true);//To detect keyEvents!
             labelMainTitle.setOnKeyPressed(this);
             labelMainTitle.setOnKeyReleased(this);
-            return labelMainTitle;
+
+            VBox vBox = new VBox();
+            vBox.setSpacing(50.0);
+            vBox.setAlignment(Pos.TOP_CENTER);
+            vBox.getChildren().add(labelMainTitle);
+            vBox.setPadding(new Insets(80, 125, 80, 125));
+
+            return vBox;
         }
 
         @Override
@@ -233,8 +246,8 @@ public class InstructionTasks {
                 "szybkiego prania. Przeciętny konsument chce mieć możliwość" +
                 "ustawienia szybkiego prania.";
 
-        private Stage mStage;
-        private BorderPane mParent;
+        private final Stage mStage;
+        private final BorderPane mParent;
 
         public FourthInstruction(Stage stage, BorderPane parent) {
             mStage = stage;
@@ -245,11 +258,19 @@ public class InstructionTasks {
             Label labelMainTitle = new Label(TEXT);
             labelMainTitle.setFont(new Font(30.0));
             labelMainTitle.setWrapText(true);
+            labelMainTitle.setAlignment(Pos.TOP_CENTER);
 
             labelMainTitle.setFocusTraversable(true);//To detect keyEvents!
             labelMainTitle.setOnKeyPressed(this);
             labelMainTitle.setOnKeyReleased(this);
-            return labelMainTitle;
+
+            VBox vBox = new VBox();
+            vBox.setSpacing(50.0);
+            vBox.setAlignment(Pos.TOP_CENTER);
+            vBox.getChildren().add(labelMainTitle);
+            vBox.setPadding(new Insets(80, 125, 80, 125));
+
+            return vBox;
         }
 
         @Override
@@ -266,6 +287,7 @@ public class InstructionTasks {
         }
     }
 
+
     static class FifthInstruction implements EventHandler<KeyEvent> {
         public static final String MAIN_TITLE = "Fifth Instruction";
         private static final String TEXT = "Za chwilę zobaczy Pani cztery" +
@@ -275,8 +297,8 @@ public class InstructionTasks {
                 "najlepszą pralkę, kierując się ich" +
                 "właściwościami.";
 
-        private Stage mStage;
-        private BorderPane mParent;
+        private final Stage mStage;
+        private final BorderPane mParent;
 
         public FifthInstruction(Stage stage, BorderPane parent) {
             mStage = stage;
@@ -288,11 +310,19 @@ public class InstructionTasks {
             labelMainTitle.setFont(new Font(40.0));
             labelMainTitle.setWrapText(true);
             labelMainTitle.setTextAlignment(TextAlignment.JUSTIFY);
+            labelMainTitle.setAlignment(Pos.TOP_CENTER);
 
             labelMainTitle.setFocusTraversable(true);//To detect keyEvents!
             labelMainTitle.setOnKeyPressed(this);
             labelMainTitle.setOnKeyReleased(this);
-            return labelMainTitle;
+
+            VBox vBox = new VBox();
+            vBox.setSpacing(50.0);
+            vBox.setAlignment(Pos.TOP_CENTER);
+            vBox.getChildren().add(labelMainTitle);
+            vBox.setPadding(new Insets(80, 125, 80, 125));
+
+            return vBox;
         }
 
         @Override
@@ -306,6 +336,47 @@ public class InstructionTasks {
         private void goToNextPage() {
             mParent.setCenter(TaskPage.getScenes().get(SceneName.FIRST_TASK));
             mStage.setTitle(FirstTask.MAIN_TITLE);
+        }
+    }
+
+    static class FinalInstruction implements EventHandler<KeyEvent> {
+        public static final String MAIN_TITLE = "Final Instruction";
+        private static final String TEXT = "To już koniec tego zadania.\n" +
+                "Dziękujemy!";
+
+        private final Stage mStage;
+        private final BorderPane mParent;
+
+        public FinalInstruction(Stage stage, BorderPane parent) {
+            mStage = stage;
+            mParent = parent;
+        }
+
+        public Node getNodeScene() {
+            Label labelMainTitle = new Label(TEXT);
+            labelMainTitle.setFont(new Font(40.0));
+            labelMainTitle.setWrapText(true);
+            labelMainTitle.setTextAlignment(TextAlignment.JUSTIFY);
+            labelMainTitle.setAlignment(Pos.TOP_CENTER);
+
+            labelMainTitle.setFocusTraversable(true);//To detect keyEvents!
+            labelMainTitle.setOnKeyPressed(this);
+            labelMainTitle.setOnKeyReleased(this);
+
+            VBox vBox = new VBox();
+            vBox.setSpacing(50.0);
+            vBox.setAlignment(Pos.TOP_CENTER);
+            vBox.getChildren().add(labelMainTitle);
+            vBox.setPadding(new Insets(80, 125, 80, 125));
+
+            return vBox;
+        }
+
+        @Override
+        public void handle(KeyEvent keyEvent) {
+            if (keyEvent.getCode() == KeyCode.ESCAPE) {
+                mStage.close();
+            }
         }
     }
 }

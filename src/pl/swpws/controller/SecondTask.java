@@ -32,9 +32,9 @@ public class SecondTask implements EventHandler<KeyEvent> {
             "sześć plusów.\n"
             + "Nie ma tu dobrych ani złych odpowiedzi, proszę się kierować własnymi" +
             "preferencjami.";
-    private Stage mStage;
-    private BorderPane mParent;
-    private HashMap<AttributesName, RatingPlus> ratingPlusHashMap = new HashMap<>();
+    private final Stage mStage;
+    private final BorderPane mParent;
+    private final HashMap<AttributesName, RatingPlus> ratingPlusHashMap = new HashMap<>();
     private Label labelAlert;
 
     public SecondTask(Stage stage, BorderPane parent) {
@@ -57,6 +57,9 @@ public class SecondTask implements EventHandler<KeyEvent> {
         vBox.getChildren().add(labelAlert);
         vBox.getChildren().add(getGridPaneDescription());
         vBox.setAlignment(Pos.TOP_CENTER);
+        vBox.setPadding(new Insets(80, 125, 80, 125));
+
+
         vBox.setOnKeyReleased(this);
         vBox.setOnKeyPressed(this);
 
@@ -93,8 +96,8 @@ public class SecondTask implements EventHandler<KeyEvent> {
     private RatingPlus getRating(AttributesName attributesName) {
         RatingPlus ratingPlus = new RatingPlus(6);
         ratingPlus.setPadding(new Insets(10, 0, 10, 0));
-        //ratingPlus.setRating(0.0);
-        ratingPlus.setRating(2.0); //TODO debugging only
+        ratingPlus.setRating(0.0);
+//        ratingPlus.setRating(2.0); //TODO debugging only
 
         ratingPlusHashMap.put(attributesName, ratingPlus);
 

@@ -33,11 +33,11 @@ public class FinalTask implements EventHandler<KeyEvent> {
             "przy zakupie nowej pralki.";
     private static final String GRID_CSS_PATH = "pl/swpws/common/grid/grid-with-borders.css";
 
-    private Integer[] selectedValues = new Integer[APPLIANCE_ATTRIBUTES_COUNT];
+    private final Integer[] selectedValues = new Integer[APPLIANCE_ATTRIBUTES_COUNT];
 
-    private HashMap<AttributesName, List<String>> attributesNameListHashMap = new HashMap<>();
-    private Stage mStage;
-    private BorderPane mParent;
+    private final HashMap<AttributesName, List<String>> attributesNameListHashMap = new HashMap<>();
+    private final Stage mStage;
+    private final BorderPane mParent;
 
 
     public FinalTask(Stage stage, BorderPane parent) {
@@ -143,10 +143,11 @@ public class FinalTask implements EventHandler<KeyEvent> {
 
 
         VBox vBox = new VBox();
-        vBox.setSpacing(20.0);
+        vBox.setSpacing(40.0);
         vBox.getChildren().add(labelMainTitle);
         vBox.getChildren().add(gridMainPane);
         vBox.setAlignment(Pos.TOP_CENTER);
+        vBox.setPadding(new Insets(80, 125, 80, 125));
 
         vBox.setFocusTraversable(true);//To detect keyEvents!
         vBox.setOnKeyPressed(this);
@@ -158,7 +159,7 @@ public class FinalTask implements EventHandler<KeyEvent> {
 
     private Label getTableTitleLabel(String name) {
         Label titleLabel = new Label(name);
-        titleLabel.setFont(new Font(30.0));
+        titleLabel.setFont(new Font(25.0));
         titleLabel.setPadding(new Insets(5, 5, 5, 5));
         titleLabel.setMaxWidth(Double.MAX_VALUE); //allows cell resizing
         titleLabel.getStyleClass().add("cell-title");
@@ -314,22 +315,22 @@ public class FinalTask implements EventHandler<KeyEvent> {
                 //save selected values and go to next page.
                 goToNextPage();
             } else {
-                new Alert(Alert.AlertType.INFORMATION, "Nope!").show();
+                new Alert(Alert.AlertType.INFORMATION, "Please select all attribute values!").show();
             }
 
         }
     }
 
     private void goToNextPage() {
-        mParent.setCenter(TaskPage.getScenes().get(SceneName.FINAL_TASK));
-        mStage.setTitle(FinalTask.MAIN_TITLE);
+        mParent.setCenter(TaskPage.getScenes().get(SceneName.FINAL_INSTR));
+        mStage.setTitle(InstructionTasks.FinalInstruction.MAIN_TITLE);
     }
 
     private boolean formValid() {
         for (int value : selectedValues)
             System.out.print(" " + value);
 
-        System.out.println("");
+        System.out.println();
 
         for (int value : selectedValues)
             if (value < 0) return false;

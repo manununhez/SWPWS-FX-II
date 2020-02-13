@@ -1,7 +1,7 @@
 package pl.swpws.model;
 
 public class ApplianceAttribute {
-    public static int APPLIANCE_ATTRIBUTES_COUNT = 6;
+    public static final int APPLIANCE_ATTRIBUTES_COUNT = 6;
 
     public enum EnergyClass {
         A("A"),
@@ -57,7 +57,7 @@ public class ApplianceAttribute {
         YES("jest"),
         NO("brak");
 
-        public String label;
+        public final String label;
 
         FastProgram(String label) {
 
@@ -73,7 +73,7 @@ public class ApplianceAttribute {
         WATER_CONSUMPTION(2),
         FAST_PROGRAM(1);
 
-        public int value;
+        public final int value;
 
         AttributeImportanceLevel(int value) {
 

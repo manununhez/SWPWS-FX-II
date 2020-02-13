@@ -18,7 +18,6 @@ import javafx.stage.Stage;
 import pl.swpws.common.rating.RatingPlus;
 import pl.swpws.model.ApplianceAttribute;
 import pl.swpws.model.ApplianceAttribute.AttributeImportanceLevel;
-import pl.swpws.model.ApplianceAttribute.AttributesName;
 import pl.swpws.model.SceneName;
 
 import java.util.HashMap;
@@ -33,10 +32,10 @@ public class FirstTask implements EventHandler<KeyEvent> {
     private static final String APPLIANCE_DEFAULT_NAME = "Pralka ";
     private static final String MAIN_PAGE_INSTRUCTION = "Wybierz najlepszą pralkę, naciskając jeden zklawiszy" +
             " na klawiaturze: 1,2 lub 3.";
-    private Stage mStage;
-    private BorderPane mParent;
-    private ToggleGroup toggleGroup = new ToggleGroup();
-    private HashMap<String, RadioButton> radioButtonHashMap = new HashMap<>();
+    private final Stage mStage;
+    private final BorderPane mParent;
+    private final ToggleGroup toggleGroup = new ToggleGroup();
+    private final HashMap<String, RadioButton> radioButtonHashMap = new HashMap<>();
     private List<ApplianceAttribute> mAttributeList;
 
     public FirstTask(Stage stage, BorderPane parent) {
@@ -84,7 +83,7 @@ public class FirstTask implements EventHandler<KeyEvent> {
         hBox.getChildren().add(getGridPaneDescription()); //Grid with appliance attributes description
         hBox.getChildren().add(gridPaneTask);
         hBox.setAlignment(Pos.CENTER);
-        hBox.setSpacing(100.0);
+        hBox.setSpacing(80.0);
 
         VBox vBox = new VBox();
         vBox.setSpacing(50.0);
@@ -92,6 +91,7 @@ public class FirstTask implements EventHandler<KeyEvent> {
         vBox.getChildren().add(labelMainTitle);
         vBox.getChildren().add(hBox);
         vBox.addEventFilter(MouseEvent.ANY, MouseEvent::consume);//block mouseEvents, only keyboard allow
+        vBox.setPadding(new Insets(80, 125, 80, 125));
 
         return vBox;
     }
@@ -194,14 +194,14 @@ public class FirstTask implements EventHandler<KeyEvent> {
 
     private Label getTableTitleLabel(String name) {
         Label titleLabel = new Label(name);
-        titleLabel.setFont(new Font(30.0));
+        titleLabel.setFont(new Font(25.0));
         titleLabel.setPadding(new Insets(5, 0, 5, 0));
         return titleLabel;
     }
 
     private StackPane getTableTitleLabelWithStyle(RadioButton radioButton, String name) {
         Label titleLabel = new Label(name);
-        titleLabel.setFont(new Font(30.0));
+        titleLabel.setFont(new Font(25.0));
 
         HBox hBox = new HBox(radioButton, titleLabel);
         hBox.setAlignment(Pos.CENTER);
@@ -233,7 +233,7 @@ public class FirstTask implements EventHandler<KeyEvent> {
                 (keyEvent.getCode() == KeyCode.SPACE || keyEvent.getCode() == KeyCode.ENTER)) {
             RadioButton radioButton = (RadioButton) toggleGroup.getSelectedToggle();
             if (radioButton == null) {
-                new Alert(Alert.AlertType.INFORMATION, "Please select something!").show();
+                new Alert(Alert.AlertType.INFORMATION, "Please select an option!").show();
             } else {
                 int index = Integer.parseInt(radioButton.getId()) - 1;
                 System.out.println(mAttributeList.get(index));

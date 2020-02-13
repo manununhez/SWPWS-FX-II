@@ -1,6 +1,7 @@
 package pl.swpws.controller;
 
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -29,8 +30,8 @@ public class UserForm implements EventHandler<KeyEvent> {
     public static final String MAIN_TITLE = "Twoje dane";
     public static final String REGEX_THREE_DIGITS = "\\d{0,3}";
     public static final String REGEX_TWO_DIGITS = "\\d{0,2}";
-    private Stage mStage;
-    private BorderPane mParent;
+    private final Stage mStage;
+    private final BorderPane mParent;
     private TextField numberTxt;
     private TextField ageTxt;
     private TextField professionTxt;
@@ -79,14 +80,13 @@ public class UserForm implements EventHandler<KeyEvent> {
 
         grid.add(getLabelForm(NUMER_LABEL), 0, 1);
 
-        numberTxt = new TextField("5");
-        numberTxt.setPromptText("hint number");
+        numberTxt = new TextField();
+        numberTxt.setPromptText("number: E.g., 345");
         numberTxt.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches(REGEX_THREE_DIGITS)) {//until three digit numbers only
                 numberTxt.setText(oldValue);
             } else {
                 numberTxt.setText(newValue);
-                //isInputValid();//TODO complete
             }
         });
         grid.add(numberTxt, 1, 1);
@@ -94,14 +94,13 @@ public class UserForm implements EventHandler<KeyEvent> {
         //#######
         grid.add(getLabelForm(WIEK_LABEL), 0, 2);
 
-        ageTxt = new TextField("5");
-        ageTxt.setPromptText("hint age");
+        ageTxt = new TextField();
+        ageTxt.setPromptText("age: E.g., 18");
         ageTxt.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches(REGEX_THREE_DIGITS)) { //until three digit numbers only
                 ageTxt.setText(oldValue);
             } else {
                 ageTxt.setText(newValue);
-                //isInputValid();//TODO complete
             }
         });
         grid.add(ageTxt, 1, 2);
@@ -112,8 +111,8 @@ public class UserForm implements EventHandler<KeyEvent> {
         //#######
         grid.add(getLabelForm(ZAWOD_LABEL), 0, 3);
 
-        professionTxt = new TextField("temp");
-        professionTxt.setPromptText("hint profession");
+        professionTxt = new TextField();
+        professionTxt.setPromptText("profession: E.g., architect");
         grid.add(professionTxt, 1, 3);
 
         professionAlert = getLabelAlert();
@@ -139,14 +138,13 @@ public class UserForm implements EventHandler<KeyEvent> {
         //#######
         grid.add(getLabelForm(EDUKACJI_LABEL), 0, 5);
 
-        educationTxt = new TextField("5");
-        educationTxt.setPromptText("hint education");
+        educationTxt = new TextField();
+        educationTxt.setPromptText("education: E.g., 25");
         educationTxt.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches(REGEX_TWO_DIGITS)) {//until three digit numbers only
                 educationTxt.setText(oldValue);
             } else {
                 educationTxt.setText(newValue);
-                //isInputValid();//TODO complete
             }
         });
         grid.add(educationTxt, 1, 5);
@@ -161,14 +159,12 @@ public class UserForm implements EventHandler<KeyEvent> {
         vBox.setSpacing(30);
         vBox.getChildren().add(scenetitle);
         vBox.getChildren().add(grid);
-        //vBox.setPadding(new Insets(80, 125, 0, 125));
+        vBox.setPadding(new Insets(80, 125, 80, 125));
 
         //Set keyboard listener
         vBox.setOnKeyPressed(this);
         vBox.setOnKeyReleased(this);
 
-//        Group root = new Group();
-//        root.getChildren().add(vBox);
 
         return vBox;
     }
@@ -177,15 +173,15 @@ public class UserForm implements EventHandler<KeyEvent> {
     public void handle(KeyEvent event) {
         if (event.getEventType() == KeyEvent.KEY_RELEASED &&
                 (event.getCode() == KeyCode.SPACE || event.getCode() == KeyCode.ENTER)) {
-            //keyBoardEvent();
-            if (formValidate())//TODO go to next page
+
+            if (formValidate())
                 goToNextPage();
 
         }
 
-        if (event.getCode() == KeyCode.ESCAPE) {
-            mStage.close();
-        }
+//        if (event.getCode() == KeyCode.ESCAPE) {
+//            mStage.close();
+//        }
 
     }
 
@@ -219,7 +215,6 @@ public class UserForm implements EventHandler<KeyEvent> {
             professionAlert.setText("");
             educationAlert.setText("");
 
-            //new Alert(Alert.AlertType.INFORMATION, "Valid").show();
             return true;
         } else {
             //set alerts text
