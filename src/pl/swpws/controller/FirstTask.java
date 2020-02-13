@@ -217,7 +217,6 @@ public class FirstTask implements EventHandler<KeyEvent> {
 
     @Override
     public void handle(KeyEvent keyEvent) {
-        System.out.println(keyEvent.getCode().getName());
         if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED && keyEvent.getCode().isDigitKey()) {
 
             RadioButton selectedRadioBtn = radioButtonHashMap.get(keyEvent.getCode().getName()); //we get the correspondent radiobtn

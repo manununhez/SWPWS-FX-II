@@ -177,20 +177,15 @@ public class UserForm implements EventHandler<KeyEvent> {
 
     @Override
     public void handle(KeyEvent event) {
-
         if (event.getEventType() == KeyEvent.KEY_RELEASED &&
                 (event.getCode() == KeyCode.SPACE || event.getCode() == KeyCode.ENTER)) {
             //keyBoardEvent();
             if (formValidate())//TODO go to next page
                 goToNextPage();
 
-
-            System.out.println("Key Pressed: " + event.getCode());
-
         }
 
         if (event.getCode() == KeyCode.ESCAPE) {
-            System.out.println("Key Pressed: " + event.getCode());
             mStage.close();
         }
 

@@ -1,6 +1,8 @@
 package pl.swpws.model;
 
 public class ApplianceAttribute {
+    public static int APPLIANCE_ATTRIBUTES_COUNT = 6;
+
     public enum EnergyClass {
         A("A"),
         APLUS("A+"),
@@ -29,7 +31,7 @@ public class ApplianceAttribute {
         }
     }
 
-    public enum AttributesMeasurementUnit{
+    public enum AttributesMeasurementUnit {
         SPIN_SPEED("obr/min"),
         DRUM_CAPACITY("kg"),
         NOISE_LEVEL("db"),
@@ -39,6 +41,15 @@ public class ApplianceAttribute {
 
         AttributesMeasurementUnit(String s) {
             this.label = s;
+        }
+
+        //According to specs: Fast program and energy class do not have unit of measurement
+        public static String getAttributeMeasurementUnit(AttributesName attributesName) {
+            for (AttributesMeasurementUnit unit : AttributesMeasurementUnit.values())
+                if (unit.name().equals(attributesName.name()))
+                    return unit.label;
+
+            return "";
         }
     }
 
@@ -67,6 +78,14 @@ public class ApplianceAttribute {
         AttributeImportanceLevel(int value) {
 
             this.value = value;
+        }
+
+        public static int getAttributeImportanceLevel(AttributesName attributesName) {
+            for (AttributeImportanceLevel level : AttributeImportanceLevel.values())
+                if (level.name().equals(attributesName.name()))
+                    return level.value;
+
+            return 0;
         }
     }
 
@@ -133,6 +152,7 @@ public class ApplianceAttribute {
     public boolean isFastProgram() {
         return fastProgram;
     }
+
     public String isFastProgramTranslated() {
         return fastProgram ? FastProgram.YES.label : FastProgram.NO.label;
     }

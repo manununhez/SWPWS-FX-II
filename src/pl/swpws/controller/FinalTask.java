@@ -1,12 +1,11 @@
 package pl.swpws.controller;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -18,9 +17,13 @@ import pl.swpws.model.ApplianceAttribute.AttributesMeasurementUnit;
 import pl.swpws.model.ApplianceAttribute.AttributesName;
 import pl.swpws.model.ApplianceAttribute.EnergyClass;
 import pl.swpws.model.ApplianceAttribute.FastProgram;
+import pl.swpws.model.SceneName;
 
 import java.util.HashMap;
 import java.util.List;
+
+import static pl.swpws.model.ApplianceAttribute.APPLIANCE_ATTRIBUTES_COUNT;
+import static pl.swpws.model.ApplianceAttribute.AttributeImportanceLevel;
 
 public class FinalTask implements EventHandler<KeyEvent> {
     public static final String MAIN_TITLE = "final task";
@@ -30,18 +33,25 @@ public class FinalTask implements EventHandler<KeyEvent> {
             "przy zakupie nowej pralki.";
     private static final String GRID_CSS_PATH = "pl/swpws/common/grid/grid-with-borders.css";
 
+    private Integer[] selectedValues = new Integer[APPLIANCE_ATTRIBUTES_COUNT];
+
     private HashMap<AttributesName, List<String>> attributesNameListHashMap = new HashMap<>();
-    private HashMap<AttributesName, BooleanProperty[]> attributesBooleanHashMap = new HashMap<>();
+    private Stage mStage;
     private BorderPane mParent;
 
 
     public FinalTask(Stage stage, BorderPane parent) {
+        mStage = stage;
         mParent = parent;
 
         getData();
     }
 
     private void getData() {
+        for (int i = 0; i < APPLIANCE_ATTRIBUTES_COUNT; i++) {
+            selectedValues[i] = -1;
+        }
+
         attributesNameListHashMap.put(AttributesName.SPIN_SPEED,
                 List.of("800", "1000", "1200", "1400", "1600"));
         attributesNameListHashMap.put(AttributesName.DRUM_CAPACITY,
@@ -60,7 +70,6 @@ public class FinalTask implements EventHandler<KeyEvent> {
     }
 
     public Node getNodeScene() {
-        int rowIndex = 0;
 
         mParent.getStylesheets().add(GRID_CSS_PATH);
 
@@ -89,6 +98,8 @@ public class FinalTask implements EventHandler<KeyEvent> {
         col3.setHgrow(Priority.ALWAYS);
 
         gridMainPane.getColumnConstraints().addAll(col1, col2, col3);
+
+        int rowIndex = 0;
 
         gridMainPane.add(getTableTitleLabel(""), 0, rowIndex);
         gridMainPane.add(getTableTitleLabel("Preferencje (po prawej lepsze)"), 1, rowIndex);
@@ -136,6 +147,8 @@ public class FinalTask implements EventHandler<KeyEvent> {
         vBox.getChildren().add(labelMainTitle);
         vBox.getChildren().add(gridMainPane);
         vBox.setAlignment(Pos.TOP_CENTER);
+
+        vBox.setFocusTraversable(true);//To detect keyEvents!
         vBox.setOnKeyPressed(this);
         vBox.setOnKeyReleased(this);
 
@@ -175,13 +188,12 @@ public class FinalTask implements EventHandler<KeyEvent> {
     }
 
     private String getSelectedValue(AttributesName attributesName) {
-        BooleanProperty[] booleanProperties = attributesBooleanHashMap.get(attributesName);
-        for (int i = 0; i < booleanProperties.length; i++) {
-            if (booleanProperties[i].get())
-                return attributesNameListHashMap.get(attributesName).get(i);
-        }
+        int indexSelectedValue = selectedValues[AttributeImportanceLevel.getAttributeImportanceLevel(attributesName) - 1];
 
-        return "-";
+        if (indexSelectedValue > 0)
+            return attributesNameListHashMap.get(attributesName).get(indexSelectedValue);
+        else
+            return "-";
     }
 
     private GridPane gridPanePerAttribute(int rowIndex, AttributesName attributesName, List<String> list,
@@ -198,24 +210,17 @@ public class FinalTask implements EventHandler<KeyEvent> {
         cc.setHgrow(Priority.ALWAYS); // allow column to grow
         cc.setFillWidth(true); // ask nodes to fill space for column
 
-        BooleanProperty[] booleanProperties = new BooleanProperty[list.size()];
-
-        for (int i = 0; i < list.size(); i++) { //init values
-            booleanProperties[i] = new SimpleBooleanProperty();
-        }
 
         for (int i = 0; i < list.size(); i++) { //create cells/columns
-            gridPane.add(createCell(rowIndex, attributesName, booleanProperties, list.get(i), gridMainPane, gridPane), i, 0);
+            gridPane.add(createCell(rowIndex, attributesName, list.get(i), gridMainPane, gridPane), i, 0);
             gridPane.getColumnConstraints().add(cc); //allows cell resizing, column constraint
 
         }
 
-        attributesBooleanHashMap.put(attributesName, booleanProperties);
-
         return gridPane;
     }
 
-    private StackPane createCell(int gridRootRowIndex, AttributesName attributesName, BooleanProperty[] cellSwitch,
+    private StackPane createCell(int gridRootRowIndex, AttributesName attributesName,
                                  String text, GridPane gridRoot, GridPane gridParent) {
 
         Label label = new Label(text);
@@ -238,10 +243,9 @@ public class FinalTask implements EventHandler<KeyEvent> {
                         Label labelTmp = (Label) stackPane.getChildren().get(0);
 
                         if (!stackPane.getId().equals(cell.getId())) { //we reset the background color of all columns, except the current cell
-                            cellSwitch[gridParentRowIndex].set(false);
                             labelTmp.setBackground(new Background(new BackgroundFill(Color.BLUE, CornerRadii.EMPTY, Insets.EMPTY)));
                         } else { //we set the current cell background color active
-                            cellSwitch[gridParentRowIndex].set(true); //we keep track of the selected value
+                            selectedValues[AttributeImportanceLevel.getAttributeImportanceLevel(attributesName) - 1] = gridParentRowIndex;//we keep track of the selected value
                             labelTmp.setBackground(new Background(new BackgroundFill(Color.ORANGE, CornerRadii.EMPTY, Insets.EMPTY)));
                             updateGridRootSelectedColumn(attributesName, gridRoot, gridParentRowIndex, gridRootRowIndex);
                         }
@@ -250,8 +254,9 @@ public class FinalTask implements EventHandler<KeyEvent> {
 
             }
         });
-        
+
         cell.getChildren().add(label);
+
 
         return cell;
     }
@@ -261,7 +266,6 @@ public class FinalTask implements EventHandler<KeyEvent> {
 
         Label label = (Label) getNodeByRowColumnIndex(gridRootRowIndex, 2, gridRoot); //column two is always the "Wybrane" column
         String prefixText = "";
-        String sufixText = "";
 
         //According to specs: Fast program does not have max/min, and max values are
         // only water consume and noise level
@@ -273,22 +277,7 @@ public class FinalTask implements EventHandler<KeyEvent> {
                 prefixText = "Min";
         }
 
-        //According to specs: Fast program and energy class do not have unit of measurement
-        switch (attributesName) {
-            case SPIN_SPEED:
-                sufixText = AttributesMeasurementUnit.SPIN_SPEED.label;
-                break;
-            case DRUM_CAPACITY:
-                sufixText = AttributesMeasurementUnit.DRUM_CAPACITY.label;
-                break;
-            case WATER_CONSUMPTION:
-                sufixText = AttributesMeasurementUnit.WATER_CONSUMPTION.label;
-                break;
-            case NOISE_LEVEL:
-                sufixText = AttributesMeasurementUnit.NOISE_LEVEL.label;
-                break;
-        }
-
+        String sufixText = AttributesMeasurementUnit.getAttributeMeasurementUnit(attributesName);
 
         label.setText(prefixText + " " +
                 attributesNameListHashMap.get(attributesName).get(gridParentRowIndex) +
@@ -316,15 +305,35 @@ public class FinalTask implements EventHandler<KeyEvent> {
                 (keyEvent.getCode() == KeyCode.SPACE || keyEvent.getCode() == KeyCode.ENTER)) {
             //we first check if all rows have selected values
             if (formValid()) {
-                //save selected values and go to next page. Get values from attributesNameListHashMap and
-                // the indexes from attributesBooleanHashMap
+                // Get values
+//                for (int value : selectedValues)
+//                    System.out.print(" " + value);
+//
+//                System.out.println("");
+
+                //save selected values and go to next page.
+                goToNextPage();
+            } else {
+                new Alert(Alert.AlertType.INFORMATION, "Nope!").show();
             }
 
         }
     }
 
+    private void goToNextPage() {
+        mParent.setCenter(TaskPage.getScenes().get(SceneName.FINAL_TASK));
+        mStage.setTitle(FinalTask.MAIN_TITLE);
+    }
+
     private boolean formValid() {
-        //if(a)
+        for (int value : selectedValues)
+            System.out.print(" " + value);
+
+        System.out.println("");
+
+        for (int value : selectedValues)
+            if (value < 0) return false;
+
         return true;
     }
 }
