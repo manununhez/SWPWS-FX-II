@@ -14,6 +14,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import pl.swpws.common.rating.RatingPlus;
+import pl.swpws.controller.TaskPage.TaskPageType;
 import pl.swpws.model.ApplianceAttribute;
 import pl.swpws.model.SceneName;
 
@@ -31,10 +32,12 @@ public class InstructionTasks {
                 "pralek.";
         private final Stage mStage;
         private final BorderPane mParent;
+        private SceneName mSceneName;
 
-        public FirstInstruction(Stage stage, BorderPane parent) {
+        public FirstInstruction(Stage stage, BorderPane parent, SceneName sceneName) {
             mStage = stage;
             mParent = parent;
+            mSceneName = sceneName;
         }
 
         public Node getNodeScene() {
@@ -43,9 +46,6 @@ public class InstructionTasks {
             labelMainTitle.setWrapText(true);
             labelMainTitle.setAlignment(Pos.TOP_CENTER);
 
-            labelMainTitle.setFocusTraversable(true);//To detect keyEvents!
-            labelMainTitle.setOnKeyPressed(this);
-            labelMainTitle.setOnKeyReleased(this);
 
             VBox vBox = new VBox();
             vBox.setSpacing(50.0);
@@ -53,21 +53,25 @@ public class InstructionTasks {
             vBox.getChildren().add(labelMainTitle);
             vBox.setPadding(new Insets(80, 125, 80, 125));
 
+            vBox.setFocusTraversable(true);//To detect keyEvents!
+            vBox.setOnKeyPressed(this);
+            vBox.setOnKeyReleased(this);
+
             return vBox;
+        }
+
+        public void goToNextPage(SceneName sceneName, String title, TaskPageType taskPageType) {
+            TaskPage.goToPage(mSceneName);
         }
 
         @Override
         public void handle(KeyEvent keyEvent) {
             if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED &&
                     (keyEvent.getCode() == KeyCode.SPACE || keyEvent.getCode() == KeyCode.ENTER)) {
-                goToNextPage();
+                goToNextPage(SceneName.SECOND_INSTR, SecondInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
             }
         }
 
-        private void goToNextPage() {
-            mParent.setCenter(TaskPage.getScenes().get(SceneName.SECOND_INSTR));
-            mStage.setTitle(SecondInstruction.MAIN_TITLE);
-        }
     }
 
     static class SecondInstruction implements EventHandler<KeyEvent> {
@@ -80,10 +84,12 @@ public class InstructionTasks {
 
         private final Stage mStage;
         private final BorderPane mParent;
+        private final SceneName mSceneName;
 
-        public SecondInstruction(Stage stage, BorderPane parent) {
+        public SecondInstruction(Stage stage, BorderPane parent, SceneName sceneName) {
             mStage = stage;
             mParent = parent;
+            mSceneName = sceneName;
         }
 
         public Node getNodeScene() {
@@ -92,9 +98,6 @@ public class InstructionTasks {
             labelMainTitle.setWrapText(true);
             labelMainTitle.setAlignment(Pos.TOP_CENTER);
 
-            labelMainTitle.setFocusTraversable(true);//To detect keyEvents!
-            labelMainTitle.setOnKeyPressed(this);
-            labelMainTitle.setOnKeyReleased(this);
 
             VBox vBox = new VBox();
             vBox.setSpacing(50.0);
@@ -102,6 +105,10 @@ public class InstructionTasks {
             vBox.getChildren().add(labelMainTitle);
             vBox.getChildren().add(getGridPaneDescription());
             vBox.setPadding(new Insets(80, 125, 80, 125));
+
+            vBox.setFocusTraversable(true);//To detect keyEvents!
+            vBox.setOnKeyPressed(this);
+            vBox.setOnKeyReleased(this);
 
             return vBox;
         }
@@ -170,8 +177,7 @@ public class InstructionTasks {
         }
 
         private void goToNextPage() {
-            mParent.setCenter(TaskPage.getScenes().get(SceneName.THIRD_INSTR));
-            mStage.setTitle(ThirdInstruction.MAIN_TITLE);
+            TaskPage.goToPage(mSceneName);
         }
     }
 
@@ -192,10 +198,13 @@ public class InstructionTasks {
 
         private final Stage mStage;
         private final BorderPane mParent;
+        private SceneName mSceneName;
 
-        public ThirdInstruction(Stage stage, BorderPane parent) {
+        public ThirdInstruction(Stage stage, BorderPane parent, SceneName sceneName) {
             mStage = stage;
             mParent = parent;
+
+            mSceneName = sceneName;
         }
 
         public Node getNodeScene() {
@@ -204,17 +213,15 @@ public class InstructionTasks {
             labelMainTitle.setWrapText(true);
             labelMainTitle.setAlignment(Pos.TOP_CENTER);
 
-
-            labelMainTitle.setFocusTraversable(true);//To detect keyEvents!
-            labelMainTitle.setOnKeyPressed(this);
-            labelMainTitle.setOnKeyReleased(this);
-
             VBox vBox = new VBox();
             vBox.setSpacing(50.0);
             vBox.setAlignment(Pos.TOP_CENTER);
             vBox.getChildren().add(labelMainTitle);
             vBox.setPadding(new Insets(80, 125, 80, 125));
 
+            vBox.setFocusTraversable(true);//To detect keyEvents!
+            vBox.setOnKeyPressed(this);
+            vBox.setOnKeyReleased(this);
             return vBox;
         }
 
@@ -227,8 +234,7 @@ public class InstructionTasks {
         }
 
         private void goToNextPage() {
-            mParent.setCenter(TaskPage.getScenes().get(SceneName.FOURTH_INSTR));
-            mStage.setTitle(FourthInstruction.MAIN_TITLE);
+            TaskPage.goToPage(mSceneName);
         }
     }
 
@@ -248,10 +254,13 @@ public class InstructionTasks {
 
         private final Stage mStage;
         private final BorderPane mParent;
+        private SceneName mSceneName;
 
-        public FourthInstruction(Stage stage, BorderPane parent) {
+        public FourthInstruction(Stage stage, BorderPane parent, SceneName sceneName) {
             mStage = stage;
             mParent = parent;
+
+            mSceneName = sceneName;
         }
 
         public Node getNodeScene() {
@@ -260,15 +269,15 @@ public class InstructionTasks {
             labelMainTitle.setWrapText(true);
             labelMainTitle.setAlignment(Pos.TOP_CENTER);
 
-            labelMainTitle.setFocusTraversable(true);//To detect keyEvents!
-            labelMainTitle.setOnKeyPressed(this);
-            labelMainTitle.setOnKeyReleased(this);
-
             VBox vBox = new VBox();
             vBox.setSpacing(50.0);
             vBox.setAlignment(Pos.TOP_CENTER);
             vBox.getChildren().add(labelMainTitle);
             vBox.setPadding(new Insets(80, 125, 80, 125));
+
+            vBox.setFocusTraversable(true);//To detect keyEvents!
+            vBox.setOnKeyPressed(this);
+            vBox.setOnKeyReleased(this);
 
             return vBox;
         }
@@ -282,45 +291,46 @@ public class InstructionTasks {
         }
 
         private void goToNextPage() {
-            mParent.setCenter(TaskPage.getScenes().get(SceneName.FIFTH_INSTR));
-            mStage.setTitle(FifthInstruction.MAIN_TITLE);
+            TaskPage.goToPage(mSceneName);
         }
     }
 
 
     static class FifthInstruction implements EventHandler<KeyEvent> {
         public static final String MAIN_TITLE = "Fifth Instruction";
-        private static final String TEXT = "Za chwilę zobaczy Pani cztery" +
-                "przykładowe zadania dotyczące" +
-                "wyboru pralek. W każdym" +
-                "zadaniu proszę wybrać" +
-                "najlepszą pralkę, kierując się ich" +
+        private static final String TEXT = "Za chwilę zobaczy Pani cztery\n" +
+                "przykładowe zadania dotyczące\n" +
+                "wyboru pralek. W każdym\n" +
+                "zadaniu proszę wybrać\n" +
+                "najlepszą pralkę, kierując się ich\n" +
                 "właściwościami.";
 
         private final Stage mStage;
         private final BorderPane mParent;
+        private SceneName mSceneName;
 
-        public FifthInstruction(Stage stage, BorderPane parent) {
+        public FifthInstruction(Stage stage, BorderPane parent, SceneName sceneName) {
             mStage = stage;
             mParent = parent;
+            mSceneName = sceneName;
         }
 
         public Node getNodeScene() {
             Label labelMainTitle = new Label(TEXT);
-            labelMainTitle.setFont(new Font(40.0));
+            labelMainTitle.setFont(new Font(50.0));
             labelMainTitle.setWrapText(true);
-            labelMainTitle.setTextAlignment(TextAlignment.JUSTIFY);
+            labelMainTitle.setTextAlignment(TextAlignment.CENTER);
             labelMainTitle.setAlignment(Pos.TOP_CENTER);
-
-            labelMainTitle.setFocusTraversable(true);//To detect keyEvents!
-            labelMainTitle.setOnKeyPressed(this);
-            labelMainTitle.setOnKeyReleased(this);
 
             VBox vBox = new VBox();
             vBox.setSpacing(50.0);
             vBox.setAlignment(Pos.TOP_CENTER);
             vBox.getChildren().add(labelMainTitle);
             vBox.setPadding(new Insets(80, 125, 80, 125));
+
+            vBox.setFocusTraversable(true);//To detect keyEvents!
+            vBox.setOnKeyPressed(this);
+            vBox.setOnKeyReleased(this);
 
             return vBox;
         }
@@ -334,8 +344,111 @@ public class InstructionTasks {
         }
 
         private void goToNextPage() {
-            mParent.setCenter(TaskPage.getScenes().get(SceneName.FIRST_TASK));
-            mStage.setTitle(FirstTask.MAIN_TITLE);
+            TaskPage.goToPage(mSceneName);
+
+        }
+    }
+
+    static class SixthInstruction implements EventHandler<KeyEvent> {
+        public static final String MAIN_TITLE = "Sixth Instruction";
+        private static final String TEXT = "To już koniec przykładowych\n" +
+                "zadań. Za chwilę przejdzie Pani\n" +
+                "do zadań właściwych. W razie\n" +
+                "pytań, proszę dać znać osobie\n" +
+                "prowadzącej badanie.";
+
+        private final Stage mStage;
+        private final BorderPane mParent;
+        private SceneName mSceneName;
+
+        public SixthInstruction(Stage stage, BorderPane parent, SceneName sceneName) {
+            mStage = stage;
+            mParent = parent;
+            mSceneName = sceneName;
+        }
+
+        public Node getNodeScene() {
+            Label labelMainTitle = new Label(TEXT);
+            labelMainTitle.setFont(new Font(50.0));
+            labelMainTitle.setWrapText(true);
+            labelMainTitle.setTextAlignment(TextAlignment.CENTER);
+            labelMainTitle.setAlignment(Pos.TOP_CENTER);
+
+            VBox vBox = new VBox();
+            vBox.setSpacing(50.0);
+            vBox.setAlignment(Pos.TOP_CENTER);
+            vBox.getChildren().add(labelMainTitle);
+            vBox.setPadding(new Insets(80, 125, 80, 125));
+
+            vBox.setFocusTraversable(true);//To detect keyEvents!
+            vBox.setOnKeyPressed(this);
+            vBox.setOnKeyReleased(this);
+            return vBox;
+        }
+
+        @Override
+        public void handle(KeyEvent keyEvent) {
+            if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED &&
+                    (keyEvent.getCode() == KeyCode.SPACE || keyEvent.getCode() == KeyCode.ENTER)) {
+                goToNextPage();
+            }
+        }
+
+        private void goToNextPage() {
+            TaskPage.goToPage(mSceneName);
+
+        }
+    }
+
+    static class SeventhInstruction implements EventHandler<KeyEvent> {
+        public static final String MAIN_TITLE = "Seventh Instruction";
+        private static final String TEXT = "To już koniec przykładowych\n" +
+                "zadań. Za chwilę przejdzie Pani\n" +
+                "do zadań właściwych. W razie\n" +
+                "pytań, proszę dać znać osobie\n" +
+                "prowadzącej badanie.";
+
+        private final Stage mStage;
+        private final BorderPane mParent;
+        private SceneName mSceneName;
+
+        public SeventhInstruction(Stage stage, BorderPane parent, SceneName sceneName) {
+            mStage = stage;
+            mParent = parent;
+            mSceneName = sceneName;
+        }
+
+        public Node getNodeScene() {
+            Label labelMainTitle = new Label(TEXT);
+            labelMainTitle.setFont(new Font(50.0));
+            labelMainTitle.setWrapText(true);
+            labelMainTitle.setTextAlignment(TextAlignment.CENTER);
+            labelMainTitle.setAlignment(Pos.TOP_CENTER);
+
+            VBox vBox = new VBox();
+            vBox.setSpacing(50.0);
+            vBox.setAlignment(Pos.TOP_CENTER);
+            vBox.getChildren().add(labelMainTitle);
+            vBox.setPadding(new Insets(80, 125, 80, 125));
+
+            vBox.setFocusTraversable(true);//To detect keyEvents!
+            vBox.setOnKeyPressed(this);
+            vBox.setOnKeyReleased(this);
+
+            return vBox;
+        }
+
+        @Override
+        public void handle(KeyEvent keyEvent) {
+            if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED &&
+                    (keyEvent.getCode() == KeyCode.SPACE || keyEvent.getCode() == KeyCode.ENTER)) {
+                goToNextPage();
+            }
+        }
+
+        private void goToNextPage() {
+            TaskPage.goToPage(mSceneName);
+
         }
     }
 
@@ -346,28 +459,32 @@ public class InstructionTasks {
 
         private final Stage mStage;
         private final BorderPane mParent;
+        private SceneName mSceneName;
 
-        public FinalInstruction(Stage stage, BorderPane parent) {
+        public FinalInstruction(Stage stage, BorderPane parent, SceneName sceneName) {
             mStage = stage;
             mParent = parent;
+            mSceneName = sceneName;
         }
 
         public Node getNodeScene() {
             Label labelMainTitle = new Label(TEXT);
-            labelMainTitle.setFont(new Font(40.0));
+            labelMainTitle.setFont(new Font(50.0));
             labelMainTitle.setWrapText(true);
-            labelMainTitle.setTextAlignment(TextAlignment.JUSTIFY);
+            labelMainTitle.setTextAlignment(TextAlignment.CENTER);
             labelMainTitle.setAlignment(Pos.TOP_CENTER);
 
-            labelMainTitle.setFocusTraversable(true);//To detect keyEvents!
-            labelMainTitle.setOnKeyPressed(this);
-            labelMainTitle.setOnKeyReleased(this);
+
 
             VBox vBox = new VBox();
             vBox.setSpacing(50.0);
             vBox.setAlignment(Pos.TOP_CENTER);
             vBox.getChildren().add(labelMainTitle);
             vBox.setPadding(new Insets(80, 125, 80, 125));
+
+            vBox.setFocusTraversable(true);//To detect keyEvents!
+            vBox.setOnKeyPressed(this);
+            vBox.setOnKeyReleased(this);
 
             return vBox;
         }

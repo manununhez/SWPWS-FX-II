@@ -13,6 +13,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import pl.swpws.controller.InstructionTasks.FirstInstruction;
 import pl.swpws.model.SceneName;
 import pl.swpws.model.User;
 
@@ -32,6 +33,7 @@ public class UserForm implements EventHandler<KeyEvent> {
     public static final String REGEX_TWO_DIGITS = "\\d{0,2}";
     private final Stage mStage;
     private final BorderPane mParent;
+    private SceneName mSceneName;
     private TextField numberTxt;
     private TextField ageTxt;
     private TextField professionTxt;
@@ -42,12 +44,11 @@ public class UserForm implements EventHandler<KeyEvent> {
     private Label educationAlert;
     private ToggleGroup sexToggleGroup;
 
-    public UserForm(Stage stage, BorderPane parent) {
-
+    public UserForm(Stage stage, BorderPane parent, SceneName sceneName) {
         mStage = stage;
         mParent = parent;
+        mSceneName = sceneName;
     }
-
 
     private Label getLabelAlert() {
         Label label = new Label();
@@ -121,6 +122,9 @@ public class UserForm implements EventHandler<KeyEvent> {
         //#######
         RadioButton rbFemale = new RadioButton(SEX_FEMALE_LABEL);
         RadioButton rbMale = new RadioButton(SEX_MALE_LABEL);
+        // The radios should be not focusable (avoid selection by keyboard)
+        rbFemale.setFocusTraversable(false);
+        rbMale.setFocusTraversable(false);
 
         sexToggleGroup = new ToggleGroup();
         rbFemale.setToggleGroup(sexToggleGroup);
@@ -165,7 +169,6 @@ public class UserForm implements EventHandler<KeyEvent> {
         vBox.setOnKeyPressed(this);
         vBox.setOnKeyReleased(this);
 
-
         return vBox;
     }
 
@@ -178,16 +181,10 @@ public class UserForm implements EventHandler<KeyEvent> {
                 goToNextPage();
 
         }
-
-//        if (event.getCode() == KeyCode.ESCAPE) {
-//            mStage.close();
-//        }
-
     }
 
     private void goToNextPage() {
-        mParent.setCenter(TaskPage.getScenes().get(SceneName.FIRST_INSTR));
-        mStage.setTitle(InstructionTasks.FirstInstruction.MAIN_TITLE);
+        TaskPage.goToPage(mSceneName);
     }
 
 

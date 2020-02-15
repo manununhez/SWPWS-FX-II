@@ -13,6 +13,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import pl.swpws.controller.InstructionTasks.FinalInstruction;
 import pl.swpws.model.ApplianceAttribute.AttributesMeasurementUnit;
 import pl.swpws.model.ApplianceAttribute.AttributesName;
 import pl.swpws.model.ApplianceAttribute.EnergyClass;
@@ -38,11 +39,13 @@ public class FinalTask implements EventHandler<KeyEvent> {
     private final HashMap<AttributesName, List<String>> attributesNameListHashMap = new HashMap<>();
     private final Stage mStage;
     private final BorderPane mParent;
+    private SceneName mSceneName;
 
 
-    public FinalTask(Stage stage, BorderPane parent) {
+    public FinalTask(Stage stage, BorderPane parent, SceneName sceneName) {
         mStage = stage;
         mParent = parent;
+        mSceneName = sceneName;
 
         getData();
     }
@@ -322,8 +325,7 @@ public class FinalTask implements EventHandler<KeyEvent> {
     }
 
     private void goToNextPage() {
-        mParent.setCenter(TaskPage.getScenes().get(SceneName.FINAL_INSTR));
-        mStage.setTitle(InstructionTasks.FinalInstruction.MAIN_TITLE);
+        TaskPage.goToPage(mSceneName);
     }
 
     private boolean formValid() {

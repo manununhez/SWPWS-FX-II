@@ -20,6 +20,7 @@ import pl.swpws.model.ApplianceAttribute;
 import pl.swpws.model.ApplianceAttribute.AttributeImportanceLevel;
 import pl.swpws.model.SceneName;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,24 +31,25 @@ public class FirstTask implements EventHandler<KeyEvent> {
     public static final String MAIN_TITLE = "first task";
     private static final String GRID_CSS_PATH = "pl/swpws/common/grid/grid-with-borders.css";
     private static final String APPLIANCE_DEFAULT_NAME = "Pralka ";
-    private static final String MAIN_PAGE_INSTRUCTION = "Wybierz najlepszą pralkę, naciskając jeden zklawiszy" +
+    private static final String MAIN_PAGE_INSTRUCTION = "Wybierz najlepszą pralkę, naciskając jeden z klawiszy" +
             " na klawiaturze: 1,2 lub 3.";
     private final Stage mStage;
     private final BorderPane mParent;
+    private SceneName mSceneName;
     private final ToggleGroup toggleGroup = new ToggleGroup();
-    private final HashMap<String, RadioButton> radioButtonHashMap = new HashMap<>();
+    private HashMap<String, RadioButton> radioButtonHashMap = new HashMap<>();
     private List<ApplianceAttribute> mAttributeList;
+    private List<ApplianceAttribute> mAttributeSelectedList = new ArrayList<>();
 
-    public FirstTask(Stage stage, BorderPane parent) {
+    public FirstTask(Stage stage, BorderPane parent, SceneName sceneName, List<ApplianceAttribute> attributeList) {
         mStage = stage;
         mParent = parent;
+        mSceneName = sceneName;
+        mAttributeList = attributeList;
     }
 
-    public Node getNodeScene(List<ApplianceAttribute> attributeList) {
-        mAttributeList = attributeList;
-
+    public Node getNodeScene() {
         mParent.getStylesheets().add(GRID_CSS_PATH);
-
 
         Label labelMainTitle = new Label(MAIN_PAGE_INSTRUCTION);
         labelMainTitle.setFont(new Font(40.0));
@@ -57,24 +59,24 @@ public class FirstTask implements EventHandler<KeyEvent> {
         GridPane gridPaneTask = getGridPaneAttrValues(); //Grid with appliance attributes values
 
         //Loading data into the grid
-        for (int i = 0; i < attributeList.size(); i++) {
+        for (int i = 0; i < mAttributeList.size(); i++) {
 
             int keyIndex = i + 1;
             RadioButton radioButton = getRadioButton(keyIndex);
             radioButtonHashMap.put(String.valueOf(keyIndex), radioButton);
 
             gridPaneTask.add(getTableTitleLabelWithStyle(radioButton, APPLIANCE_DEFAULT_NAME + keyIndex), keyIndex, 0);
-            gridPaneTask.add(getParamLabelWithStyle(String.valueOf(attributeList.get(i).getMaxSpinSpeed())),
+            gridPaneTask.add(getParamLabelWithStyle(String.valueOf(mAttributeList.get(i).getMaxSpinSpeed())),
                     keyIndex, 1);
-            gridPaneTask.add(getParamLabelWithStyle(String.valueOf(attributeList.get(i).getDrumCapacity())),
+            gridPaneTask.add(getParamLabelWithStyle(String.valueOf(mAttributeList.get(i).getDrumCapacity())),
                     keyIndex, 2);
-            gridPaneTask.add(getParamLabelWithStyle(String.valueOf(attributeList.get(i).getEnergyClass())),
+            gridPaneTask.add(getParamLabelWithStyle(String.valueOf(mAttributeList.get(i).getEnergyClass())),
                     keyIndex, 3);
-            gridPaneTask.add(getParamLabelWithStyle(String.valueOf(attributeList.get(i).getNoiseLevel())),
+            gridPaneTask.add(getParamLabelWithStyle(String.valueOf(mAttributeList.get(i).getNoiseLevel())),
                     keyIndex, 4);
-            gridPaneTask.add(getParamLabelWithStyle(String.valueOf(attributeList.get(i).getWaterConsumption())),
+            gridPaneTask.add(getParamLabelWithStyle(String.valueOf(mAttributeList.get(i).getWaterConsumption())),
                     keyIndex, 5);
-            gridPaneTask.add(getParamLabelWithStyle(attributeList.get(i).isFastProgramTranslated()),
+            gridPaneTask.add(getParamLabelWithStyle(mAttributeList.get(i).isFastProgramTranslated()),
                     keyIndex, 6);
         }
 
@@ -92,6 +94,11 @@ public class FirstTask implements EventHandler<KeyEvent> {
         vBox.getChildren().add(hBox);
         vBox.addEventFilter(MouseEvent.ANY, MouseEvent::consume);//block mouseEvents, only keyboard allow
         vBox.setPadding(new Insets(80, 125, 80, 125));
+
+        vBox.setFocusTraversable(true);//To detect keyEvents!
+        vBox.setOnKeyPressed(this);
+        vBox.setOnKeyReleased(this);
+        vBox.requestFocus();
 
         return vBox;
     }
@@ -158,9 +165,6 @@ public class FirstTask implements EventHandler<KeyEvent> {
         radioButton.setSelected(false);
         radioButton.setId(String.valueOf(id));
 
-        radioButton.setOnKeyPressed(this);
-        radioButton.setOnKeyReleased(this);
-
         return radioButton;
     }
 
@@ -221,7 +225,7 @@ public class FirstTask implements EventHandler<KeyEvent> {
 
             RadioButton selectedRadioBtn = radioButtonHashMap.get(keyEvent.getCode().getName()); //we get the correspondent radiobtn
             if (selectedRadioBtn != null) {
-                selectedRadioBtn.requestFocus();
+                //selectedRadioBtn.requestFocus();
                 if (!selectedRadioBtn.isSelected()) {
                     selectedRadioBtn.setSelected(true);
                 }
@@ -236,7 +240,12 @@ public class FirstTask implements EventHandler<KeyEvent> {
                 new Alert(Alert.AlertType.INFORMATION, "Please select an option!").show();
             } else {
                 int index = Integer.parseInt(radioButton.getId()) - 1;
-                System.out.println(mAttributeList.get(index));
+
+                mAttributeSelectedList.add(mAttributeList.get(index));
+
+                System.out.println(mAttributeSelectedList.toString());
+
+                radioButton.setSelected(false); //to clean the selected value after every page iteration (reset radio-buttons)
 
                 goToNextPage();
 
@@ -245,7 +254,7 @@ public class FirstTask implements EventHandler<KeyEvent> {
     }
 
     private void goToNextPage() {
-        mParent.setCenter(TaskPage.getScenes().get(SceneName.SECOND_TASK));
-        mStage.setTitle(SecondTask.MAIN_TITLE);
+        TaskPage.goToPage(mSceneName);
+
     }
 }

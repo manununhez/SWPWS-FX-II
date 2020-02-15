@@ -7,9 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -34,13 +32,14 @@ public class SecondTask implements EventHandler<KeyEvent> {
             "preferencjami.";
     private final Stage mStage;
     private final BorderPane mParent;
+    private SceneName mSceneName;
     private final HashMap<AttributesName, RatingPlus> ratingPlusHashMap = new HashMap<>();
     private Label labelAlert;
 
-    public SecondTask(Stage stage, BorderPane parent) {
+    public SecondTask(Stage stage, BorderPane parent, SceneName sceneName) {
         mStage = stage;
-
         mParent = parent;
+        mSceneName = sceneName;
     }
 
     public Node getNodeScene() {
@@ -135,7 +134,6 @@ public class SecondTask implements EventHandler<KeyEvent> {
     }
 
     private void goToNextPage() {
-        mParent.setCenter(TaskPage.getScenes().get(SceneName.FINAL_TASK));
-        mStage.setTitle(FinalTask.MAIN_TITLE);
+        TaskPage.goToPage(mSceneName);
     }
 }

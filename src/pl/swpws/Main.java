@@ -10,6 +10,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import pl.swpws.controller.MainPage;
 import pl.swpws.controller.TaskPage;
+import pl.swpws.controller.UserForm;
+import pl.swpws.model.SceneName;
 
 import java.io.IOException;
 
@@ -106,9 +108,11 @@ public class Main extends Application {
 
             // Set the participant into the controller.
             TaskPage controller = loader.getController();
-//            TestingFirstTask controller = loader.getController();
-            //controller.setStage(mPrimaryStage);
-            controller.initScenes(mSecondaryStage, borderPane);
+            controller.setStage(mSecondaryStage);
+            controller.setParent(borderPane);
+            controller.initScenes();
+
+            TaskPage.goToPage(SceneName.MAIN);
 
             // Show the dialog and wait until the user closes it
             mSecondaryStage.showAndWait();
