@@ -14,16 +14,17 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import pl.swpws.common.rating.RatingPlus;
 import pl.swpws.model.ApplianceAttribute;
-import pl.swpws.model.ApplianceAttribute.AttributeImportanceLevel;
 import pl.swpws.model.SceneName;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static pl.swpws.model.ApplianceAttribute.AttributeImportanceLevel.getAttributeImportanceLevel;
 import static pl.swpws.model.ApplianceAttribute.AttributesName.*;
 
 public class FirstTask implements EventHandler<KeyEvent> {
@@ -33,13 +34,25 @@ public class FirstTask implements EventHandler<KeyEvent> {
     private static final String APPLIANCE_DEFAULT_NAME = "Pralka ";
     private static final String MAIN_PAGE_INSTRUCTION = "Wybierz najlepszą pralkę, naciskając jeden z klawiszy" +
             " na klawiaturze: 1,2 lub 3.";
+    private static final String TABLE_TITLE1 = "właściwość";
+    private static final String TABLE_TITLE2 = "ważność";
+    private static final String GRID_STYLE_CELL_TITLE = "cell-title";
+    private static final String GRID_STYLE_CELL = "cell";
+    private static final String GRID_STYLE = "grid";
+    private static final String FONT_TYPE = "Tahoma";
+
+    private static final double TABLE_TITLE_TEXT_SIZE = 25.0;
+    private static final double MAIN_PAGE_INSTRUCTION_TEXT_SIZE = 40.0;
+    private static final double PARAM_TEXT_SIZE = 20.0;
+
     private final Stage mStage;
     private final BorderPane mParent;
-    private SceneName mSceneName;
     private final ToggleGroup toggleGroup = new ToggleGroup();
+
     private HashMap<String, RadioButton> radioButtonHashMap = new HashMap<>();
     private List<ApplianceAttribute> mAttributeList;
     private List<ApplianceAttribute> mAttributeSelectedList = new ArrayList<>();
+    private SceneName mSceneName;
 
     public FirstTask(Stage stage, BorderPane parent, SceneName sceneName, List<ApplianceAttribute> attributeList) {
         mStage = stage;
@@ -52,7 +65,7 @@ public class FirstTask implements EventHandler<KeyEvent> {
         mParent.getStylesheets().add(GRID_CSS_PATH);
 
         Label labelMainTitle = new Label(MAIN_PAGE_INSTRUCTION);
-        labelMainTitle.setFont(new Font(40.0));
+        labelMainTitle.setFont(Font.font(FONT_TYPE, FontWeight.NORMAL, MAIN_PAGE_INSTRUCTION_TEXT_SIZE));
         labelMainTitle.setWrapText(true);
 
         //**********
@@ -107,7 +120,7 @@ public class FirstTask implements EventHandler<KeyEvent> {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
 
-        gridPane.getStyleClass().add("grid");
+        gridPane.getStyleClass().add(GRID_STYLE);
 
         ColumnConstraints column = new ColumnConstraints();
         column.setHalignment(HPos.CENTER); //To center column data
@@ -129,8 +142,8 @@ public class FirstTask implements EventHandler<KeyEvent> {
     }
 
     private GridPane getGridPaneDescription() {
-        Label gridTitle1 = getTableTitleLabel("właściwość");
-        Label gridTitle2 = getTableTitleLabel("ważność");
+        Label gridTitle1 = getTableTitleLabel(TABLE_TITLE1);
+        Label gridTitle2 = getTableTitleLabel(TABLE_TITLE2);
 
         GridPane gridPane = new GridPane();
         gridPane.setHgap(20);
@@ -139,22 +152,22 @@ public class FirstTask implements EventHandler<KeyEvent> {
         gridPane.add(gridTitle2, 2, 0);
 
         gridPane.add(getParamLabel(SPIN_SPEED.label), 1, 1);
-        gridPane.add(getDisabledRating(AttributeImportanceLevel.SPIN_SPEED.value), 2, 1);
+        gridPane.add(getDisabledRating(getAttributeImportanceLevel(SPIN_SPEED)), 2, 1);
 
         gridPane.add(getParamLabel(DRUM_CAPACITY.label), 1, 2);
-        gridPane.add(getDisabledRating(AttributeImportanceLevel.DRUM_CAPACITY.value), 2, 2);
+        gridPane.add(getDisabledRating(getAttributeImportanceLevel(DRUM_CAPACITY)), 2, 2);
 
         gridPane.add(getParamLabel(ENERGY_CLASS.label), 1, 3);
-        gridPane.add(getDisabledRating(AttributeImportanceLevel.ENERGY_CLASS.value), 2, 3);
+        gridPane.add(getDisabledRating(getAttributeImportanceLevel(ENERGY_CLASS)), 2, 3);
 
         gridPane.add(getParamLabel(NOISE_LEVEL.label), 1, 4);
-        gridPane.add(getDisabledRating(AttributeImportanceLevel.NOISE_LEVEL.value), 2, 4);
+        gridPane.add(getDisabledRating(getAttributeImportanceLevel(NOISE_LEVEL)), 2, 4);
 
         gridPane.add(getParamLabel(WATER_CONSUMPTION.label), 1, 5);
-        gridPane.add(getDisabledRating(AttributeImportanceLevel.WATER_CONSUMPTION.value), 2, 5);
+        gridPane.add(getDisabledRating(getAttributeImportanceLevel(WATER_CONSUMPTION)), 2, 5);
 
         gridPane.add(getParamLabel(FAST_PROGRAM.label), 1, 6);
-        gridPane.add(getDisabledRating(AttributeImportanceLevel.FAST_PROGRAM.value), 2, 6);
+        gridPane.add(getDisabledRating(getAttributeImportanceLevel(FAST_PROGRAM)), 2, 6);
 
         return gridPane;
     }
@@ -162,7 +175,6 @@ public class FirstTask implements EventHandler<KeyEvent> {
     private RadioButton getRadioButton(int id) {
         RadioButton radioButton = new RadioButton();
         radioButton.setToggleGroup(toggleGroup);
-        radioButton.setSelected(false);
         radioButton.setId(String.valueOf(id));
 
         return radioButton;
@@ -179,33 +191,32 @@ public class FirstTask implements EventHandler<KeyEvent> {
 
     private Label getParamLabel(String name) {
         Label label = new Label(name);
-        label.setFont(new Font(20.0));
+        label.setFont(Font.font(FONT_TYPE, FontWeight.NORMAL, PARAM_TEXT_SIZE));
         label.setPadding(new Insets(5, 0, 5, 0));
         return label;
     }
 
     private StackPane getParamLabelWithStyle(String name) {
         Label label = new Label(name);
-        label.setFont(new Font(20.0));
-        //label.setPadding(new Insets(15, 0, 15, 0));
+        label.setFont(Font.font(FONT_TYPE, FontWeight.NORMAL, PARAM_TEXT_SIZE));
 
         StackPane stackPane = new StackPane();
         stackPane.getChildren().add(label);
-        stackPane.getStyleClass().add("cell");
+        stackPane.getStyleClass().add(GRID_STYLE_CELL);
 
         return stackPane;
     }
 
     private Label getTableTitleLabel(String name) {
         Label titleLabel = new Label(name);
-        titleLabel.setFont(new Font(25.0));
+        titleLabel.setFont(Font.font(FONT_TYPE, FontWeight.NORMAL, TABLE_TITLE_TEXT_SIZE));
         titleLabel.setPadding(new Insets(5, 0, 5, 0));
         return titleLabel;
     }
 
     private StackPane getTableTitleLabelWithStyle(RadioButton radioButton, String name) {
         Label titleLabel = new Label(name);
-        titleLabel.setFont(new Font(25.0));
+        titleLabel.setFont(Font.font(FONT_TYPE, FontWeight.NORMAL, TABLE_TITLE_TEXT_SIZE));
 
         HBox hBox = new HBox(radioButton, titleLabel);
         hBox.setAlignment(Pos.CENTER);
@@ -214,7 +225,7 @@ public class FirstTask implements EventHandler<KeyEvent> {
 
         StackPane stackPane = new StackPane();
         stackPane.getChildren().add(hBox);
-        stackPane.getStyleClass().add("cell-title");
+        stackPane.getStyleClass().add(GRID_STYLE_CELL_TITLE);
 
         return stackPane;
     }
@@ -225,7 +236,6 @@ public class FirstTask implements EventHandler<KeyEvent> {
 
             RadioButton selectedRadioBtn = radioButtonHashMap.get(keyEvent.getCode().getName()); //we get the correspondent radiobtn
             if (selectedRadioBtn != null) {
-                //selectedRadioBtn.requestFocus();
                 if (!selectedRadioBtn.isSelected()) {
                     selectedRadioBtn.setSelected(true);
                 }
@@ -243,7 +253,7 @@ public class FirstTask implements EventHandler<KeyEvent> {
 
                 mAttributeSelectedList.add(mAttributeList.get(index));
 
-                System.out.println(mAttributeSelectedList.toString());
+                System.out.println(mAttributeSelectedList.toString());//TODO Debug Only
 
                 radioButton.setSelected(false); //to clean the selected value after every page iteration (reset radio-buttons)
 
@@ -254,7 +264,7 @@ public class FirstTask implements EventHandler<KeyEvent> {
     }
 
     private void goToNextPage() {
-        TaskPage.goToPage(mSceneName);
+        TaskPage.navigateTo(mSceneName);
 
     }
 }

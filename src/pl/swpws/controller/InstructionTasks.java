@@ -14,7 +14,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import pl.swpws.common.rating.RatingPlus;
-import pl.swpws.controller.TaskPage.TaskPageType;
 import pl.swpws.model.ApplianceAttribute;
 import pl.swpws.model.SceneName;
 
@@ -26,12 +25,13 @@ public class InstructionTasks {
         public static final String MAIN_TITLE = "First instruction";
         private static final String TEXT = "Za chwilę zobaczy Pani zadanie, którego celem będzie wybranie\n" +
                 "najlepszej pralki spośród 3 przedstawionych modeli. Będzie Pani\n" +
-                "proszona o dokonanie wielu takich wyborów.\n" +
-                "\n" +
+                "proszona o dokonanie wielu takich wyborów.\n\n" +
                 "Zależy nam, aby za każdym razem wybrała Pani najlepszą z trzech\n" +
                 "pralek.";
+
         private final Stage mStage;
         private final BorderPane mParent;
+
         private SceneName mSceneName;
 
         public FirstInstruction(Stage stage, BorderPane parent, SceneName sceneName) {
@@ -49,7 +49,7 @@ public class InstructionTasks {
 
             VBox vBox = new VBox();
             vBox.setSpacing(50.0);
-            vBox.setAlignment(Pos.TOP_CENTER);
+            vBox.setAlignment(Pos.CENTER);
             vBox.getChildren().add(labelMainTitle);
             vBox.setPadding(new Insets(80, 125, 80, 125));
 
@@ -60,15 +60,15 @@ public class InstructionTasks {
             return vBox;
         }
 
-        public void goToNextPage(SceneName sceneName, String title, TaskPageType taskPageType) {
-            TaskPage.goToPage(mSceneName);
+        public void goToNextPage() {
+            TaskPage.navigateTo(mSceneName);
         }
 
         @Override
         public void handle(KeyEvent keyEvent) {
             if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED &&
                     (keyEvent.getCode() == KeyCode.SPACE || keyEvent.getCode() == KeyCode.ENTER)) {
-                goToNextPage(SceneName.SECOND_INSTR, SecondInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
+                goToNextPage();
             }
         }
 
@@ -177,7 +177,7 @@ public class InstructionTasks {
         }
 
         private void goToNextPage() {
-            TaskPage.goToPage(mSceneName);
+            TaskPage.navigateTo(mSceneName);
         }
     }
 
@@ -234,7 +234,7 @@ public class InstructionTasks {
         }
 
         private void goToNextPage() {
-            TaskPage.goToPage(mSceneName);
+            TaskPage.navigateTo(mSceneName);
         }
     }
 
@@ -291,7 +291,7 @@ public class InstructionTasks {
         }
 
         private void goToNextPage() {
-            TaskPage.goToPage(mSceneName);
+            TaskPage.navigateTo(mSceneName);
         }
     }
 
@@ -324,7 +324,7 @@ public class InstructionTasks {
 
             VBox vBox = new VBox();
             vBox.setSpacing(50.0);
-            vBox.setAlignment(Pos.TOP_CENTER);
+            vBox.setAlignment(Pos.CENTER);
             vBox.getChildren().add(labelMainTitle);
             vBox.setPadding(new Insets(80, 125, 80, 125));
 
@@ -344,7 +344,7 @@ public class InstructionTasks {
         }
 
         private void goToNextPage() {
-            TaskPage.goToPage(mSceneName);
+            TaskPage.navigateTo(mSceneName);
 
         }
     }
@@ -376,7 +376,7 @@ public class InstructionTasks {
 
             VBox vBox = new VBox();
             vBox.setSpacing(50.0);
-            vBox.setAlignment(Pos.TOP_CENTER);
+            vBox.setAlignment(Pos.CENTER);
             vBox.getChildren().add(labelMainTitle);
             vBox.setPadding(new Insets(80, 125, 80, 125));
 
@@ -395,7 +395,7 @@ public class InstructionTasks {
         }
 
         private void goToNextPage() {
-            TaskPage.goToPage(mSceneName);
+            TaskPage.navigateTo(mSceneName);
 
         }
     }
@@ -427,7 +427,7 @@ public class InstructionTasks {
 
             VBox vBox = new VBox();
             vBox.setSpacing(50.0);
-            vBox.setAlignment(Pos.TOP_CENTER);
+            vBox.setAlignment(Pos.CENTER);
             vBox.getChildren().add(labelMainTitle);
             vBox.setPadding(new Insets(80, 125, 80, 125));
 
@@ -447,7 +447,7 @@ public class InstructionTasks {
         }
 
         private void goToNextPage() {
-            TaskPage.goToPage(mSceneName);
+            TaskPage.navigateTo(mSceneName);
 
         }
     }
@@ -475,10 +475,9 @@ public class InstructionTasks {
             labelMainTitle.setAlignment(Pos.TOP_CENTER);
 
 
-
             VBox vBox = new VBox();
             vBox.setSpacing(50.0);
-            vBox.setAlignment(Pos.TOP_CENTER);
+            vBox.setAlignment(Pos.CENTER);
             vBox.getChildren().add(labelMainTitle);
             vBox.setPadding(new Insets(80, 125, 80, 125));
 

@@ -12,19 +12,19 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import pl.swpws.controller.InstructionTasks.FinalInstruction;
 import pl.swpws.model.ApplianceAttribute.AttributesMeasurementUnit;
 import pl.swpws.model.ApplianceAttribute.AttributesName;
-import pl.swpws.model.ApplianceAttribute.EnergyClass;
-import pl.swpws.model.ApplianceAttribute.FastProgram;
+import pl.swpws.model.DataGenerator;
 import pl.swpws.model.SceneName;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static pl.swpws.model.ApplianceAttribute.APPLIANCE_ATTRIBUTES_COUNT;
 import static pl.swpws.model.ApplianceAttribute.AttributeImportanceLevel;
+import static pl.swpws.model.ApplianceAttribute.AttributesName.*;
 
 public class FinalTask implements EventHandler<KeyEvent> {
     public static final String MAIN_TITLE = "final task";
@@ -33,13 +33,25 @@ public class FinalTask implements EventHandler<KeyEvent> {
             "Przy każdej właściwości prosimy o wybranie wartości, którą uznałaby Pani za wystarczającą " +
             "przy zakupie nowej pralki.";
     private static final String GRID_CSS_PATH = "pl/swpws/common/grid/grid-with-borders.css";
+    private static final String EMPTY_CELL = "-";
+    private static final String TABLE_TITLE2 = "Preferencje (po prawej lepsze)";
+    private static final String TABLE_TITLE3 = "Wybrane";
+    private static final String TABLE_TITLE1 = "";
+    private static final String FONT_TYPE = "Tahoma";
+    private static final String GRID_STYLE = "grid2";
+    private static final String GRID_CELL_TITLE_STYLE = "cell-title";
+    private static final String GRID_CELL_STYLE = "cell2";
+    private static final double MAIN_PAGE_INSTRUCTION_TEXT_SIZE = 30.0;
+    private static final double TABLE_TITLE_TEXT_SIZE = 25.0;
+    private static final double PARAM_TEXT_SIZE = 20.0;
+    private static final double TABLE_CELL_VALUE_TEXT_SIZE = 15.0;
 
     private final Integer[] selectedValues = new Integer[APPLIANCE_ATTRIBUTES_COUNT];
-
-    private final HashMap<AttributesName, List<String>> attributesNameListHashMap = new HashMap<>();
     private final Stage mStage;
     private final BorderPane mParent;
+
     private SceneName mSceneName;
+    private Map<AttributesName, List<String>> applianceAttributesNameMap;
 
 
     public FinalTask(Stage stage, BorderPane parent, SceneName sceneName) {
@@ -47,29 +59,15 @@ public class FinalTask implements EventHandler<KeyEvent> {
         mParent = parent;
         mSceneName = sceneName;
 
-        getData();
+        initializeArray();
     }
 
-    private void getData() {
+    private void initializeArray() {
         for (int i = 0; i < APPLIANCE_ATTRIBUTES_COUNT; i++) {
             selectedValues[i] = -1;
         }
 
-        attributesNameListHashMap.put(AttributesName.SPIN_SPEED,
-                List.of("800", "1000", "1200", "1400", "1600"));
-        attributesNameListHashMap.put(AttributesName.DRUM_CAPACITY,
-                List.of("4", "5", "6", "7", "8", "9", "10"));
-        attributesNameListHashMap.put(AttributesName.ENERGY_CLASS,
-                List.of(EnergyClass.A.label,
-                        EnergyClass.APLUS.label,
-                        EnergyClass.APLUS2.label,
-                        EnergyClass.APLUS3.label));
-        attributesNameListHashMap.put(AttributesName.NOISE_LEVEL,
-                List.of("70", "65", "60", "55", "50", "45", "40"));
-        attributesNameListHashMap.put(AttributesName.WATER_CONSUMPTION,
-                List.of("70", "60", "50", "40", "30"));
-        attributesNameListHashMap.put(AttributesName.FAST_PROGRAM,
-                List.of(FastProgram.YES.label, FastProgram.NO.label));
+        applianceAttributesNameMap = DataGenerator.getApplianceAttributesNameMap();
     }
 
     public Node getNodeScene() {
@@ -77,72 +75,68 @@ public class FinalTask implements EventHandler<KeyEvent> {
         mParent.getStylesheets().add(GRID_CSS_PATH);
 
         Label labelMainTitle = new Label(MAIN_PAGE_INSTRUCTION);
-        labelMainTitle.setFont(new Font(30.0));
+        labelMainTitle.setFont(Font.font(FONT_TYPE, FontWeight.NORMAL, MAIN_PAGE_INSTRUCTION_TEXT_SIZE));
         labelMainTitle.setWrapText(true);
 
 
         GridPane gridMainPane = new GridPane();
         gridMainPane.setAlignment(Pos.CENTER);
-        gridMainPane.getStyleClass().add("grid2");
+        gridMainPane.getStyleClass().add(GRID_STYLE);
 
-        ColumnConstraints col1 = new ColumnConstraints();
-        col1.setPercentWidth(25);
-        col1.setFillWidth(true);
-        col1.setHgrow(Priority.ALWAYS);
+        ColumnConstraints col25 = new ColumnConstraints();
+        col25.setPercentWidth(25);
+        col25.setFillWidth(true);
+        col25.setHgrow(Priority.ALWAYS);
 
-        ColumnConstraints col2 = new ColumnConstraints();
-        col2.setPercentWidth(50);
-        col2.setFillWidth(true);
-        col2.setHgrow(Priority.ALWAYS);
+        ColumnConstraints col50 = new ColumnConstraints();
+        col50.setPercentWidth(50);
+        col50.setFillWidth(true);
+        col50.setHgrow(Priority.ALWAYS);
 
-        ColumnConstraints col3 = new ColumnConstraints();
-        col3.setPercentWidth(25);
-        col3.setFillWidth(true);
-        col3.setHgrow(Priority.ALWAYS);
 
-        gridMainPane.getColumnConstraints().addAll(col1, col2, col3);
+        gridMainPane.getColumnConstraints().addAll(col25, col50, col25);
 
         int rowIndex = 0;
 
-        gridMainPane.add(getTableTitleLabel(""), 0, rowIndex);
-        gridMainPane.add(getTableTitleLabel("Preferencje (po prawej lepsze)"), 1, rowIndex);
-        gridMainPane.add(getTableTitleLabel("Wybrane"), 2, rowIndex);
+        gridMainPane.add(getTableTitleLabel(TABLE_TITLE1), 0, rowIndex);
+        gridMainPane.add(getTableTitleLabel(TABLE_TITLE2), 1, rowIndex);
+        gridMainPane.add(getTableTitleLabel(TABLE_TITLE3), 2, rowIndex);
         rowIndex++;
 
-        gridMainPane.add(getParamLabel(AttributesName.SPIN_SPEED.label), 0, rowIndex);
-        gridMainPane.add(gridPanePerAttribute(rowIndex, AttributesName.SPIN_SPEED,
-                attributesNameListHashMap.get(AttributesName.SPIN_SPEED), gridMainPane), 1, rowIndex);
-        gridMainPane.add(getParamLabelCentered(getSelectedValue(AttributesName.SPIN_SPEED)), 2, rowIndex);
+        gridMainPane.add(getParamLabel(SPIN_SPEED.label), 0, rowIndex);
+        gridMainPane.add(gridPanePerAttribute(rowIndex, SPIN_SPEED,
+                applianceAttributesNameMap.get(SPIN_SPEED), gridMainPane), 1, rowIndex);
+        gridMainPane.add(getParamLabelCentered(EMPTY_CELL), 2, rowIndex);
         rowIndex++;
 
-        gridMainPane.add(getParamLabel(AttributesName.DRUM_CAPACITY.label), 0, rowIndex);
-        gridMainPane.add(gridPanePerAttribute(rowIndex, AttributesName.DRUM_CAPACITY,
-                attributesNameListHashMap.get(AttributesName.DRUM_CAPACITY), gridMainPane), 1, rowIndex);
-        gridMainPane.add(getParamLabelCentered(getSelectedValue(AttributesName.DRUM_CAPACITY)), 2, rowIndex);
+        gridMainPane.add(getParamLabel(DRUM_CAPACITY.label), 0, rowIndex);
+        gridMainPane.add(gridPanePerAttribute(rowIndex, DRUM_CAPACITY,
+                applianceAttributesNameMap.get(DRUM_CAPACITY), gridMainPane), 1, rowIndex);
+        gridMainPane.add(getParamLabelCentered(EMPTY_CELL), 2, rowIndex);
         rowIndex++;
 
-        gridMainPane.add(getParamLabel(AttributesName.ENERGY_CLASS.label), 0, rowIndex);
-        gridMainPane.add(gridPanePerAttribute(rowIndex, AttributesName.ENERGY_CLASS,
-                attributesNameListHashMap.get(AttributesName.ENERGY_CLASS), gridMainPane), 1, rowIndex);
-        gridMainPane.add(getParamLabelCentered(getSelectedValue(AttributesName.ENERGY_CLASS)), 2, rowIndex);
+        gridMainPane.add(getParamLabel(ENERGY_CLASS.label), 0, rowIndex);
+        gridMainPane.add(gridPanePerAttribute(rowIndex, ENERGY_CLASS,
+                applianceAttributesNameMap.get(ENERGY_CLASS), gridMainPane), 1, rowIndex);
+        gridMainPane.add(getParamLabelCentered(EMPTY_CELL), 2, rowIndex);
         rowIndex++;
 
-        gridMainPane.add(getParamLabel(AttributesName.NOISE_LEVEL.label), 0, rowIndex);
-        gridMainPane.add(gridPanePerAttribute(rowIndex, AttributesName.NOISE_LEVEL,
-                attributesNameListHashMap.get(AttributesName.NOISE_LEVEL), gridMainPane), 1, rowIndex);
-        gridMainPane.add(getParamLabelCentered(getSelectedValue(AttributesName.NOISE_LEVEL)), 2, rowIndex);
+        gridMainPane.add(getParamLabel(NOISE_LEVEL.label), 0, rowIndex);
+        gridMainPane.add(gridPanePerAttribute(rowIndex, NOISE_LEVEL,
+                applianceAttributesNameMap.get(NOISE_LEVEL), gridMainPane), 1, rowIndex);
+        gridMainPane.add(getParamLabelCentered(EMPTY_CELL), 2, rowIndex);
         rowIndex++;
 
-        gridMainPane.add(getParamLabel(AttributesName.WATER_CONSUMPTION.label), 0, rowIndex);
-        gridMainPane.add(gridPanePerAttribute(rowIndex, AttributesName.WATER_CONSUMPTION,
-                attributesNameListHashMap.get(AttributesName.WATER_CONSUMPTION), gridMainPane), 1, rowIndex);
-        gridMainPane.add(getParamLabelCentered(getSelectedValue(AttributesName.WATER_CONSUMPTION)), 2, rowIndex);
+        gridMainPane.add(getParamLabel(WATER_CONSUMPTION.label), 0, rowIndex);
+        gridMainPane.add(gridPanePerAttribute(rowIndex, WATER_CONSUMPTION,
+                applianceAttributesNameMap.get(WATER_CONSUMPTION), gridMainPane), 1, rowIndex);
+        gridMainPane.add(getParamLabelCentered(EMPTY_CELL), 2, rowIndex);
         rowIndex++;
 
-        gridMainPane.add(getParamLabel(AttributesName.FAST_PROGRAM.label), 0, rowIndex);
-        gridMainPane.add(gridPanePerAttribute(rowIndex, AttributesName.FAST_PROGRAM,
-                attributesNameListHashMap.get(AttributesName.FAST_PROGRAM), gridMainPane), 1, rowIndex);
-        gridMainPane.add(getParamLabelCentered(getSelectedValue(AttributesName.FAST_PROGRAM)), 2, rowIndex);
+        gridMainPane.add(getParamLabel(FAST_PROGRAM.label), 0, rowIndex);
+        gridMainPane.add(gridPanePerAttribute(rowIndex, FAST_PROGRAM,
+                applianceAttributesNameMap.get(FAST_PROGRAM), gridMainPane), 1, rowIndex);
+        gridMainPane.add(getParamLabelCentered(EMPTY_CELL), 2, rowIndex);
 
 
         VBox vBox = new VBox();
@@ -162,43 +156,35 @@ public class FinalTask implements EventHandler<KeyEvent> {
 
     private Label getTableTitleLabel(String name) {
         Label titleLabel = new Label(name);
-        titleLabel.setFont(new Font(25.0));
+        titleLabel.setFont(Font.font(FONT_TYPE, FontWeight.NORMAL, TABLE_TITLE_TEXT_SIZE));
         titleLabel.setPadding(new Insets(5, 5, 5, 5));
         titleLabel.setMaxWidth(Double.MAX_VALUE); //allows cell resizing
-        titleLabel.getStyleClass().add("cell-title");
+        titleLabel.getStyleClass().add(GRID_CELL_TITLE_STYLE);
         titleLabel.setAlignment(Pos.CENTER);
         return titleLabel;
     }
 
     private Label getParamLabel(String name) {
         Label label = new Label(name);
-        label.setFont(new Font(20.0));
+        label.setFont(Font.font(FONT_TYPE, FontWeight.NORMAL, PARAM_TEXT_SIZE));
         label.setPadding(new Insets(5, 5, 5, 5));
         label.setMaxWidth(Double.MAX_VALUE); //allows cell resizing
-        label.getStyleClass().add("cell2");
+        label.getStyleClass().add(GRID_CELL_STYLE);
 
         return label;
     }
 
     private Label getParamLabelCentered(String name) {
         Label label = new Label(name);
-        label.setFont(new Font(20.0));
+        label.setFont(Font.font(FONT_TYPE, FontWeight.NORMAL, PARAM_TEXT_SIZE));
         label.setPadding(new Insets(5, 5, 5, 5));
         label.setAlignment(Pos.CENTER);
         label.setMaxWidth(Double.MAX_VALUE); //allows cell resizing
-        label.getStyleClass().add("cell2");
+        label.getStyleClass().add(GRID_CELL_STYLE);
 
         return label;
     }
 
-    private String getSelectedValue(AttributesName attributesName) {
-        int indexSelectedValue = selectedValues[AttributeImportanceLevel.getAttributeImportanceLevel(attributesName) - 1];
-
-        if (indexSelectedValue > 0)
-            return attributesNameListHashMap.get(attributesName).get(indexSelectedValue);
-        else
-            return "-";
-    }
 
     private GridPane gridPanePerAttribute(int rowIndex, AttributesName attributesName, List<String> list,
                                           GridPane gridMainPane) {
@@ -207,7 +193,7 @@ public class FinalTask implements EventHandler<KeyEvent> {
         gridPane.setHgap(40.0);
         gridPane.setPadding(new Insets(0, 10, 0, 10));
         gridPane.setAlignment(Pos.CENTER);
-        gridPane.getStyleClass().add("cell2");
+        gridPane.getStyleClass().add(GRID_CELL_STYLE);
 
         //Cell resizing constraints
         ColumnConstraints cc = new ColumnConstraints();
@@ -229,7 +215,7 @@ public class FinalTask implements EventHandler<KeyEvent> {
 
         Label label = new Label(text);
         label.setTextFill(Color.WHITE);
-        label.setFont(new Font(15.0));
+        label.setFont(Font.font(FONT_TYPE, FontWeight.NORMAL, TABLE_CELL_VALUE_TEXT_SIZE));
         label.setPadding(new Insets(5, 5, 5, 5));
         label.setBackground(new Background(new BackgroundFill(Color.BLUE, CornerRadii.EMPTY, Insets.EMPTY)));
         label.setMaxWidth(Double.MAX_VALUE); //allows cell resizing
@@ -273,9 +259,9 @@ public class FinalTask implements EventHandler<KeyEvent> {
 
         //According to specs: Fast program does not have max/min, and max values are
         // only water consume and noise level
-        if (!attributesName.equals(AttributesName.FAST_PROGRAM)) {
-            if (attributesName.equals(AttributesName.WATER_CONSUMPTION) ||
-                    attributesName.equals(AttributesName.NOISE_LEVEL))
+        if (!attributesName.equals(FAST_PROGRAM)) {
+            if (attributesName.equals(WATER_CONSUMPTION) ||
+                    attributesName.equals(NOISE_LEVEL))
                 prefixText = "Max";
             else
                 prefixText = "Min";
@@ -284,16 +270,16 @@ public class FinalTask implements EventHandler<KeyEvent> {
         String sufixText = AttributesMeasurementUnit.getAttributeMeasurementUnit(attributesName);
 
         label.setText(prefixText + " " +
-                attributesNameListHashMap.get(attributesName).get(gridParentRowIndex) +
+                applianceAttributesNameMap.get(attributesName).get(gridParentRowIndex) +
                 " " + sufixText);
 
     }
 
     public Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
         Node result = null;
-        ObservableList<Node> childrens = gridPane.getChildren();
+        ObservableList<Node> children = gridPane.getChildren();
 
-        for (Node node : childrens) {
+        for (Node node : children) {
             if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
                 result = node;
                 break;
@@ -308,7 +294,7 @@ public class FinalTask implements EventHandler<KeyEvent> {
         if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED &&
                 (keyEvent.getCode() == KeyCode.SPACE || keyEvent.getCode() == KeyCode.ENTER)) {
             //we first check if all rows have selected values
-            if (formValid()) {
+            if (isFormValid()) {
                 // Get values
 //                for (int value : selectedValues)
 //                    System.out.print(" " + value);
@@ -325,10 +311,10 @@ public class FinalTask implements EventHandler<KeyEvent> {
     }
 
     private void goToNextPage() {
-        TaskPage.goToPage(mSceneName);
+        TaskPage.navigateTo(mSceneName);
     }
 
-    private boolean formValid() {
+    private boolean isFormValid() {
         for (int value : selectedValues)
             System.out.print(" " + value);
 

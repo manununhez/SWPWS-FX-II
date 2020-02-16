@@ -3,36 +3,54 @@ package pl.swpws.controller;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import pl.swpws.controller.InstructionTasks.FirstInstruction;
 import pl.swpws.model.SceneName;
 import pl.swpws.model.User;
 
 public class UserForm implements EventHandler<KeyEvent> {
 
-    public static final int PARAM_TEXT_SIZE = 20;
-    public static final Font ATTRI_FONT_PROP = Font.font("Tahoma", FontWeight.NORMAL, PARAM_TEXT_SIZE);
-    public static final String NUMER_LABEL = "Numer:";
-    public static final String WIEK_LABEL = "Wiek:";
-    public static final String ZAWOD_LABEL = "Zawod:";
-    public static final String GENDER_LABEL = "Płeć:";
-    public static final String EDUKACJI_LABEL = "Lata formalnej edukacji:";
-    public static final String SEX_FEMALE_LABEL = "Kobieta";
-    public static final String SEX_MALE_LABEL = "Mężczyzna";
     public static final String MAIN_TITLE = "Twoje dane";
-    public static final String REGEX_THREE_DIGITS = "\\d{0,3}";
-    public static final String REGEX_TWO_DIGITS = "\\d{0,2}";
+    private static final String NUMBER_LABEL = "Numer:";
+    private static final String AGE_LABEL = "Wiek:";
+    private static final String PROFESSION_LABEL = "Zawod:";
+    private static final String GENDER_LABEL = "Płeć:";
+    private static final String EDUCATION_LABEL = "Lata formalnej edukacji:";
+    private static final String SEX_FEMALE_LABEL = "Kobieta";
+    private static final String SEX_MALE_LABEL = "Mężczyzna";
+    private static final String FONT_TYPE = "Tahoma";
+    private static final String NUMBER_HINT = "number: E.g., 345";
+    private static final String AGE_HINT = "age: E.g., 18";
+    private static final String PROFESSION_HINT = "profession: E.g., architect";
+    private static final String EDUCATION_HINT = "education: E.g., 25";
+    private static final String EMPTY_TEXT = "";
+    private static final String NUMBER_ALERT_MESSAGE = "Uncompleted number field!";
+    private static final String AGE_ALERT_MESSAGE = "Uncompleted age field!";
+    private static final String PROFESSION_ALERT_MESSAGE = "Uncompleted profession field!";
+    private static final String EDUCATION_ALERT_MESSAGE = "Uncompleted education field!";
+    private static final String REGEX_THREE_DIGITS = "\\d{0,3}";
+    private static final String REGEX_TWO_DIGITS = "\\d{0,2}";
+    private static final double PARAM_TEXT_SIZE = 20.0;
+    private static final double MAIN_PAGE_INSTRUCTION_TEXT_SIZE = 40.0;
+
     private final Stage mStage;
     private final BorderPane mParent;
+
+    private ToggleGroup sexToggleGroup;
     private SceneName mSceneName;
     private TextField numberTxt;
     private TextField ageTxt;
@@ -42,7 +60,6 @@ public class UserForm implements EventHandler<KeyEvent> {
     private Label ageAlert;
     private Label professionAlert;
     private Label educationAlert;
-    private ToggleGroup sexToggleGroup;
 
     public UserForm(Stage stage, BorderPane parent, SceneName sceneName) {
         mStage = stage;
@@ -50,39 +67,24 @@ public class UserForm implements EventHandler<KeyEvent> {
         mSceneName = sceneName;
     }
 
-    private Label getLabelAlert() {
-        Label label = new Label();
-        label.setTextFill(Color.RED);
-
-        return label;
-    }
-
-    private Label getLabelForm(String name) {
-        Label label = new Label(name);
-        label.setFont(ATTRI_FONT_PROP);
-        return label;
-    }
-
     public VBox getNodeScene() {
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(30);
 
-
         //#######
-        Text scenetitle = new Text(MAIN_TITLE);
-        scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 40));
-        scenetitle.setTextAlignment(TextAlignment.CENTER);
-        //grid.add(scenetitle, 0, 0, 2, 1);
+        Text sceneTitle = new Text(MAIN_TITLE);
+        sceneTitle.setFont(Font.font(FONT_TYPE, FontWeight.NORMAL, MAIN_PAGE_INSTRUCTION_TEXT_SIZE));
+        sceneTitle.setTextAlignment(TextAlignment.CENTER);
 
         //#######
         numberAlert = getLabelAlert();
         grid.add(numberAlert, 2, 1);
 
-        grid.add(getLabelForm(NUMER_LABEL), 0, 1);
+        grid.add(getLabelForm(NUMBER_LABEL), 0, 1);
 
         numberTxt = new TextField();
-        numberTxt.setPromptText("number: E.g., 345");
+        numberTxt.setPromptText(NUMBER_HINT);
         numberTxt.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches(REGEX_THREE_DIGITS)) {//until three digit numbers only
                 numberTxt.setText(oldValue);
@@ -93,10 +95,10 @@ public class UserForm implements EventHandler<KeyEvent> {
         grid.add(numberTxt, 1, 1);
 
         //#######
-        grid.add(getLabelForm(WIEK_LABEL), 0, 2);
+        grid.add(getLabelForm(AGE_LABEL), 0, 2);
 
         ageTxt = new TextField();
-        ageTxt.setPromptText("age: E.g., 18");
+        ageTxt.setPromptText(AGE_HINT);
         ageTxt.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches(REGEX_THREE_DIGITS)) { //until three digit numbers only
                 ageTxt.setText(oldValue);
@@ -110,10 +112,10 @@ public class UserForm implements EventHandler<KeyEvent> {
         grid.add(ageAlert, 2, 2);
 
         //#######
-        grid.add(getLabelForm(ZAWOD_LABEL), 0, 3);
+        grid.add(getLabelForm(PROFESSION_LABEL), 0, 3);
 
         professionTxt = new TextField();
-        professionTxt.setPromptText("profession: E.g., architect");
+        professionTxt.setPromptText(PROFESSION_HINT);
         grid.add(professionTxt, 1, 3);
 
         professionAlert = getLabelAlert();
@@ -140,10 +142,10 @@ public class UserForm implements EventHandler<KeyEvent> {
         grid.add(hbSex, 1, 4);
 
         //#######
-        grid.add(getLabelForm(EDUKACJI_LABEL), 0, 5);
+        grid.add(getLabelForm(EDUCATION_LABEL), 0, 5);
 
         educationTxt = new TextField();
-        educationTxt.setPromptText("education: E.g., 25");
+        educationTxt.setPromptText(EDUCATION_HINT);
         educationTxt.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches(REGEX_TWO_DIGITS)) {//until three digit numbers only
                 educationTxt.setText(oldValue);
@@ -161,9 +163,10 @@ public class UserForm implements EventHandler<KeyEvent> {
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.TOP_LEFT);
         vBox.setSpacing(30);
-        vBox.getChildren().add(scenetitle);
-        vBox.getChildren().add(grid);
         vBox.setPadding(new Insets(80, 125, 80, 125));
+
+        vBox.getChildren().add(sceneTitle);
+        vBox.getChildren().add(grid);
 
         //Set keyboard listener
         vBox.setOnKeyPressed(this);
@@ -172,23 +175,35 @@ public class UserForm implements EventHandler<KeyEvent> {
         return vBox;
     }
 
+    private Label getLabelAlert() {
+        Label label = new Label();
+        label.setTextFill(Color.RED);
+
+        return label;
+    }
+
+    private Label getLabelForm(String name) {
+        Label label = new Label(name);
+        label.setFont(Font.font(FONT_TYPE, FontWeight.NORMAL, PARAM_TEXT_SIZE));
+        return label;
+    }
+
     @Override
     public void handle(KeyEvent event) {
         if (event.getEventType() == KeyEvent.KEY_RELEASED &&
                 (event.getCode() == KeyCode.SPACE || event.getCode() == KeyCode.ENTER)) {
 
-            if (formValidate())
+            if (isFormValid())
                 goToNextPage();
 
         }
     }
 
     private void goToNextPage() {
-        TaskPage.goToPage(mSceneName);
+        TaskPage.navigateTo(mSceneName);
     }
 
-
-    public boolean formValidate() {
+    public boolean isFormValid() {
         RadioButton selectedSexRadioButton = (RadioButton) sexToggleGroup.getSelectedToggle();
 
         String numberField = numberTxt.getText().trim();
@@ -207,25 +222,25 @@ public class UserForm implements EventHandler<KeyEvent> {
             System.out.println(user.toString());
 
             //Clear alerts
-            numberAlert.setText("");
-            ageAlert.setText("");
-            professionAlert.setText("");
-            educationAlert.setText("");
+            numberAlert.setText(EMPTY_TEXT);
+            ageAlert.setText(EMPTY_TEXT);
+            professionAlert.setText(EMPTY_TEXT);
+            educationAlert.setText(EMPTY_TEXT);
 
             return true;
         } else {
             //set alerts text
-            if (numberField.isEmpty()) numberAlert.setText("Uncompleted number field!");
-            else numberAlert.setText("");
+            if (numberField.isEmpty()) numberAlert.setText(NUMBER_ALERT_MESSAGE);
+            else numberAlert.setText(EMPTY_TEXT);
 
-            if (ageField.isEmpty()) ageAlert.setText("Uncompleted age field!");
-            else ageAlert.setText("");
+            if (ageField.isEmpty()) ageAlert.setText(AGE_ALERT_MESSAGE);
+            else ageAlert.setText(EMPTY_TEXT);
 
-            if (professionField.isEmpty()) professionAlert.setText("Uncompleted profession field!");
-            else professionAlert.setText("");
+            if (professionField.isEmpty()) professionAlert.setText(PROFESSION_ALERT_MESSAGE);
+            else professionAlert.setText(EMPTY_TEXT);
 
-            if (educationField.isEmpty()) educationAlert.setText("Uncompleted education field!");
-            else educationAlert.setText("");
+            if (educationField.isEmpty()) educationAlert.setText(EDUCATION_ALERT_MESSAGE);
+            else educationAlert.setText(EMPTY_TEXT);
         }
 
         return false;

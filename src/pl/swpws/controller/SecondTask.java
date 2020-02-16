@@ -30,10 +30,15 @@ public class SecondTask implements EventHandler<KeyEvent> {
             "sześć plusów.\n"
             + "Nie ma tu dobrych ani złych odpowiedzi, proszę się kierować własnymi" +
             "preferencjami.";
+    private static final int MAX_RATING = 6;
+    private static final double PARAM_TEXT_SIZE = 20.0;
+    private static final double MAIN_PAGE_INSTRUCTION_TEXT_SIZE_SMALL = 30.0;
+
     private final Stage mStage;
     private final BorderPane mParent;
-    private SceneName mSceneName;
     private final HashMap<AttributesName, RatingPlus> ratingPlusHashMap = new HashMap<>();
+
+    private SceneName mSceneName;
     private Label labelAlert;
 
     public SecondTask(Stage stage, BorderPane parent, SceneName sceneName) {
@@ -45,7 +50,7 @@ public class SecondTask implements EventHandler<KeyEvent> {
     public Node getNodeScene() {
 
         Label labelMainTitle = new Label(MAIN_PAGE_INSTRUCTION);
-        labelMainTitle.setFont(new Font(30.0));
+        labelMainTitle.setFont(new Font(MAIN_PAGE_INSTRUCTION_TEXT_SIZE_SMALL));
         labelMainTitle.setWrapText(true);
 
         labelAlert = new Label();
@@ -93,10 +98,9 @@ public class SecondTask implements EventHandler<KeyEvent> {
     }
 
     private RatingPlus getRating(AttributesName attributesName) {
-        RatingPlus ratingPlus = new RatingPlus(6);
+        RatingPlus ratingPlus = new RatingPlus(MAX_RATING);
         ratingPlus.setPadding(new Insets(10, 0, 10, 0));
         ratingPlus.setRating(0.0);
-//        ratingPlus.setRating(2.0); //TODO debugging only
 
         ratingPlusHashMap.put(attributesName, ratingPlus);
 
@@ -105,7 +109,7 @@ public class SecondTask implements EventHandler<KeyEvent> {
 
     private Label getParamLabel(String name) {
         Label label = new Label(name);
-        label.setFont(new Font(20.0));
+        label.setFont(new Font(PARAM_TEXT_SIZE));
         label.setPadding(new Insets(5, 0, 5, 0));
         return label;
     }
@@ -134,6 +138,6 @@ public class SecondTask implements EventHandler<KeyEvent> {
     }
 
     private void goToNextPage() {
-        TaskPage.goToPage(mSceneName);
+        TaskPage.navigateTo(mSceneName);
     }
 }

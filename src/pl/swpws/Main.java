@@ -10,14 +10,11 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import pl.swpws.controller.MainPage;
 import pl.swpws.controller.TaskPage;
-import pl.swpws.controller.UserForm;
-import pl.swpws.model.SceneName;
 
 import java.io.IOException;
 
 public class Main extends Application {
     private static final String VIEW_ROOT_LAYOUT_FXML = "view/MainPage.fxml";
-    private static final String VIEW_TASK_PAGE_FXML = "view/TaskPage.fxml";
 
     public static final String PRIMARY_STAGE_TITLE = "SWPS University App";
     private static final String FIRST_TASK_STAGE_TITLE = "FirstTask";
@@ -88,38 +85,26 @@ public class Main extends Application {
 
 
     public void goToTaskPage() {
-        try {
-            // Load the fxml file and create a new stage for the popup dialog.
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource(VIEW_TASK_PAGE_FXML));
-//            AnchorPane borderPane = loader.load();
-            BorderPane borderPane = loader.load();
+        // Create the dialog Stage.
+        Stage mSecondaryStage = new Stage();
+        mSecondaryStage.setTitle(FIRST_TASK_STAGE_TITLE);
+        mSecondaryStage.initModality(Modality.WINDOW_MODAL);
+        mSecondaryStage.initOwner(mPrimaryStage);
+        mSecondaryStage.setMaximized(true);
 
-            // Create the dialog Stage.
-            Stage mSecondaryStage = new Stage();
-            mSecondaryStage.setTitle(FIRST_TASK_STAGE_TITLE);
-            mSecondaryStage.initModality(Modality.WINDOW_MODAL);
-            mSecondaryStage.initOwner(mPrimaryStage);
-            mSecondaryStage.setMaximized(true);
+        BorderPane borderPane = new BorderPane();
 
-            //new scene
-            Scene scene = new Scene(borderPane);
-            mSecondaryStage.setScene(scene);
+        //new scene
+        Scene scene = new Scene(borderPane);
+        mSecondaryStage.setScene(scene);
 
-            // Set the participant into the controller.
-            TaskPage controller = loader.getController();
-            controller.setStage(mSecondaryStage);
-            controller.setParent(borderPane);
-            controller.initScenes();
+        // Set the participant into the controller.
+        TaskPage taskPage = new TaskPage(mSecondaryStage, borderPane);
+        taskPage.initScenes();
+        taskPage.setFirstPage();
 
-            TaskPage.goToPage(SceneName.MAIN);
-
-            // Show the dialog and wait until the user closes it
-            mSecondaryStage.showAndWait();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // Show the dialog and wait until the user closes it
+        mSecondaryStage.showAndWait();
     }
 
 }
