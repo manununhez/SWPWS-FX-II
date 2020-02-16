@@ -77,7 +77,7 @@ public class TaskPage {
 
         switch (sceneName) {
             case MAIN:
-                navigateTo(SceneName.USER_FORM, UserForm.MAIN_TITLE, TaskPage.TaskPageType.TASK);
+                navigateTo(SceneName.USER_FORM, UserForm.MAIN_TITLE, TaskPageType.TASK);
                 break;
             case USER_FORM:
                 navigateTo(SceneName.FIRST_INSTR, FirstInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);

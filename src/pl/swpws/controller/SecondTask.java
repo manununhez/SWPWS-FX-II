@@ -10,6 +10,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import pl.swpws.common.rating.RatingPlus;
 import pl.swpws.model.SceneName;
@@ -30,9 +31,11 @@ public class SecondTask implements EventHandler<KeyEvent> {
             "sześć plusów.\n"
             + "Nie ma tu dobrych ani złych odpowiedzi, proszę się kierować własnymi" +
             "preferencjami.";
+
     private static final int MAX_RATING = 6;
     private static final double PARAM_TEXT_SIZE = 20.0;
     private static final double MAIN_PAGE_INSTRUCTION_TEXT_SIZE_SMALL = 30.0;
+    private static final String FONT_TYPE = "Tahoma";
 
     private final Stage mStage;
     private final BorderPane mParent;
@@ -50,7 +53,7 @@ public class SecondTask implements EventHandler<KeyEvent> {
     public Node getNodeScene() {
 
         Label labelMainTitle = new Label(MAIN_PAGE_INSTRUCTION);
-        labelMainTitle.setFont(new Font(MAIN_PAGE_INSTRUCTION_TEXT_SIZE_SMALL));
+        labelMainTitle.setFont(Font.font(FONT_TYPE, FontWeight.NORMAL, MAIN_PAGE_INSTRUCTION_TEXT_SIZE_SMALL));
         labelMainTitle.setWrapText(true);
 
         labelAlert = new Label();
@@ -61,8 +64,8 @@ public class SecondTask implements EventHandler<KeyEvent> {
         vBox.getChildren().add(labelAlert);
         vBox.getChildren().add(getGridPaneDescription());
         vBox.setAlignment(Pos.TOP_CENTER);
-        vBox.setPadding(new Insets(40, 80, 40, 80));
-
+        vBox.setPadding(new Insets(20, 80, 20, 80));
+        vBox.setSpacing(10.0);
 
         vBox.setOnKeyReleased(this);
         vBox.setOnKeyPressed(this);
