@@ -51,7 +51,7 @@ public class InstructionTasks {
             vBox.setSpacing(50.0);
             vBox.setAlignment(Pos.TOP_CENTER);
             vBox.getChildren().add(labelMainTitle);
-            vBox.setPadding(new Insets(80, 125, 80, 125));
+            vBox.setPadding(new Insets(40, 125, 40, 125));
 
             vBox.setFocusTraversable(true);//To detect keyEvents!
             vBox.setOnKeyPressed(this);
@@ -104,7 +104,7 @@ public class InstructionTasks {
             vBox.setAlignment(Pos.TOP_CENTER);
             vBox.getChildren().add(labelMainTitle);
             vBox.getChildren().add(getGridPaneDescription());
-            vBox.setPadding(new Insets(80, 125, 80, 125));
+            vBox.setPadding(new Insets(40, 125, 40, 125));
 
             vBox.setFocusTraversable(true);//To detect keyEvents!
             vBox.setOnKeyPressed(this);
@@ -217,7 +217,7 @@ public class InstructionTasks {
             vBox.setSpacing(50.0);
             vBox.setAlignment(Pos.TOP_CENTER);
             vBox.getChildren().add(labelMainTitle);
-            vBox.setPadding(new Insets(80, 125, 80, 125));
+            vBox.setPadding(new Insets(40, 125, 40, 125));
 
             vBox.setFocusTraversable(true);//To detect keyEvents!
             vBox.setOnKeyPressed(this);
@@ -273,7 +273,7 @@ public class InstructionTasks {
             vBox.setSpacing(50.0);
             vBox.setAlignment(Pos.TOP_CENTER);
             vBox.getChildren().add(labelMainTitle);
-            vBox.setPadding(new Insets(80, 125, 80, 125));
+            vBox.setPadding(new Insets(40, 125, 40, 125));
 
             vBox.setFocusTraversable(true);//To detect keyEvents!
             vBox.setOnKeyPressed(this);
@@ -326,7 +326,7 @@ public class InstructionTasks {
             vBox.setSpacing(50.0);
             vBox.setAlignment(Pos.CENTER);
             vBox.getChildren().add(labelMainTitle);
-            vBox.setPadding(new Insets(80, 125, 80, 125));
+            vBox.setPadding(new Insets(40, 125, 40, 125));
 
             vBox.setFocusTraversable(true);//To detect keyEvents!
             vBox.setOnKeyPressed(this);
@@ -378,7 +378,7 @@ public class InstructionTasks {
             vBox.setSpacing(50.0);
             vBox.setAlignment(Pos.CENTER);
             vBox.getChildren().add(labelMainTitle);
-            vBox.setPadding(new Insets(80, 125, 80, 125));
+            vBox.setPadding(new Insets(40, 125, 40, 125));
 
             vBox.setFocusTraversable(true);//To detect keyEvents!
             vBox.setOnKeyPressed(this);
@@ -429,7 +429,7 @@ public class InstructionTasks {
             vBox.setSpacing(50.0);
             vBox.setAlignment(Pos.CENTER);
             vBox.getChildren().add(labelMainTitle);
-            vBox.setPadding(new Insets(80, 125, 80, 125));
+            vBox.setPadding(new Insets(40, 125, 40, 125));
 
             vBox.setFocusTraversable(true);//To detect keyEvents!
             vBox.setOnKeyPressed(this);
@@ -479,7 +479,7 @@ public class InstructionTasks {
             vBox.setSpacing(50.0);
             vBox.setAlignment(Pos.CENTER);
             vBox.getChildren().add(labelMainTitle);
-            vBox.setPadding(new Insets(80, 125, 80, 125));
+            vBox.setPadding(new Insets(40, 125, 40, 125));
 
             vBox.setFocusTraversable(true);//To detect keyEvents!
             vBox.setOnKeyPressed(this);

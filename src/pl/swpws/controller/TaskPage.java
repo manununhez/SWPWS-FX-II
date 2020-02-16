@@ -20,14 +20,18 @@ public class TaskPage {
     private final static int FIRST_TASK_EXAMPLE_TOTAL_ITERATION = 4;//TODO should be 60
     private final static Map<SceneName, Node> scenes = new HashMap<>(); //Holds the various scenes to switch between
 
-    private static int firstTaskExampleTotalIteration = 0;
-    private static int firstTaskTotalIteration = 0;
+    private static int firstTaskExampleTotalIteration;
+    private static int firstTaskTotalIteration;
     private static Stage mStage;
     private static BorderPane mParent;
 
     public TaskPage(Stage stage, BorderPane parent) {
         mStage = stage;
         mParent = parent;
+
+        firstTaskExampleTotalIteration = 0; //init values after every experiment iteration
+        firstTaskTotalIteration = 0;//init values after every experiment iteration
+
     }
 
     public void initScenes() {

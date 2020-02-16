@@ -83,10 +83,15 @@ public class FinalTask implements EventHandler<KeyEvent> {
         gridMainPane.setAlignment(Pos.CENTER);
         gridMainPane.getStyleClass().add(GRID_STYLE);
 
-        ColumnConstraints col25 = new ColumnConstraints();
-        col25.setPercentWidth(25);
-        col25.setFillWidth(true);
-        col25.setHgrow(Priority.ALWAYS);
+        ColumnConstraints col30 = new ColumnConstraints();
+        col30.setPercentWidth(30);
+        col30.setFillWidth(true);
+        col30.setHgrow(Priority.ALWAYS);
+
+        ColumnConstraints col20 = new ColumnConstraints();
+        col20.setPercentWidth(20);
+        col20.setFillWidth(true);
+        col20.setHgrow(Priority.ALWAYS);
 
         ColumnConstraints col50 = new ColumnConstraints();
         col50.setPercentWidth(50);
@@ -94,7 +99,7 @@ public class FinalTask implements EventHandler<KeyEvent> {
         col50.setHgrow(Priority.ALWAYS);
 
 
-        gridMainPane.getColumnConstraints().addAll(col25, col50, col25);
+        gridMainPane.getColumnConstraints().addAll(col30, col50, col20);
 
         int rowIndex = 0;
 
@@ -144,7 +149,7 @@ public class FinalTask implements EventHandler<KeyEvent> {
         vBox.getChildren().add(labelMainTitle);
         vBox.getChildren().add(gridMainPane);
         vBox.setAlignment(Pos.TOP_CENTER);
-        vBox.setPadding(new Insets(80, 125, 80, 125));
+        vBox.setPadding(new Insets(40, 125, 40, 125));
 
         vBox.setFocusTraversable(true);//To detect keyEvents!
         vBox.setOnKeyPressed(this);

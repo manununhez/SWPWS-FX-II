@@ -163,7 +163,7 @@ public class UserForm implements EventHandler<KeyEvent> {
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.TOP_LEFT);
         vBox.setSpacing(30);
-        vBox.setPadding(new Insets(80, 125, 80, 125));
+        vBox.setPadding(new Insets(40, 125, 40, 125));
 
         vBox.getChildren().add(sceneTitle);
         vBox.getChildren().add(grid);

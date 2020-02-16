@@ -61,7 +61,7 @@ public class SecondTask implements EventHandler<KeyEvent> {
         vBox.getChildren().add(labelAlert);
         vBox.getChildren().add(getGridPaneDescription());
         vBox.setAlignment(Pos.TOP_CENTER);
-        vBox.setPadding(new Insets(80, 125, 80, 125));
+        vBox.setPadding(new Insets(40, 125, 40, 125));
 
 
         vBox.setOnKeyReleased(this);
