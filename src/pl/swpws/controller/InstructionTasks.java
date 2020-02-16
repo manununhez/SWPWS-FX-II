@@ -23,10 +23,10 @@ public class InstructionTasks {
 
     static class FirstInstruction implements EventHandler<KeyEvent> {
         public static final String MAIN_TITLE = "First instruction";
-        private static final String TEXT = "Za chwilę zobaczy Pani zadanie, którego celem będzie wybranie\n" +
-                "najlepszej pralki spośród 3 przedstawionych modeli. Będzie Pani\n" +
+        private static final String TEXT = "Za chwilę zobaczy Pani zadanie, którego celem będzie wybranie" +
+                "najlepszej pralki spośród 3 przedstawionych modeli. Będzie Pani" +
                 "proszona o dokonanie wielu takich wyborów.\n\n" +
-                "Zależy nam, aby za każdym razem wybrała Pani najlepszą z trzech\n" +
+                "Zależy nam, aby za każdym razem wybrała Pani najlepszą z trzech" +
                 "pralek.";
 
         private final Stage mStage;
@@ -45,11 +45,11 @@ public class InstructionTasks {
             labelMainTitle.setFont(new Font(30.0));
             labelMainTitle.setWrapText(true);
             labelMainTitle.setAlignment(Pos.TOP_CENTER);
-
+            labelMainTitle.setTextAlignment(TextAlignment.LEFT);
 
             VBox vBox = new VBox();
             vBox.setSpacing(50.0);
-            vBox.setAlignment(Pos.CENTER);
+            vBox.setAlignment(Pos.TOP_CENTER);
             vBox.getChildren().add(labelMainTitle);
             vBox.setPadding(new Insets(80, 125, 80, 125));
 
