@@ -106,7 +106,7 @@ public class FirstTask implements EventHandler<KeyEvent> {
         vBox.getChildren().add(labelMainTitle);
         vBox.getChildren().add(hBox);
         vBox.addEventFilter(MouseEvent.ANY, MouseEvent::consume);//block mouseEvents, only keyboard allow
-        vBox.setPadding(new Insets(40, 125, 40, 125));
+        vBox.setPadding(new Insets(40, 80, 40, 80));
 
         vBox.setFocusTraversable(true);//To detect keyEvents!
         vBox.setOnKeyPressed(this);

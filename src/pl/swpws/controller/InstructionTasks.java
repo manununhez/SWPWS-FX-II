@@ -77,9 +77,9 @@ public class InstructionTasks {
     static class SecondInstruction implements EventHandler<KeyEvent> {
         public static final String MAIN_TITLE = "Second instruction";
 
-        public static final String TEXT = "Zgodnie z badaniami marketingowymi przyznaliśmy plusy właściwościom pralek. Im\n" +
-                "wyższa liczba plusów, tym ważniejsza dla przeciętnego użytkownika jest dana\n" +
-                "właściwość. Prosimy, aby dokonując wyboru produktu kierowała się Pani\n" +
+        public static final String TEXT = "Zgodnie z badaniami marketingowymi przyznaliśmy plusy właściwościom pralek. Im" +
+                "wyższa liczba plusów, tym ważniejsza dla przeciętnego użytkownika jest dana" +
+                "właściwość. Prosimy, aby dokonując wyboru produktu kierowała się Pani" +
                 "ważnością podanych właściwości.";
 
         private final Stage mStage;
