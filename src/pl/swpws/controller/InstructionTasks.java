@@ -406,11 +406,8 @@ public class InstructionTasks {
 
     static class SeventhInstruction implements EventHandler<KeyEvent> {
         public static final String MAIN_TITLE = "Seventh Instruction";
-        private static final String TEXT = "To już koniec przykładowych\n" +
-                "zadań. Za chwilę przejdzie Pani\n" +
-                "do zadań właściwych. W razie\n" +
-                "pytań, proszę dać znać osobie\n" +
-                "prowadzącej badanie.";
+        private static final String TEXT = "Teraz proszę sobie wyobrazić,\n" +
+                "że kupuje Pani pralkę dla siebie.";
 
         private final Stage mStage;
         private final BorderPane mParent;

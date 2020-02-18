@@ -91,6 +91,7 @@ public class TaskPage {
 
     }
 
+    //Completed version
     public static void navigateTo(SceneName sceneName) {
 
         switch (sceneName) {
@@ -147,6 +148,89 @@ public class TaskPage {
                 break;
         }
     }
+
+    //FirstTask only version
+//    public static void navigateTo(SceneName sceneName) {
+//
+//        switch (sceneName) {
+//            case MAIN:
+//                navigateTo(SceneName.USER_FORM, UserForm.MAIN_TITLE, TaskPageType.TASK);
+//                break;
+//            case USER_FORM:
+//                navigateTo(SceneName.FIRST_INSTR, FirstInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
+//                break;
+//            case FIRST_INSTR:
+//                navigateTo(SceneName.SECOND_INSTR, SecondInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
+//                break;
+//            case SECOND_INSTR:
+//                navigateTo(SceneName.THIRD_INSTR, ThirdInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
+//                break;
+//            case THIRD_INSTR:
+//                navigateTo(SceneName.FOURTH_INSTR, FourthInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
+//                break;
+//            case FOURTH_INSTR:
+//                navigateTo(SceneName.FIFTH_INSTR, FifthInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
+//                break;
+//            case FIFTH_INSTR:
+//                firstTaskExampleTotalIteration++;
+//                navigateToFirstTaskExample(SceneName.FIRST_TASK_EXAMPLE, firstTaskExampleTotalIteration, FIRST_TASK_EXAMPLE_TOTAL_ITERATION, TaskPageType.INSTRUCTION);
+//                break;
+//            case FIRST_TASK_EXAMPLE:
+//                if (firstTaskExampleTotalIteration == FIRST_TASK_EXAMPLE_TOTAL_ITERATION)
+//                    navigateTo(SceneName.SIXTH_INSTR, SixthInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
+//                else {
+//                    firstTaskExampleTotalIteration++;
+//                    navigateToFirstTaskExample(SceneName.FIRST_TASK_EXAMPLE, firstTaskExampleTotalIteration, FIRST_TASK_EXAMPLE_TOTAL_ITERATION, TaskPageType.INSTRUCTION);
+//                }
+//                break;
+//            case SIXTH_INSTR:
+//                firstTaskTotalIteration++;
+//                navigateToFirstTaskExample(SceneName.FIRST_TASK, firstTaskTotalIteration, FIRST_TASK_TOTAL_ITERATION, TaskPageType.TASK);
+//                break;
+//            case FIRST_TASK:
+//                if (firstTaskTotalIteration == FIRST_TASK_TOTAL_ITERATION)//should be 60
+//                    navigateTo(SceneName.FINAL_INSTR, FinalInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
+//                else {
+//                    firstTaskTotalIteration++;
+//                    navigateToFirstTaskExample(SceneName.FIRST_TASK, firstTaskTotalIteration, FIRST_TASK_TOTAL_ITERATION, TaskPageType.TASK);
+//                }
+//                break;
+//        }
+//    }
+
+    //Second and Third version
+//    public static void navigateTo(SceneName sceneName) {
+//
+//        switch (sceneName) {
+//            case MAIN:
+//                navigateTo(SceneName.USER_FORM, UserForm.MAIN_TITLE, TaskPageType.TASK);
+//                break;
+//            case USER_FORM:
+//                navigateTo(SceneName.FIRST_INSTR, FirstInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
+//                break;
+//            case FIRST_INSTR:
+//                navigateTo(SceneName.SECOND_INSTR, SecondInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
+//                break;
+//            case SECOND_INSTR:
+//                navigateTo(SceneName.THIRD_INSTR, ThirdInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
+//                break;
+//            case THIRD_INSTR:
+//                navigateTo(SceneName.FOURTH_INSTR, FourthInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
+//                break;
+//            case FOURTH_INSTR:
+//                navigateTo(SceneName.SEVENTH_INSTR, FifthInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
+//                break;
+//            case SEVENTH_INSTR:
+//                navigateTo(SceneName.SECOND_TASK, SecondTask.MAIN_TITLE, TaskPageType.TASK);
+//                break;
+//            case SECOND_TASK:
+//                navigateTo(SceneName.FINAL_TASK, FinalTask.MAIN_TITLE, TaskPageType.TASK);
+//                break;
+//            case FINAL_TASK:
+//                navigateTo(SceneName.FINAL_INSTR, FinalInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
+//                break;
+//        }
+//    }
 
     public void setFirstPage() {
         TaskPage.navigateTo(SceneName.MAIN);
