@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
@@ -16,9 +15,7 @@
          <SeparatorMenuItem mnemonicParsing="false" />
          <MenuItem mnemonicParsing="false" onAction="#handleCloseMenuItem" text="Close" />
         </Menu>
-        <Menu mnemonicParsing="false" text="Settings">
-            <MenuItem mnemonicParsing="false" text="Appliance attribute" />
-        </Menu>
+        <Menu mnemonicParsing="false" text="Settings" />
         <Menu mnemonicParsing="false" text="Help">
             <MenuItem mnemonicParsing="false" onAction="#handleAbout" text="About" />
         </Menu>

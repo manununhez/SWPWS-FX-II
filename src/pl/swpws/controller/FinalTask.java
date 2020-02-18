@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import pl.swpws.model.ApplianceAttribute.AttributeIndex;
 import pl.swpws.model.ApplianceAttribute.AttributesID;
 import pl.swpws.model.ApplianceAttribute.AttributesMeasurementUnit;
-import pl.swpws.model.DataGenerator;
+import pl.swpws.data.repository.Repository;
 import pl.swpws.model.SceneName;
 
 import java.util.List;
@@ -66,7 +66,7 @@ public class FinalTask implements EventHandler<KeyEvent> {
             selectedValues[i] = -1;
         }
 
-        applianceAttributesNameMap = DataGenerator.getApplianceAttributesNameMap();
+        applianceAttributesNameMap = Repository.getApplianceAttributesNameMap();
     }
 
     public Node getNodeScene() {

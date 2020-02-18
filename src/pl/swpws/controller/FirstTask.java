@@ -18,7 +18,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import pl.swpws.common.rating.RatingPlus;
 import pl.swpws.model.Attribute;
-import pl.swpws.model.DataGenerator;
+import pl.swpws.data.repository.Repository;
 import pl.swpws.model.SceneName;
 
 import java.util.HashMap;
@@ -160,7 +160,7 @@ public class FirstTask implements EventHandler<KeyEvent> {
 
         for (int i = 0; i < mAttributeList.size(); i++) {
             gridPane.add(getParamLabel(mAttributeList.get(i).attributeName), COLUMN_1, i + 1);
-            gridPane.add(getDisabledRating(DataGenerator.ATTRIBUTE_NUMBER - i), COLUMN_2, i + 1);
+            gridPane.add(getDisabledRating(Repository.ATTRIBUTE_NUMBER - i), COLUMN_2, i + 1);
         }
 
         return gridPane;

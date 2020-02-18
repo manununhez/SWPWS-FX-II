@@ -1,24 +1,30 @@
-package pl.swpws.model;
+package pl.swpws.data.repository;
 
+import pl.swpws.model.ApplianceAttribute;
 import pl.swpws.model.ApplianceAttribute.EnergyClass;
+import pl.swpws.data.local.FileDataSource;
+import pl.swpws.model.Attribute;
 
 import java.util.*;
 
-public class DataGenerator {
+public class Repository {
 
     public static final int ATTRIBUTE_NUMBER = 6;
     private List<Attribute> attributeList;
     private List<Attribute> exampleList;
+    private final FileDataSource dataSource;
 
-    public DataGenerator() {
-        getExampleListOfAttributes();
+    public Repository() {
+        dataSource = FileDataSource.getInstance();
 
-        getListOfAttributes(); //TODO here the file should be read and parsed
+        getExampleListOfAttributes();//init example list
+
+        attributeList = dataSource.loadAttributeListsFromCSV();//init task list
     }
 
     public static List<List<String>> getApplianceAttributesNameMap() {
         List<List<String>> listLis = new ArrayList<>();
-        listLis.add( Arrays.asList("800", "1000", "1200", "1400", "1600")); //AttributesID.SPIN_SPEED
+        listLis.add(Arrays.asList("800", "1000", "1200", "1400", "1600")); //AttributesID.SPIN_SPEED
         listLis.add(Arrays.asList("4", "5", "6", "7", "8", "9", "10"));//AttributesID.DRUM_CAPACITY
         listLis.add(Arrays.asList(EnergyClass.A.label,
                 EnergyClass.APLUS.label,
@@ -30,37 +36,6 @@ public class DataGenerator {
         return listLis;
     }
 
-    private void getListOfAttributes() {
-        attributeList = new ArrayList<>();
-        attributeList.add(new Attribute(1, "A1", new int[]{1, 0, 0}, "max prędkość wirowania", new String[]{"1200", "800", "1000"}));
-        attributeList.add(new Attribute(1, "A2", new int[]{0, 0, 0}, "pojemnosc bębna", new String[]{"4", "2", "4"}));
-        attributeList.add(new Attribute(1, "A3", new int[]{1, 0, 0}, "klasa energetyczna", new String[]{"A+", "A+", "A"}));
-        attributeList.add(new Attribute(1, "A4", new int[]{0, 1, 0}, "poziom hałasu", new String[]{"70", "60", "70"}));
-        attributeList.add(new Attribute(1, "A5", new int[]{0, 0, 0}, "zużycie wody", new String[]{"65", "65", "65"}));
-        attributeList.add(new Attribute(1, "A6", new int[]{0, 0, 1}, "program szybki", new String[]{"brak", "brak", "jest"}));
-
-        attributeList.add(new Attribute(2, "A1", new int[]{0, 0, 1}, "poziom hałasu", new String[]{"70", "65", "70"}));
-        attributeList.add(new Attribute(2, "A2", new int[]{1, 1, 1}, "pojemnosc bębna", new String[]{"4", "4", "4"}));
-        attributeList.add(new Attribute(2, "A3", new int[]{0, 0, 0}, "program szybki", new String[]{"brak", "brak", "jest"}));
-        attributeList.add(new Attribute(2, "A4", new int[]{0, 0, 0}, "max prędkość wirowania", new String[]{"1200", "1000", "1000"}));
-        attributeList.add(new Attribute(2, "A5", new int[]{0, 0, 1}, "zużycie wody", new String[]{"65", "65", "65"}));
-        attributeList.add(new Attribute(2, "A6", new int[]{0, 1, 1}, "klasa energetyczna", new String[]{"A+", "A", "A"}));
-
-        attributeList.add(new Attribute(3, "A1", new int[]{0, 0, 0}, "klasa energetyczna", new String[]{"A+", "A++", "A+++"}));
-        attributeList.add(new Attribute(3, "A2", new int[]{0, 1, 0}, "max prędkość wirowania", new String[]{"1200", "1000", "1000"}));
-        attributeList.add(new Attribute(3, "A3", new int[]{0, 1, 0}, "pojemnosc bębna", new String[]{"4", "4", "4"}));
-        attributeList.add(new Attribute(3, "A4", new int[]{1, 1, 0}, "poziom hałasu", new String[]{"70", "65", "70"}));
-        attributeList.add(new Attribute(3, "A5", new int[]{0, 0, 0}, "zużycie wody", new String[]{"65", "65", "65"}));
-        attributeList.add(new Attribute(3, "A6", new int[]{0, 0, 0}, "program szybki", new String[]{"brak", "brak", "brak"}));
-
-        attributeList.add(new Attribute(4, "A1", new int[]{0, 0, 1}, "zużycie wody", new String[]{"65", "65", "65"}));
-        attributeList.add(new Attribute(4, "A2", new int[]{0, 0, 1}, "pojemnosc bębna", new String[]{"4", "4", "4"}));
-        attributeList.add(new Attribute(4, "A3", new int[]{0, 0, 1}, "poziom hałasu", new String[]{"70", "65", "70"}));
-        attributeList.add(new Attribute(4, "A4", new int[]{1, 1, 1}, "max prędkość wirowania", new String[]{"1200", "1000", "1000"}));
-        attributeList.add(new Attribute(4, "A5", new int[]{0, 1, 0}, "program szybki", new String[]{"brak", "brak", "jest"}));
-        attributeList.add(new Attribute(4, "A6", new int[]{0, 0, 0}, "klasa energetyczna", new String[]{"A+", "A", "A"}));
-
-    }
 
     public List<Attribute> getListOfAttributesPerIteration(int iteration) {
         int firstIndexList = (iteration * ATTRIBUTE_NUMBER) - ATTRIBUTE_NUMBER;
@@ -75,7 +50,7 @@ public class DataGenerator {
         return attributes;
     }
 
-    public List<Attribute> getExampleListOfAttributes() {
+    public void getExampleListOfAttributes() {
         exampleList = new ArrayList<>();
         exampleList.add(new Attribute(1, "A1", new int[]{1, 0, 0}, "max prędkość wirowania", new String[]{"1200", "800", "1000"}));
         exampleList.add(new Attribute(1, "A2", new int[]{0, 0, 0}, "pojemnosc bębna", new String[]{"4", "2", "4"}));
@@ -105,7 +80,6 @@ public class DataGenerator {
         exampleList.add(new Attribute(4, "A5", new int[]{0, 1, 0}, "program szybki", new String[]{"brak", "brak", "jest"}));
         exampleList.add(new Attribute(4, "A6", new int[]{0, 0, 0}, "klasa energetyczna", new String[]{"A+", "A", "A"}));
 
-        return exampleList;
     }
 
     public List<Attribute> getListOfExampleAttributesPerIteration(int iteration) {

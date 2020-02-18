@@ -9,7 +9,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import pl.swpws.controller.InstructionTasks.*;
-import pl.swpws.model.DataGenerator;
+import pl.swpws.data.repository.Repository;
 import pl.swpws.model.SceneName;
 
 import java.util.HashMap;
@@ -24,18 +24,18 @@ public class TaskPage {
     private static int firstTaskTotalIteration;
     private static Stage mStage;
     private static BorderPane mParent;
-    private static DataGenerator repository;
+    private static Repository repository;
 
-    public TaskPage(Stage stage, BorderPane parent, DataGenerator dataGenerator) {
+    public TaskPage(Stage stage, BorderPane parent, Repository repository) {
         mStage = stage;
         mParent = parent;
-        repository = dataGenerator;
+        TaskPage.repository = repository;
 
         firstTaskExampleTotalIteration = 0; //init values after every experiment iteration
         firstTaskTotalIteration = 0;//init values after every experiment iteration
 
-        FIRST_TASK_TOTAL_ITERATION = repository.getFirstTaskCountIteration();
-        FIRST_TASK_EXAMPLE_TOTAL_ITERATION = repository.getFirstTaskExampleCountIteration();
+        FIRST_TASK_TOTAL_ITERATION = TaskPage.repository.getFirstTaskCountIteration();
+        FIRST_TASK_EXAMPLE_TOTAL_ITERATION = TaskPage.repository.getFirstTaskExampleCountIteration();
 
     }
 
