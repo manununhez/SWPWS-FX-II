@@ -5,8 +5,13 @@ import java.util.List;
 public class QuestionFirstTask {
     private int userId;
     private int questionNumber;
-    private List<ApplianceAttribute> options;
     private int selectedAnswer;
+
+    public QuestionFirstTask(int userId, int questionNumber, int selectedAnswer) {
+        this.userId = userId;
+        this.questionNumber = questionNumber;
+        this.selectedAnswer = selectedAnswer;
+    }
 
     public int getUserId() {
         return userId;
@@ -22,14 +27,6 @@ public class QuestionFirstTask {
 
     public void setQuestionNumber(int questionNumber) {
         this.questionNumber = questionNumber;
-    }
-
-    public List<ApplianceAttribute> getOptions() {
-        return options;
-    }
-
-    public void setOptions(List<ApplianceAttribute> options) {
-        this.options = options;
     }
 
     public int getSelectedAnswer() {

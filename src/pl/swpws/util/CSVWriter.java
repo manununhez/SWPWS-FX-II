@@ -82,6 +82,25 @@ public class CSVWriter {
     }
 
     /**
+     * constructor.
+     * creates a csv file for writing data to it
+     *
+     * @param file     the file to write data to
+     * @param encoding encoding to use or null (=defualt)
+     * @param append append mode
+     */
+    public CSVWriter(File file, String encoding, boolean append) throws IOException {
+
+        if (encoding == null) {
+            encoding = System.getProperty("file.encoding");
+        }
+
+        FileOutputStream fout = new FileOutputStream(file, append);
+
+        writer = new OutputStreamWriter(fout, encoding);
+    }
+
+    /**
      * writes the csv header (fieldnames). should be called after
      * construction one time.
      *

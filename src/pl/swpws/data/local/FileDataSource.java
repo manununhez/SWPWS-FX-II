@@ -3,8 +3,10 @@ package pl.swpws.data.local;
 import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
 import pl.swpws.Main;
-import pl.swpws.model.Attribute;
+import pl.swpws.data.local.model.AttributeListCSVWrapper;
+import pl.swpws.model.*;
 import pl.swpws.util.CSVReader;
+import pl.swpws.util.CSVWriter;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -14,8 +16,11 @@ import java.util.prefs.Preferences;
 
 public class FileDataSource {
     private static FileDataSource INSTANCE;
+    private static final String RESULT_FILE_CSV_USER = "Users.csv";
+    private static final String RESULT_FILE_CSV_FIRST_TASK = "FirstTask.csv";
+    private static final String RESULT_FILE_CSV_SECOND_TASK = "SecondTask.csv";
+    private static final String RESULT_FILE_CSV_FINAL_TASK = "FinalTask.csv";
     private static final String FILE_PATH = "filePath";
-    public static final String RESULTS_FILE_CSV_NAME = "Results.csv";
     public static final String FILE_EXTENSION_FILTER = "*";
     public static final String FILE_EXTENSION_TITLE = "CSV files (*.csv)";
     public static final String OPEN_FILE = "Open file...";
@@ -115,13 +120,9 @@ public class FileDataSource {
         if (file != null) {
             prefs.put(FILE_PATH, file.getPath());
 
-            // TODO Update the stage title.
-//            mPrimaryStage.setTitle(PRIMARY_STAGE_TITLE + " - " + file.getName());
         } else {
             prefs.remove(FILE_PATH);
 
-            // TODO Update the stage title.
-//            mPrimaryStage.setTitle(PRIMARY_STAGE_TITLE);
         }
     }
 
@@ -156,38 +157,213 @@ public class FileDataSource {
 
     }
 
-    /**
-     * Saves the current person data to the specified file.
-     *
-     * @param participants
-     */
-//    public void saveResultsToFileCSV(File file, ObservableList<Participant> participants) {
-//        CSVWriter csvWriter;
-//        try {
-//            csvWriter = new CSVWriter(file, null);
-//            csvWriter.writeHeader(new String[]{"Participant#", "Sex", "Years of education",
-//                    "Date of the experiment", "Category", "Lists"});
-//
-//            for (Participant participant : participants) {
-//                List<String> listOfKeys = new ArrayList<>();
-//
-//                for (WordList wordList : participant.wordLists)
-//                    listOfKeys.add(wordList.key);
-//
-//                csvWriter.writeData(new String[]{String.valueOf(participant.participantNumber),
-//                        participant.sex, String.valueOf(participant.yearsOfEducation), participant.getTimestampFormatted(),
-//                        participant.category, String.join(",", listOfKeys)});
-//            }
-//
-//            csvWriter.close();
-//            // Save the file path to the registry.
-//            setFilePath(file);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//
-//            showAlert(SAVE_ERROR_WARNING, SAVE_ERROR_WARNING_PATH, file.getPath());
-//        }
-//    }
+    public void saveUser(User user) {
+        CSVWriter csvWriter;
+
+        File file = new File(RESULT_FILE_CSV_USER);
+
+        if (!file.exists()) {
+            try {
+                csvWriter = new CSVWriter(file, null);
+                csvWriter.writeHeader(new String[]{"UserID", "Number", "Sex", "Age", "Profession", "YearsEducation"});
+
+
+                csvWriter.writeData(new String[]{
+                        String.valueOf(user.getId()),
+                        String.valueOf(user.getNumber()),
+                        user.getSex(),
+                        String.valueOf(user.getAge()),
+                        user.getProfession(),
+                        String.valueOf(user.getYearsEducation())
+                });
+
+
+                csvWriter.close();
+                // Save the file path to the registry.
+                setFilePath(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+
+                showAlert(SAVE_ERROR_WARNING, SAVE_ERROR_WARNING_PATH, file.getPath());
+            }
+        } else {
+            try {
+                csvWriter = new CSVWriter(file, null, true);
+
+                csvWriter.writeData(new String[]{
+                        String.valueOf(user.getId()),
+                        String.valueOf(user.getNumber()),
+                        user.getSex(),
+                        String.valueOf(user.getAge()),
+                        user.getProfession(),
+                        String.valueOf(user.getYearsEducation())
+                });
+
+
+                csvWriter.close();
+                // Save the file path to the registry.
+                setFilePath(file);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+
+                showAlert(SAVE_ERROR_WARNING, SAVE_ERROR_WARNING_PATH, file.getPath());
+            }
+        }
+    }
+
+    public void saveFirstTask(QuestionFirstTask questionFirstTask) {
+        CSVWriter csvWriter;
+
+        File file = new File(RESULT_FILE_CSV_FIRST_TASK);
+
+        if (!file.exists()) {
+            try {
+                csvWriter = new CSVWriter(file, null);
+                csvWriter.writeHeader(new String[]{"UserID", "QuestionNumber", "SelectedAnswer"});
+
+
+                csvWriter.writeData(new String[]{
+                        String.valueOf(questionFirstTask.getUserId()),
+                        String.valueOf(questionFirstTask.getQuestionNumber()),
+                        String.valueOf(questionFirstTask.getSelectedAnswer()),
+                });
+
+
+                csvWriter.close();
+                // Save the file path to the registry.
+                setFilePath(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+
+                showAlert(SAVE_ERROR_WARNING, SAVE_ERROR_WARNING_PATH, file.getPath());
+            }
+        } else {
+            try {
+                csvWriter = new CSVWriter(file, null, true);
+
+                csvWriter.writeData(new String[]{
+                        String.valueOf(questionFirstTask.getUserId()),
+                        String.valueOf(questionFirstTask.getQuestionNumber()),
+                        String.valueOf(questionFirstTask.getSelectedAnswer()),
+                });
+
+
+                csvWriter.close();
+                // Save the file path to the registry.
+                setFilePath(file);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+
+                showAlert(SAVE_ERROR_WARNING, SAVE_ERROR_WARNING_PATH, file.getPath());
+            }
+        }
+
+    }
+
+    public void saveSecondTask(List<QuestionSecondTask> secondTaskList) {
+        CSVWriter csvWriter;
+
+        File file = new File(RESULT_FILE_CSV_SECOND_TASK);
+
+        if (!file.exists()) {
+            try {
+                csvWriter = new CSVWriter(file, null);
+                csvWriter.writeHeader(new String[]{"UserID", "AttributeCode", "Rating"});
+
+                for (QuestionSecondTask questionSecondTask : secondTaskList) {
+                    csvWriter.writeData(new String[]{
+                            String.valueOf(questionSecondTask.getUserId()),
+                            questionSecondTask.getAttributeCode(),
+                            String.valueOf(questionSecondTask.getRating()),
+                    });
+                }
+
+                csvWriter.close();
+                // Save the file path to the registry.
+                setFilePath(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+
+                showAlert(SAVE_ERROR_WARNING, SAVE_ERROR_WARNING_PATH, file.getPath());
+            }
+        } else {
+            try {
+                csvWriter = new CSVWriter(file, null, true);
+
+                for (QuestionSecondTask questionSecondTask : secondTaskList) {
+                    csvWriter.writeData(new String[]{
+                            String.valueOf(questionSecondTask.getUserId()),
+                            questionSecondTask.getAttributeCode(),
+                            String.valueOf(questionSecondTask.getRating()),
+                    });
+                }
+
+
+                csvWriter.close();
+                // Save the file path to the registry.
+                setFilePath(file);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+
+                showAlert(SAVE_ERROR_WARNING, SAVE_ERROR_WARNING_PATH, file.getPath());
+            }
+        }
+    }
+
+    public void saveFinalTask(List<QuestionFinalTask> finalTaskList) {
+        CSVWriter csvWriter;
+
+        File file = new File(RESULT_FILE_CSV_FINAL_TASK);
+
+        if (!file.exists()) {
+            try {
+                csvWriter = new CSVWriter(file, null);
+                csvWriter.writeHeader(new String[]{"UserID", "AttributeCode", "SelectedValue"});
+
+                for (QuestionFinalTask questionSecondTask : finalTaskList) {
+                    csvWriter.writeData(new String[]{
+                            String.valueOf(questionSecondTask.getUserId()),
+                            questionSecondTask.getAttributeCode(),
+                            questionSecondTask.getSelectedValue(),
+                    });
+                }
+
+                csvWriter.close();
+                // Save the file path to the registry.
+                setFilePath(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+
+                showAlert(SAVE_ERROR_WARNING, SAVE_ERROR_WARNING_PATH, file.getPath());
+            }
+        } else {
+            try {
+                csvWriter = new CSVWriter(file, null, true);
+
+                for (QuestionFinalTask questionSecondTask : finalTaskList) {
+                    csvWriter.writeData(new String[]{
+                            String.valueOf(questionSecondTask.getUserId()),
+                            questionSecondTask.getAttributeCode(),
+                            questionSecondTask.getSelectedValue(),
+                    });
+                }
+
+
+                csvWriter.close();
+                // Save the file path to the registry.
+                setFilePath(file);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+
+                showAlert(SAVE_ERROR_WARNING, SAVE_ERROR_WARNING_PATH, file.getPath());
+            }
+        }
+    }
+
 
 }
 

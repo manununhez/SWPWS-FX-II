@@ -18,8 +18,11 @@ import pl.swpws.model.ApplianceAttribute.AttributeIndex;
 import pl.swpws.model.ApplianceAttribute.AttributesID;
 import pl.swpws.model.ApplianceAttribute.AttributesMeasurementUnit;
 import pl.swpws.data.repository.Repository;
+import pl.swpws.model.QuestionFinalTask;
 import pl.swpws.model.SceneName;
+import pl.swpws.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static pl.swpws.model.ApplianceAttribute.APPLIANCE_ATTRIBUTES_COUNT;
@@ -50,13 +53,17 @@ public class FinalTask implements EventHandler<KeyEvent> {
     private final BorderPane mParent;
 
     private SceneName mSceneName;
+    private Repository mRepository;
     private List<List<String>> applianceAttributesNameMap;
 
 
-    public FinalTask(Stage stage, BorderPane parent, SceneName sceneName) {
+    public FinalTask(Stage stage, BorderPane parent, SceneName sceneName, Repository repository) {
         mStage = stage;
         mParent = parent;
         mSceneName = sceneName;
+        mRepository = repository;
+
+        applianceAttributesNameMap = mRepository.getApplianceAttributesNameMap();
 
         initializeArray();
     }
@@ -65,8 +72,6 @@ public class FinalTask implements EventHandler<KeyEvent> {
         for (int i = 0; i < APPLIANCE_ATTRIBUTES_COUNT; i++) {
             selectedValues[i] = -1;
         }
-
-        applianceAttributesNameMap = Repository.getApplianceAttributesNameMap();
     }
 
     public Node getNodeScene() {
@@ -312,12 +317,17 @@ public class FinalTask implements EventHandler<KeyEvent> {
     }
 
     private void saveTask() {
+        List<QuestionFinalTask> finalTaskList = new ArrayList<>();
+        User user = mRepository.getUser();
         //TODO debug only
         System.out.println("Final Task");
         for (int i = 0; i < applianceAttributesNameMap.size(); i++) {
-            System.out.println(AttributesID.getAttributeID(i)+" : "+ applianceAttributesNameMap.get(i).get(selectedValues[i]));
+            System.out.println(AttributesID.getAttributeID(i) + " : " + applianceAttributesNameMap.get(i).get(selectedValues[i]));
 
+            finalTaskList.add(new QuestionFinalTask(user.getId(), AttributesID.getAttributeID(i), applianceAttributesNameMap.get(i).get(selectedValues[i])));
         }
+
+        mRepository.saveFinalTask(finalTaskList);
     }
 
     private void goToNextPage() {

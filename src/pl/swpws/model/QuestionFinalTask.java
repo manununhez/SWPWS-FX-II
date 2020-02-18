@@ -1,14 +1,14 @@
 package pl.swpws.model;
 
-public class QuestionSecondTask {
+public class QuestionFinalTask {
     private int userId;
     private String attributeCode;
-    private int rating;
+    private String selectedValue;
 
-    public QuestionSecondTask(int userId, String attributeCode, int rating) {
+    public QuestionFinalTask(int userId, String attributeCode, String selectedValue) {
         this.userId = userId;
         this.attributeCode = attributeCode;
-        this.rating = rating;
+        this.selectedValue = selectedValue;
     }
 
     public int getUserId() {
@@ -27,11 +27,11 @@ public class QuestionSecondTask {
         this.attributeCode = attributeCode;
     }
 
-    public int getRating() {
-        return rating;
+    public String getSelectedValue() {
+        return selectedValue;
     }
 
-    public void setRating(int rating) {
-        this.rating = rating;
+    public void setSelectedValue(String selectedValue) {
+        this.selectedValue = selectedValue;
     }
 }

@@ -1,9 +1,8 @@
 package pl.swpws.data.repository;
 
-import pl.swpws.model.ApplianceAttribute;
+import pl.swpws.model.*;
 import pl.swpws.model.ApplianceAttribute.EnergyClass;
 import pl.swpws.data.local.FileDataSource;
-import pl.swpws.model.Attribute;
 
 import java.util.*;
 
@@ -13,6 +12,7 @@ public class Repository {
     private List<Attribute> attributeList;
     private List<Attribute> exampleList;
     private final FileDataSource dataSource;
+    private User mUser;
 
     public Repository() {
         dataSource = FileDataSource.getInstance();
@@ -22,7 +22,18 @@ public class Repository {
         attributeList = dataSource.loadAttributeListsFromCSV();//init task list
     }
 
-    public static List<List<String>> getApplianceAttributesNameMap() {
+
+    private void setUser(User user) {
+        mUser = user;
+    }
+
+
+    public User getUser() {
+        return mUser;
+    }
+
+
+    public List<List<String>> getApplianceAttributesNameMap() {
         List<List<String>> listLis = new ArrayList<>();
         listLis.add(Arrays.asList("800", "1000", "1200", "1400", "1600")); //AttributesID.SPIN_SPEED
         listLis.add(Arrays.asList("4", "5", "6", "7", "8", "9", "10"));//AttributesID.DRUM_CAPACITY
@@ -104,4 +115,28 @@ public class Repository {
         return exampleList.size() / ATTRIBUTE_NUMBER;
     }
 
+    public List<Attribute> getAttributeList(SceneName sceneName, int iteration) {
+        if (sceneName == SceneName.FIRST_TASK)
+            return getListOfAttributesPerIteration(iteration);
+        else
+            return getListOfExampleAttributesPerIteration(iteration); //FIRST_TASK_EXAMPLE
+    }
+
+    public void saveUser(User user) {
+        setUser(user);
+
+        dataSource.saveUser(user);
+    }
+
+    public void saveFirstTask(QuestionFirstTask questionFirstTask) {
+        dataSource.saveFirstTask(questionFirstTask);
+    }
+
+    public void saveSecondTask(List<QuestionSecondTask> secondTaskList) {
+        dataSource.saveSecondTask(secondTaskList);
+    }
+
+    public void saveFinalTask(List<QuestionFinalTask> finalTaskList) {
+        dataSource.saveFinalTask(finalTaskList);
+    }
 }

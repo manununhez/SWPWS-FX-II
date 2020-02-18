@@ -1,7 +1,5 @@
 package pl.swpws.model;
 
-import java.util.Random;
-
 public class User {
     enum Gender {
         MALE, FEMALE //mężczyzna, Kobieta
@@ -9,18 +7,19 @@ public class User {
 
 
     public User(int number, int age, String sex, String profession, int yearsEducation) {
-        this.id = new Random(1000).nextInt();
+//        this.id = new Random(1000).nextInt();
         this.number = number;
+        this.id = number;
         this.age = age;
-        this.sex = getSex(sex);
+        this.sex = sex;
         this.profession = profession;
         this.yearsEducation = yearsEducation;
     }
 
-    private int id; //TODO ?????
+    private int id;
     private int number; //numer
     private int age; //wiek
-    private Gender sex; //płeć
+    private String sex; //płeć
     private String profession;//zawód
     private int yearsEducation; //lata formalnej edukacji
 
@@ -49,11 +48,11 @@ public class User {
         this.age = age;
     }
 
-    public Gender getSex(String sex) {
-        return sex.equals(Gender.MALE.name()) ? Gender.MALE : Gender.FEMALE;
+    public String getSex() {
+        return sex;
     }
 
-    public void setSex(Gender sex) {
+    public void setSex(String sex) {
         this.sex = sex;
     }
 

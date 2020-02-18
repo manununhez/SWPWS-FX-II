@@ -1,4 +1,4 @@
-package pl.swpws.data.local;
+package pl.swpws.data.local.model;
 
 import pl.swpws.model.Attribute;
 

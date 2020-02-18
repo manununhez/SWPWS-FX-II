@@ -17,8 +17,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import pl.swpws.common.rating.RatingPlus;
-import pl.swpws.model.Attribute;
 import pl.swpws.data.repository.Repository;
+import pl.swpws.model.Attribute;
+import pl.swpws.model.QuestionFirstTask;
 import pl.swpws.model.SceneName;
 
 import java.util.HashMap;
@@ -52,15 +53,17 @@ public class FirstTask implements EventHandler<KeyEvent> {
     private HashMap<String, RadioButton> radioButtonHashMap = new HashMap<>();
     private List<Attribute> mAttributeList;
     private int mQuestionNumber;
-    //private List<ApplianceAttribute> mAttributeSelectedList = new ArrayList<>();
     private SceneName mSceneName;
+    private Repository mRepository;
 
-    public FirstTask(Stage stage, BorderPane parent, SceneName sceneName, List<Attribute> attributeList, int questionNumber) {
+    public FirstTask(Stage stage, BorderPane parent, SceneName sceneName, int questionNumber, Repository repository) {
         mStage = stage;
         mParent = parent;
         mSceneName = sceneName;
-        mAttributeList = attributeList;
+        mRepository = repository;
         mQuestionNumber = questionNumber;
+
+        mAttributeList = mRepository.getAttributeList(sceneName, questionNumber);
     }
 
     public Node getNodeScene() {
@@ -274,6 +277,8 @@ public class FirstTask implements EventHandler<KeyEvent> {
         //TODO debug only
         System.out.println("First Task");
         System.out.println("Question #" + mQuestionNumber + " - Selected Pralka: " + index);//TODO Debug Only
+
+        mRepository.saveFirstTask(new QuestionFirstTask(mRepository.getUser().getId(), mQuestionNumber, index));
     }
 
     private void goToNextPage() {

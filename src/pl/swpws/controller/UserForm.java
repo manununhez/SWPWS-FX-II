@@ -19,6 +19,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import pl.swpws.data.repository.Repository;
 import pl.swpws.model.SceneName;
 import pl.swpws.model.User;
 
@@ -52,6 +53,7 @@ public class UserForm implements EventHandler<KeyEvent> {
 
     private ToggleGroup sexToggleGroup;
     private SceneName mSceneName;
+    private Repository mRepository;
     private TextField numberTxt;
     private TextField ageTxt;
     private TextField professionTxt;
@@ -61,10 +63,11 @@ public class UserForm implements EventHandler<KeyEvent> {
     private Label professionAlert;
     private Label educationAlert;
 
-    public UserForm(Stage stage, BorderPane parent, SceneName sceneName) {
+    public UserForm(Stage stage, BorderPane parent, SceneName sceneName, Repository repository) {
         mStage = stage;
         mParent = parent;
         mSceneName = sceneName;
+        mRepository = repository;
     }
 
     public VBox getNodeScene() {
@@ -221,6 +224,9 @@ public class UserForm implements EventHandler<KeyEvent> {
         //TODO debug only
         System.out.println("User Form");
         System.out.println(user.toString());
+
+
+        mRepository.saveUser(user);
     }
 
     private void goToNextPage() {

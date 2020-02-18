@@ -13,9 +13,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import pl.swpws.common.rating.RatingPlus;
+import pl.swpws.data.repository.Repository;
+import pl.swpws.model.QuestionSecondTask;
 import pl.swpws.model.SceneName;
+import pl.swpws.model.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static pl.swpws.model.ApplianceAttribute.*;
@@ -42,12 +47,14 @@ public class SecondTask implements EventHandler<KeyEvent> {
     private final HashMap<AttributesID, RatingPlus> ratingPlusHashMap = new HashMap<>();
 
     private SceneName mSceneName;
+    private Repository mRepository;
     private Label labelAlert;
 
-    public SecondTask(Stage stage, BorderPane parent, SceneName sceneName) {
+    public SecondTask(Stage stage, BorderPane parent, SceneName sceneName, Repository repository) {
         mStage = stage;
         mParent = parent;
         mSceneName = sceneName;
+        mRepository = repository;
     }
 
     public Node getNodeScene() {
@@ -146,12 +153,18 @@ public class SecondTask implements EventHandler<KeyEvent> {
     }
 
     private void saveTask() {
+        List<QuestionSecondTask> secondTaskList = new ArrayList<>();
+        User user = mRepository.getUser();
         //TODO debug only
         System.out.println("Second Task");
         for (Map.Entry<AttributesID, RatingPlus> entry : ratingPlusHashMap.entrySet()) {
             RatingPlus ratingPlus = entry.getValue();
-            System.out.println(entry.getKey().label+" : "+ratingPlus.getRating());
+            System.out.println(entry.getKey().label + " : " + ratingPlus.getRating());
+
+            secondTaskList.add(new QuestionSecondTask(user.getId(), entry.getKey().label, (int) ratingPlus.getRating()));
         }
+
+        mRepository.saveSecondTask(secondTaskList);
     }
 
     private void goToNextPage() {
