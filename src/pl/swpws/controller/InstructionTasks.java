@@ -14,12 +14,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import pl.swpws.common.rating.RatingPlus;
-import pl.swpws.model.ApplianceAttribute;
-import pl.swpws.model.ApplianceAttribute.AttributeImportanceLevel;
+import pl.swpws.model.ApplianceAttribute.AttributesName;
 import pl.swpws.model.SceneName;
 
 import static pl.swpws.model.ApplianceAttribute.AttributeImportanceLevel.getAttributeImportanceLevel;
-import static pl.swpws.model.ApplianceAttribute.AttributesName.*;
+import static pl.swpws.model.ApplianceAttribute.AttributesID.*;
 
 public class InstructionTasks {
 
@@ -129,22 +128,22 @@ public class InstructionTasks {
             gridPane.add(gridTitle1, 1, 0);
             gridPane.add(gridTitle2, 2, 0);
 
-            gridPane.add(getParamLabel(SPIN_SPEED.label), 1, 1);
+            gridPane.add(getParamLabel(AttributesName.SPIN_SPEED.label), 1, 1);
             gridPane.add(getDisabledRating(getAttributeImportanceLevel(SPIN_SPEED)), 2, 1);
 
-            gridPane.add(getParamLabel(DRUM_CAPACITY.label), 1, 2);
+            gridPane.add(getParamLabel(AttributesName.DRUM_CAPACITY.label), 1, 2);
             gridPane.add(getDisabledRating(getAttributeImportanceLevel(DRUM_CAPACITY)), 2, 2);
 
-            gridPane.add(getParamLabel(ENERGY_CLASS.label), 1, 3);
+            gridPane.add(getParamLabel(AttributesName.ENERGY_CLASS.label), 1, 3);
             gridPane.add(getDisabledRating(getAttributeImportanceLevel(ENERGY_CLASS)), 2, 3);
 
-            gridPane.add(getParamLabel(NOISE_LEVEL.label), 1, 4);
+            gridPane.add(getParamLabel(AttributesName.NOISE_LEVEL.label), 1, 4);
             gridPane.add(getDisabledRating(getAttributeImportanceLevel(NOISE_LEVEL)), 2, 4);
 
-            gridPane.add(getParamLabel(WATER_CONSUMPTION.label), 1, 5);
+            gridPane.add(getParamLabel(AttributesName.WATER_CONSUMPTION.label), 1, 5);
             gridPane.add(getDisabledRating(getAttributeImportanceLevel(WATER_CONSUMPTION)), 2, 5);
 
-            gridPane.add(getParamLabel(FAST_PROGRAM.label), 1, 6);
+            gridPane.add(getParamLabel(AttributesName.FAST_PROGRAM.label), 1, 6);
             gridPane.add(getDisabledRating(getAttributeImportanceLevel(FAST_PROGRAM)), 2, 6);
 
             return gridPane;

@@ -17,15 +17,12 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import pl.swpws.common.rating.RatingPlus;
-import pl.swpws.model.ApplianceAttribute;
+import pl.swpws.model.Attribute;
+import pl.swpws.model.DataGenerator;
 import pl.swpws.model.SceneName;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import static pl.swpws.model.ApplianceAttribute.AttributeImportanceLevel.getAttributeImportanceLevel;
-import static pl.swpws.model.ApplianceAttribute.AttributesName.*;
 
 public class FirstTask implements EventHandler<KeyEvent> {
 
@@ -44,21 +41,26 @@ public class FirstTask implements EventHandler<KeyEvent> {
     private static final double TABLE_TITLE_TEXT_SIZE = 25.0;
     private static final double MAIN_PAGE_INSTRUCTION_TEXT_SIZE = 40.0;
     private static final double PARAM_TEXT_SIZE = 20.0;
+    public static final int COLUMN_1 = 1;
+    public static final int COLUMN_2 = 2;
+    public static final int COLUMN_3 = 3;
 
     private final Stage mStage;
     private final BorderPane mParent;
     private final ToggleGroup toggleGroup = new ToggleGroup();
 
     private HashMap<String, RadioButton> radioButtonHashMap = new HashMap<>();
-    private List<ApplianceAttribute> mAttributeList;
-    private List<ApplianceAttribute> mAttributeSelectedList = new ArrayList<>();
+    private List<Attribute> mAttributeList;
+    private int mQuestionNumber;
+    //private List<ApplianceAttribute> mAttributeSelectedList = new ArrayList<>();
     private SceneName mSceneName;
 
-    public FirstTask(Stage stage, BorderPane parent, SceneName sceneName, List<ApplianceAttribute> attributeList) {
+    public FirstTask(Stage stage, BorderPane parent, SceneName sceneName, List<Attribute> attributeList, int questionNumber) {
         mStage = stage;
         mParent = parent;
         mSceneName = sceneName;
         mAttributeList = attributeList;
+        mQuestionNumber = questionNumber;
     }
 
     public Node getNodeScene() {
@@ -70,27 +72,32 @@ public class FirstTask implements EventHandler<KeyEvent> {
 
         //**********
         GridPane gridPaneTask = getGridPaneAttrValues(); //Grid with appliance attributes values
+        RadioButton radioButton1 = getRadioButton(COLUMN_1);
+        RadioButton radioButton2 = getRadioButton(COLUMN_2);
+        RadioButton radioButton3 = getRadioButton(COLUMN_3);
+        radioButtonHashMap.put(String.valueOf(COLUMN_1), radioButton1);
+        radioButtonHashMap.put(String.valueOf(COLUMN_2), radioButton2);
+        radioButtonHashMap.put(String.valueOf(COLUMN_3), radioButton3);
+        gridPaneTask.add(getTableTitleLabelWithStyle(radioButton1, APPLIANCE_DEFAULT_NAME + 1), COLUMN_1, 0);
+        gridPaneTask.add(getTableTitleLabelWithStyle(radioButton2, APPLIANCE_DEFAULT_NAME + 2), COLUMN_2, 0);
+        gridPaneTask.add(getTableTitleLabelWithStyle(radioButton3, APPLIANCE_DEFAULT_NAME + 3), COLUMN_3, 0);
 
         //Loading data into the grid
         for (int i = 0; i < mAttributeList.size(); i++) {
+            if (mAttributeList.get(i).boldSelector[COLUMN_1 - 1] == 1)
+                gridPaneTask.add(getParamLabelWithStyle(mAttributeList.get(i).values[COLUMN_1 - 1]), COLUMN_1, i + 1);
+            else
+                gridPaneTask.add(getParamLabelWithBoldStyle(mAttributeList.get(i).values[COLUMN_1 - 1]), COLUMN_1, i + 1);
 
-            int keyIndex = i + 1;
-            RadioButton radioButton = getRadioButton(keyIndex);
-            radioButtonHashMap.put(String.valueOf(keyIndex), radioButton);
+            if (mAttributeList.get(i).boldSelector[COLUMN_2 - 1] == 1)
+                gridPaneTask.add(getParamLabelWithStyle(mAttributeList.get(i).values[COLUMN_2 - 1]), COLUMN_2, i + 1);
+            else
+                gridPaneTask.add(getParamLabelWithBoldStyle(mAttributeList.get(i).values[COLUMN_2 - 1]), COLUMN_2, i + 1);
 
-            gridPaneTask.add(getTableTitleLabelWithStyle(radioButton, APPLIANCE_DEFAULT_NAME + keyIndex), keyIndex, 0);
-            gridPaneTask.add(getParamLabelWithStyle(String.valueOf(mAttributeList.get(i).getMaxSpinSpeed())),
-                    keyIndex, 1);
-            gridPaneTask.add(getParamLabelWithStyle(String.valueOf(mAttributeList.get(i).getDrumCapacity())),
-                    keyIndex, 2);
-            gridPaneTask.add(getParamLabelWithStyle(String.valueOf(mAttributeList.get(i).getEnergyClass())),
-                    keyIndex, 3);
-            gridPaneTask.add(getParamLabelWithStyle(String.valueOf(mAttributeList.get(i).getNoiseLevel())),
-                    keyIndex, 4);
-            gridPaneTask.add(getParamLabelWithStyle(String.valueOf(mAttributeList.get(i).getWaterConsumption())),
-                    keyIndex, 5);
-            gridPaneTask.add(getParamLabelWithStyle(mAttributeList.get(i).isFastProgramTranslated()),
-                    keyIndex, 6);
+            if (mAttributeList.get(i).boldSelector[COLUMN_3 - 1] == 1)
+                gridPaneTask.add(getParamLabelWithStyle(mAttributeList.get(i).values[COLUMN_3 - 1]), COLUMN_3, i + 1);
+            else
+                gridPaneTask.add(getParamLabelWithBoldStyle(mAttributeList.get(i).values[COLUMN_3 - 1]), COLUMN_3, i + 1);
         }
 
         //**********
@@ -148,26 +155,13 @@ public class FirstTask implements EventHandler<KeyEvent> {
         GridPane gridPane = new GridPane();
         gridPane.setHgap(20);
 
-        gridPane.add(gridTitle1, 1, 0);
-        gridPane.add(gridTitle2, 2, 0);
+        gridPane.add(gridTitle1, COLUMN_1, 0);
+        gridPane.add(gridTitle2, COLUMN_2, 0);
 
-        gridPane.add(getParamLabel(SPIN_SPEED.label), 1, 1);
-        gridPane.add(getDisabledRating(getAttributeImportanceLevel(SPIN_SPEED)), 2, 1);
-
-        gridPane.add(getParamLabel(DRUM_CAPACITY.label), 1, 2);
-        gridPane.add(getDisabledRating(getAttributeImportanceLevel(DRUM_CAPACITY)), 2, 2);
-
-        gridPane.add(getParamLabel(ENERGY_CLASS.label), 1, 3);
-        gridPane.add(getDisabledRating(getAttributeImportanceLevel(ENERGY_CLASS)), 2, 3);
-
-        gridPane.add(getParamLabel(NOISE_LEVEL.label), 1, 4);
-        gridPane.add(getDisabledRating(getAttributeImportanceLevel(NOISE_LEVEL)), 2, 4);
-
-        gridPane.add(getParamLabel(WATER_CONSUMPTION.label), 1, 5);
-        gridPane.add(getDisabledRating(getAttributeImportanceLevel(WATER_CONSUMPTION)), 2, 5);
-
-        gridPane.add(getParamLabel(FAST_PROGRAM.label), 1, 6);
-        gridPane.add(getDisabledRating(getAttributeImportanceLevel(FAST_PROGRAM)), 2, 6);
+        for (int i = 0; i < mAttributeList.size(); i++) {
+            gridPane.add(getParamLabel(mAttributeList.get(i).attributeName), COLUMN_1, i + 1);
+            gridPane.add(getDisabledRating(DataGenerator.ATTRIBUTE_NUMBER - i), COLUMN_2, i + 1);
+        }
 
         return gridPane;
     }
@@ -200,6 +194,16 @@ public class FirstTask implements EventHandler<KeyEvent> {
         Label label = new Label(name);
         label.setFont(Font.font(FONT_TYPE, FontWeight.NORMAL, PARAM_TEXT_SIZE));
 
+        StackPane stackPane = new StackPane();
+        stackPane.getChildren().add(label);
+        stackPane.getStyleClass().add(GRID_STYLE_CELL);
+
+        return stackPane;
+    }
+
+    private StackPane getParamLabelWithBoldStyle(String name) {
+        Label label = new Label(name);
+        label.setFont(Font.font(FONT_TYPE, FontWeight.BOLD, PARAM_TEXT_SIZE));
         StackPane stackPane = new StackPane();
         stackPane.getChildren().add(label);
         stackPane.getStyleClass().add(GRID_STYLE_CELL);
@@ -249,18 +253,27 @@ public class FirstTask implements EventHandler<KeyEvent> {
             if (radioButton == null) {
                 new Alert(Alert.AlertType.INFORMATION, "Please select an option!").show();
             } else {
-                int index = Integer.parseInt(radioButton.getId()) - 1;
+                int index = Integer.parseInt(radioButton.getId());
 
-                mAttributeSelectedList.add(mAttributeList.get(index));
-
-                System.out.println(mAttributeSelectedList.toString());//TODO Debug Only
 
                 radioButton.setSelected(false); //to clean the selected value after every page iteration (reset radio-buttons)
+
+
+                if (mSceneName == SceneName.FIRST_TASK) {
+                    //save value
+                    saveTask(index);
+                }
 
                 goToNextPage();
 
             }
         }
+    }
+
+    private void saveTask(int index) {
+        //TODO debug only
+        System.out.println("First Task");
+        System.out.println("Question #" + mQuestionNumber + " - Selected Pralka: " + index);//TODO Debug Only
     }
 
     private void goToNextPage() {

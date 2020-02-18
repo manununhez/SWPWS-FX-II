@@ -14,16 +14,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import pl.swpws.model.ApplianceAttribute.AttributeIndex;
+import pl.swpws.model.ApplianceAttribute.AttributesID;
 import pl.swpws.model.ApplianceAttribute.AttributesMeasurementUnit;
-import pl.swpws.model.ApplianceAttribute.AttributesName;
 import pl.swpws.model.DataGenerator;
 import pl.swpws.model.SceneName;
 
 import java.util.List;
-import java.util.Map;
 
 import static pl.swpws.model.ApplianceAttribute.APPLIANCE_ATTRIBUTES_COUNT;
-import static pl.swpws.model.ApplianceAttribute.AttributeImportanceLevel;
 import static pl.swpws.model.ApplianceAttribute.AttributesName.*;
 
 public class FinalTask implements EventHandler<KeyEvent> {
@@ -51,7 +50,7 @@ public class FinalTask implements EventHandler<KeyEvent> {
     private final BorderPane mParent;
 
     private SceneName mSceneName;
-    private Map<AttributesName, List<String>> applianceAttributesNameMap;
+    private List<List<String>> applianceAttributesNameMap;
 
 
     public FinalTask(Stage stage, BorderPane parent, SceneName sceneName) {
@@ -109,38 +108,38 @@ public class FinalTask implements EventHandler<KeyEvent> {
         rowIndex++;
 
         gridMainPane.add(getParamLabel(SPIN_SPEED.label), 0, rowIndex);
-        gridMainPane.add(gridPanePerAttribute(rowIndex, SPIN_SPEED,
-                applianceAttributesNameMap.get(SPIN_SPEED), gridMainPane), 1, rowIndex);
+        gridMainPane.add(gridPanePerAttribute(rowIndex, AttributesID.SPIN_SPEED,
+                applianceAttributesNameMap.get(AttributeIndex.getAttributeIndex(AttributesID.SPIN_SPEED)), gridMainPane), 1, rowIndex);
         gridMainPane.add(getParamLabelCentered(EMPTY_CELL), 2, rowIndex);
         rowIndex++;
 
         gridMainPane.add(getParamLabel(DRUM_CAPACITY.label), 0, rowIndex);
-        gridMainPane.add(gridPanePerAttribute(rowIndex, DRUM_CAPACITY,
-                applianceAttributesNameMap.get(DRUM_CAPACITY), gridMainPane), 1, rowIndex);
+        gridMainPane.add(gridPanePerAttribute(rowIndex, AttributesID.DRUM_CAPACITY,
+                applianceAttributesNameMap.get(AttributeIndex.getAttributeIndex(AttributesID.DRUM_CAPACITY)), gridMainPane), 1, rowIndex);
         gridMainPane.add(getParamLabelCentered(EMPTY_CELL), 2, rowIndex);
         rowIndex++;
 
         gridMainPane.add(getParamLabel(ENERGY_CLASS.label), 0, rowIndex);
-        gridMainPane.add(gridPanePerAttribute(rowIndex, ENERGY_CLASS,
-                applianceAttributesNameMap.get(ENERGY_CLASS), gridMainPane), 1, rowIndex);
+        gridMainPane.add(gridPanePerAttribute(rowIndex, AttributesID.ENERGY_CLASS,
+                applianceAttributesNameMap.get(AttributeIndex.getAttributeIndex(AttributesID.ENERGY_CLASS)), gridMainPane), 1, rowIndex);
         gridMainPane.add(getParamLabelCentered(EMPTY_CELL), 2, rowIndex);
         rowIndex++;
 
         gridMainPane.add(getParamLabel(NOISE_LEVEL.label), 0, rowIndex);
-        gridMainPane.add(gridPanePerAttribute(rowIndex, NOISE_LEVEL,
-                applianceAttributesNameMap.get(NOISE_LEVEL), gridMainPane), 1, rowIndex);
+        gridMainPane.add(gridPanePerAttribute(rowIndex, AttributesID.NOISE_LEVEL,
+                applianceAttributesNameMap.get(AttributeIndex.getAttributeIndex(AttributesID.NOISE_LEVEL)), gridMainPane), 1, rowIndex);
         gridMainPane.add(getParamLabelCentered(EMPTY_CELL), 2, rowIndex);
         rowIndex++;
 
         gridMainPane.add(getParamLabel(WATER_CONSUMPTION.label), 0, rowIndex);
-        gridMainPane.add(gridPanePerAttribute(rowIndex, WATER_CONSUMPTION,
-                applianceAttributesNameMap.get(WATER_CONSUMPTION), gridMainPane), 1, rowIndex);
+        gridMainPane.add(gridPanePerAttribute(rowIndex, AttributesID.WATER_CONSUMPTION,
+                applianceAttributesNameMap.get(AttributeIndex.getAttributeIndex(AttributesID.WATER_CONSUMPTION)), gridMainPane), 1, rowIndex);
         gridMainPane.add(getParamLabelCentered(EMPTY_CELL), 2, rowIndex);
         rowIndex++;
 
         gridMainPane.add(getParamLabel(FAST_PROGRAM.label), 0, rowIndex);
-        gridMainPane.add(gridPanePerAttribute(rowIndex, FAST_PROGRAM,
-                applianceAttributesNameMap.get(FAST_PROGRAM), gridMainPane), 1, rowIndex);
+        gridMainPane.add(gridPanePerAttribute(rowIndex, AttributesID.FAST_PROGRAM,
+                applianceAttributesNameMap.get(AttributeIndex.getAttributeIndex(AttributesID.FAST_PROGRAM)), gridMainPane), 1, rowIndex);
         gridMainPane.add(getParamLabelCentered(EMPTY_CELL), 2, rowIndex);
 
 
@@ -191,7 +190,7 @@ public class FinalTask implements EventHandler<KeyEvent> {
     }
 
 
-    private GridPane gridPanePerAttribute(int rowIndex, AttributesName attributesName, List<String> list,
+    private GridPane gridPanePerAttribute(int rowIndex, AttributesID attributesID, List<String> list,
                                           GridPane gridMainPane) {
 
         GridPane gridPane = new GridPane();
@@ -207,7 +206,7 @@ public class FinalTask implements EventHandler<KeyEvent> {
 
 
         for (int i = 0; i < list.size(); i++) { //create cells/columns
-            gridPane.add(createCell(rowIndex, attributesName, list.get(i), gridMainPane, gridPane), i, 0);
+            gridPane.add(createCell(rowIndex, attributesID, list.get(i), gridMainPane, gridPane), i, 0);
             gridPane.getColumnConstraints().add(cc); //allows cell resizing, column constraint
 
         }
@@ -215,7 +214,7 @@ public class FinalTask implements EventHandler<KeyEvent> {
         return gridPane;
     }
 
-    private StackPane createCell(int gridRootRowIndex, AttributesName attributesName,
+    private StackPane createCell(int gridRootRowIndex, AttributesID attributesID,
                                  String text, GridPane gridRoot, GridPane gridParent) {
 
         Label label = new Label(text);
@@ -240,9 +239,9 @@ public class FinalTask implements EventHandler<KeyEvent> {
                         if (!stackPane.getId().equals(cell.getId())) { //we reset the background color of all columns, except the current cell
                             labelTmp.setBackground(new Background(new BackgroundFill(Color.BLUE, CornerRadii.EMPTY, Insets.EMPTY)));
                         } else { //we set the current cell background color active
-                            selectedValues[AttributeImportanceLevel.getAttributeImportanceLevel(attributesName) - 1] = gridParentRowIndex;//we keep track of the selected value
+                            selectedValues[AttributeIndex.getAttributeIndex(attributesID)] = gridParentRowIndex;//we keep track of the selected value
                             labelTmp.setBackground(new Background(new BackgroundFill(Color.ORANGE, CornerRadii.EMPTY, Insets.EMPTY)));
-                            updateGridRootSelectedColumn(attributesName, gridRoot, gridParentRowIndex, gridRootRowIndex);
+                            updateGridRootSelectedColumn(attributesID, gridRoot, gridParentRowIndex, gridRootRowIndex);
                         }
                     }
                 }
@@ -256,7 +255,7 @@ public class FinalTask implements EventHandler<KeyEvent> {
         return cell;
     }
 
-    private void updateGridRootSelectedColumn(AttributesName attributesName, GridPane gridRoot,
+    private void updateGridRootSelectedColumn(AttributesID attributesID, GridPane gridRoot,
                                               int gridParentRowIndex, int gridRootRowIndex) {
 
         Label label = (Label) getNodeByRowColumnIndex(gridRootRowIndex, 2, gridRoot); //column two is always the "Wybrane" column
@@ -264,18 +263,18 @@ public class FinalTask implements EventHandler<KeyEvent> {
 
         //According to specs: Fast program does not have max/min, and max values are
         // only water consume and noise level
-        if (!attributesName.equals(FAST_PROGRAM)) {
-            if (attributesName.equals(WATER_CONSUMPTION) ||
-                    attributesName.equals(NOISE_LEVEL))
+        if (!attributesID.equals(AttributesID.FAST_PROGRAM)) {
+            if (attributesID.equals(AttributesID.WATER_CONSUMPTION) ||
+                    attributesID.equals(AttributesID.NOISE_LEVEL))
                 prefixText = "Max";
             else
                 prefixText = "Min";
         }
 
-        String sufixText = AttributesMeasurementUnit.getAttributeMeasurementUnit(attributesName);
+        String sufixText = AttributesMeasurementUnit.getAttributeMeasurementUnit(attributesID);
 
         label.setText(prefixText + " " +
-                applianceAttributesNameMap.get(attributesName).get(gridParentRowIndex) +
+                applianceAttributesNameMap.get(AttributeIndex.getAttributeIndex(attributesID)).get(gridParentRowIndex) +
                 " " + sufixText);
 
     }
@@ -300,17 +299,23 @@ public class FinalTask implements EventHandler<KeyEvent> {
                 (keyEvent.getCode() == KeyCode.SPACE || keyEvent.getCode() == KeyCode.ENTER)) {
             //we first check if all rows have selected values
             if (isFormValid()) {
-                // Get values
-//                for (int value : selectedValues)
-//                    System.out.print(" " + value);
-//
-//                System.out.println("");
+                //save value
+                saveTask();
 
-                //save selected values and go to next page.
+                //go to next page.
                 goToNextPage();
             } else {
                 new Alert(Alert.AlertType.INFORMATION, "Please select all attribute values!").show();
             }
+
+        }
+    }
+
+    private void saveTask() {
+        //TODO debug only
+        System.out.println("Final Task");
+        for (int i = 0; i < applianceAttributesNameMap.size(); i++) {
+            System.out.println(AttributesID.getAttributeID(i)+" : "+ applianceAttributesNameMap.get(i).get(selectedValues[i]));
 
         }
     }
@@ -320,11 +325,6 @@ public class FinalTask implements EventHandler<KeyEvent> {
     }
 
     private boolean isFormValid() {
-        for (int value : selectedValues)
-            System.out.print(" " + value);
-
-        System.out.println();
-
         for (int value : selectedValues)
             if (value < 0) return false;
 

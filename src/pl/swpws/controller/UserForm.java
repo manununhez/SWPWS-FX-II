@@ -193,10 +193,34 @@ public class UserForm implements EventHandler<KeyEvent> {
         if (event.getEventType() == KeyEvent.KEY_RELEASED &&
                 (event.getCode() == KeyCode.SPACE || event.getCode() == KeyCode.ENTER)) {
 
-            if (isFormValid())
+            if (isFormValid()) {
+                //save value
+                saveUser();
                 goToNextPage();
+            }
 
         }
+    }
+
+    private void saveUser() {
+        RadioButton selectedSexRadioButton = (RadioButton) sexToggleGroup.getSelectedToggle();
+
+        User user = new User(Integer.parseInt(numberTxt.getText()),
+                Integer.parseInt(ageTxt.getText()),
+                selectedSexRadioButton.getText(),
+                professionTxt.getText(),
+                Integer.parseInt(educationTxt.getText()));
+
+
+        //Clear alerts
+        numberAlert.setText(EMPTY_TEXT);
+        ageAlert.setText(EMPTY_TEXT);
+        professionAlert.setText(EMPTY_TEXT);
+        educationAlert.setText(EMPTY_TEXT);
+
+        //TODO debug only
+        System.out.println("User Form");
+        System.out.println(user.toString());
     }
 
     private void goToNextPage() {
@@ -204,31 +228,15 @@ public class UserForm implements EventHandler<KeyEvent> {
     }
 
     public boolean isFormValid() {
-        RadioButton selectedSexRadioButton = (RadioButton) sexToggleGroup.getSelectedToggle();
 
         String numberField = numberTxt.getText().trim();
         String ageField = ageTxt.getText().trim();
         String professionField = professionTxt.getText().trim();
         String educationField = educationTxt.getText().trim();
 
-        if (!numberField.isEmpty() && !ageField.isEmpty() &&
-                !professionField.isEmpty() && !educationField.isEmpty()) {
-            User user = new User(Integer.parseInt(numberTxt.getText()),
-                    Integer.parseInt(ageTxt.getText()),
-                    selectedSexRadioButton.getText(),
-                    professionTxt.getText(),
-                    Integer.parseInt(educationTxt.getText()));
+        if (numberField.isEmpty() || ageField.isEmpty() ||
+                professionField.isEmpty() || educationField.isEmpty()) {
 
-            System.out.println(user.toString());
-
-            //Clear alerts
-            numberAlert.setText(EMPTY_TEXT);
-            ageAlert.setText(EMPTY_TEXT);
-            professionAlert.setText(EMPTY_TEXT);
-            educationAlert.setText(EMPTY_TEXT);
-
-            return true;
-        } else {
             //set alerts text
             if (numberField.isEmpty()) numberAlert.setText(NUMBER_ALERT_MESSAGE);
             else numberAlert.setText(EMPTY_TEXT);
@@ -241,9 +249,11 @@ public class UserForm implements EventHandler<KeyEvent> {
 
             if (educationField.isEmpty()) educationAlert.setText(EDUCATION_ALERT_MESSAGE);
             else educationAlert.setText(EMPTY_TEXT);
+
+            return false;
         }
 
-        return false;
+        return true;
     }
 
 }

@@ -39,7 +39,7 @@ public class SecondTask implements EventHandler<KeyEvent> {
 
     private final Stage mStage;
     private final BorderPane mParent;
-    private final HashMap<AttributesName, RatingPlus> ratingPlusHashMap = new HashMap<>();
+    private final HashMap<AttributesID, RatingPlus> ratingPlusHashMap = new HashMap<>();
 
     private SceneName mSceneName;
     private Label labelAlert;
@@ -80,32 +80,32 @@ public class SecondTask implements EventHandler<KeyEvent> {
         gridPane.setAlignment(Pos.CENTER);
 
         gridPane.add(getParamLabel(SPIN_SPEED.label), 1, 0);
-        gridPane.add(getRating(SPIN_SPEED), 2, 0);
+        gridPane.add(getRating(AttributesID.SPIN_SPEED), 2, 0);
 
         gridPane.add(getParamLabel(DRUM_CAPACITY.label), 1, 1);
-        gridPane.add(getRating(DRUM_CAPACITY), 2, 1);
+        gridPane.add(getRating(AttributesID.DRUM_CAPACITY), 2, 1);
 
         gridPane.add(getParamLabel(ENERGY_CLASS.label), 1, 2);
-        gridPane.add(getRating(ENERGY_CLASS), 2, 2);
+        gridPane.add(getRating(AttributesID.ENERGY_CLASS), 2, 2);
 
         gridPane.add(getParamLabel(NOISE_LEVEL.label), 1, 3);
-        gridPane.add(getRating(NOISE_LEVEL), 2, 3);
+        gridPane.add(getRating(AttributesID.NOISE_LEVEL), 2, 3);
 
         gridPane.add(getParamLabel(WATER_CONSUMPTION.label), 1, 4);
-        gridPane.add(getRating(WATER_CONSUMPTION), 2, 4);
+        gridPane.add(getRating(AttributesID.WATER_CONSUMPTION), 2, 4);
 
         gridPane.add(getParamLabel(FAST_PROGRAM.label), 1, 5);
-        gridPane.add(getRating(FAST_PROGRAM), 2, 5);
+        gridPane.add(getRating(AttributesID.FAST_PROGRAM), 2, 5);
 
         return gridPane;
     }
 
-    private RatingPlus getRating(AttributesName attributesName) {
+    private RatingPlus getRating(AttributesID attributesID) {
         RatingPlus ratingPlus = new RatingPlus(MAX_RATING);
         ratingPlus.setPadding(new Insets(10, 0, 10, 0));
         ratingPlus.setRating(0.0);
 
-        ratingPlusHashMap.put(attributesName, ratingPlus);
+        ratingPlusHashMap.put(attributesID, ratingPlus);
 
         return ratingPlus;
     }
@@ -124,7 +124,7 @@ public class SecondTask implements EventHandler<KeyEvent> {
             int b = 0;
 
             //loop through values of selected rating per attribute
-            for (Map.Entry<AttributesName, RatingPlus> entry : ratingPlusHashMap.entrySet()) {
+            for (Map.Entry<AttributesID, RatingPlus> entry : ratingPlusHashMap.entrySet()) {
                 RatingPlus ratingPlus = entry.getValue();
                 if (ratingPlus.getRating() <= 0.0) {
                     b++;
@@ -135,8 +135,22 @@ public class SecondTask implements EventHandler<KeyEvent> {
                 labelAlert.setText("Please select all the attributes rating! Total left:(" + b + ")");
             else {
                 labelAlert.setText("");
+
+                //save value
+                saveTask();
+
                 goToNextPage();
+
             }
+        }
+    }
+
+    private void saveTask() {
+        //TODO debug only
+        System.out.println("Second Task");
+        for (Map.Entry<AttributesID, RatingPlus> entry : ratingPlusHashMap.entrySet()) {
+            RatingPlus ratingPlus = entry.getValue();
+            System.out.println(entry.getKey().label+" : "+ratingPlus.getRating());
         }
     }
 

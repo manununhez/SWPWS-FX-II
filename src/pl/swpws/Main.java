@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import pl.swpws.controller.MainPage;
 import pl.swpws.controller.TaskPage;
+import pl.swpws.model.DataGenerator;
 
 import java.io.IOException;
 
@@ -99,7 +100,7 @@ public class Main extends Application {
         mSecondaryStage.setScene(scene);
 
         // Set the participant into the controller.
-        TaskPage taskPage = new TaskPage(mSecondaryStage, borderPane);
+        TaskPage taskPage = new TaskPage(mSecondaryStage, borderPane, new DataGenerator());
         taskPage.initScenes();
         taskPage.setFirstPage();
 

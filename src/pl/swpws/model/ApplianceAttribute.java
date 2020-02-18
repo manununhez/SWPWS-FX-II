@@ -16,6 +16,30 @@ public class ApplianceAttribute {
         }
     }
 
+    public enum AttributeImportanceLevel {
+        SPIN_SPEED(6),
+        DRUM_CAPACITY(5),
+        ENERGY_CLASS(4),
+        NOISE_LEVEL(3),
+        WATER_CONSUMPTION(2),
+        FAST_PROGRAM(1);
+
+        public final int value;
+
+        AttributeImportanceLevel(int value) {
+
+            this.value = value;
+        }
+
+        public static int getAttributeImportanceLevel(AttributesID attributesID) {
+            for (AttributeImportanceLevel level : AttributeImportanceLevel.values())
+                if (level.name().equals(attributesID.name()))
+                    return level.value;
+
+            return 0;
+        }
+    }
+
     public enum AttributesName {
         SPIN_SPEED("max prędkość wirowania(obr/min)"),
         DRUM_CAPACITY("pojemność bębna (kg)"),
@@ -28,6 +52,40 @@ public class ApplianceAttribute {
 
         AttributesName(String s) {
             this.label = s;
+        }
+
+        //According to specs: Fast program and energy class do not have unit of measurement
+        public static String getAttributeName(AttributesID attributesID) {
+            for (AttributesName unit : AttributesName.values())
+                if (unit.name().equals(attributesID.name()))
+                    return unit.label;
+
+            return "";
+        }
+    }
+
+    public enum AttributesID {
+        SPIN_SPEED("A1"),
+        DRUM_CAPACITY("A2"),
+        ENERGY_CLASS("A3"),
+        NOISE_LEVEL("A4"),
+        WATER_CONSUMPTION("A5"),
+        FAST_PROGRAM("A6");
+
+        public final String label;
+
+        AttributesID(String s) {
+            this.label = s;
+        }
+
+        //According to specs: Fast program and energy class do not have unit of measurement
+        public static String getAttributeID(int value) {
+            String attributeIndex = AttributeIndex.getAttributeIndex(value);
+            for (AttributesID unit : AttributesID.values())
+                if (unit.name().equals(attributeIndex))
+                    return unit.label;
+
+            return "";
         }
     }
 
@@ -44,9 +102,9 @@ public class ApplianceAttribute {
         }
 
         //According to specs: Fast program and energy class do not have unit of measurement
-        public static String getAttributeMeasurementUnit(AttributesName attributesName) {
+        public static String getAttributeMeasurementUnit(AttributesID attributesID) {
             for (AttributesMeasurementUnit unit : AttributesMeasurementUnit.values())
-                if (unit.name().equals(attributesName.name()))
+                if (unit.name().equals(attributesID.name()))
                     return unit.label;
 
             return "";
@@ -65,27 +123,36 @@ public class ApplianceAttribute {
         }
     }
 
-    public enum AttributeImportanceLevel {
-        SPIN_SPEED(6),
-        DRUM_CAPACITY(5),
-        ENERGY_CLASS(4),
+
+    public enum AttributeIndex {
+        SPIN_SPEED(0),
+        DRUM_CAPACITY(1),
+        ENERGY_CLASS(2),
         NOISE_LEVEL(3),
-        WATER_CONSUMPTION(2),
-        FAST_PROGRAM(1);
+        WATER_CONSUMPTION(4),
+        FAST_PROGRAM(5);
 
         public final int value;
 
-        AttributeImportanceLevel(int value) {
+        AttributeIndex(int value) {
 
             this.value = value;
         }
 
-        public static int getAttributeImportanceLevel(AttributesName attributesName) {
-            for (AttributeImportanceLevel level : AttributeImportanceLevel.values())
-                if (level.name().equals(attributesName.name()))
+        public static int getAttributeIndex(AttributesID attributesID) {
+            for (AttributeIndex level : AttributeIndex.values())
+                if (level.name().equals(attributesID.name()))
                     return level.value;
 
             return 0;
+        }
+
+        public static String getAttributeIndex(int value) {
+            for (AttributeIndex level : AttributeIndex.values())
+                if (level.value == value)
+                    return level.name();
+
+            return "";
         }
     }
 
