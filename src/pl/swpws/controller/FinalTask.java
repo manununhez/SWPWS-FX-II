@@ -50,6 +50,7 @@ public class FinalTask extends RootPage {
     private static final double TABLE_TITLE_TEXT_SIZE = 25.0;
     private static final double PARAM_TEXT_SIZE = 20.0;
     private static final double TABLE_CELL_VALUE_TEXT_SIZE = 15.0;
+    public static final String VALIDATION_ALERT_MESSAGE = "Please select all the attribute values!";
 
     private final Integer[] selectedValues = new Integer[APPLIANCE_ATTRIBUTES_COUNT];
 
@@ -313,7 +314,7 @@ public class FinalTask extends RootPage {
                 //go to next page.
                 goToNextPage();
             } else {
-                new Alert(Alert.AlertType.INFORMATION, "Please select all attribute values!").show();
+                new Alert(Alert.AlertType.INFORMATION, VALIDATION_ALERT_MESSAGE).show();
             }
 
         }

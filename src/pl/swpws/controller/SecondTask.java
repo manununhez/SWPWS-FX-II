@@ -47,8 +47,9 @@ public class SecondTask extends RootPage {
             "preferencjami.";
     private static final int MAX_RATING = 6;
     private static final double PARAM_TEXT_SIZE = 20.0;
-    private static final double MAIN_PAGE_INSTRUCTION_TEXT_SIZE_SMALL = 30.0;
+    private static final double MAIN_PAGE_INSTRUCTION_TEXT_SIZE_SMALL = 20.0;
     private static final String FONT_TYPE = "Tahoma";
+    public static final String VALIDATION_ALERT_MESSAGE = "Please select all the attributes rating!";
 
     private final HashMap<AttributesID, RatingPlus> ratingPlusHashMap = new HashMap<>();
 
@@ -148,7 +149,7 @@ public class SecondTask extends RootPage {
             }
 
             if (b > 0)
-                labelAlert.setText("Please select all the attributes rating! Total left:(" + b + ")");
+                labelAlert.setText(VALIDATION_ALERT_MESSAGE + " Total left:(" + b + ")");
             else {
                 labelAlert.setText("");
 

@@ -252,7 +252,7 @@ public class InstructionTasks {
         @Override
         public Node getNodeScene() {
             Label labelMainTitle = new Label(getMainInstruction());
-            labelMainTitle.setFont(new Font(20.0));
+            labelMainTitle.setFont(new Font(15.0));
             labelMainTitle.setWrapText(true);
             labelMainTitle.setAlignment(Pos.TOP_CENTER);
 
@@ -285,74 +285,6 @@ public class InstructionTasks {
         }
 
     }
-
-//    static class FourthInstruction extends RootPage {
-//        public static final String MAIN_TITLE = "Fourth Instruction";
-//        private static final String MAIN_PAGE_INSTRUCTION_MALE = "Kolejna właściwość, oceniana przez konsumentów na trzy plusy, to " +
-//                "poziom hałasu w decybelach (db). Prezentowane pralki będą miały " +
-//                "poziom hałasu od 70db do 40db, gdzie mniejsza wartość oznacza " +
-//                "cichszą pralkę. Cicha praca jest preferowana przez większość " +
-//                "użytkowników.\n\n" +
-//                "Następna właściwość, to zużycie wody w litrach (dwa plusy). " +
-//                "Porównywane pralki będą zużywały od 70l do 30l na cykl prania. " +
-//                "Konsumenci preferują pralki zużywające mniejszą ilość wody.\n\n" +
-//                "Ostatnia właściwość (jeden plus) to obecność lub brak programu " +
-//                "szybkiego prania. Przeciętny konsument chce mieć możliwość" +
-//                "ustawienia szybkiego prania.";
-//        private static final String MAIN_PAGE_INSTRUCTION_FEMALE = "Kolejna właściwość, oceniana przez konsumentów na trzy plusy, to " +
-//                "poziom hałasu w decybelach (db). Prezentowane pralki będą miały " +
-//                "poziom hałasu od 70db do 40db, gdzie mniejsza wartość oznacza " +
-//                "cichszą pralkę. Cicha praca jest preferowana przez większość " +
-//                "użytkowników.\n\n" +
-//                "Następna właściwość, to zużycie wody w litrach (dwa plusy). " +
-//                "Porównywane pralki będą zużywały od 70l do 30l na cykl prania. " +
-//                "Konsumenci preferują pralki zużywające mniejszą ilość wody.\n\n" +
-//                "Ostatnia właściwość (jeden plus) to obecność lub brak programu " +
-//                "szybkiego prania. Przeciętny konsument chce mieć możliwość" +
-//                "ustawienia szybkiego prania.";
-//
-//
-//        public FourthInstruction(Stage stage, BorderPane parent, SceneName sceneName, Repository repository) {
-//            super(stage, parent, sceneName, repository);
-//        }
-//
-//        @Override
-//        public Node getNodeScene() {
-//            Label labelMainTitle = new Label(getMainInstruction());
-//            labelMainTitle.setFont(new Font(30.0));
-//            labelMainTitle.setWrapText(true);
-//            labelMainTitle.setAlignment(Pos.TOP_CENTER);
-//
-//            VBox vBox = new VBox();
-//            vBox.setSpacing(50.0);
-//            vBox.setAlignment(Pos.TOP_CENTER);
-//            vBox.getChildren().add(labelMainTitle);
-//            vBox.setPadding(new Insets(40, 125, 40, 125));
-//
-//            vBox.setFocusTraversable(true);//To detect keyEvents!
-//            vBox.setOnKeyPressed(this);
-//            vBox.setOnKeyReleased(this);
-//
-//            return vBox;
-//        }
-//
-//        private String getMainInstruction() {
-//            User user = mRepository.getUser();
-//            if (user.getSex().equals(UserForm.SEX_FEMALE_LABEL))
-//                return MAIN_PAGE_INSTRUCTION_FEMALE;
-//            else
-//                return MAIN_PAGE_INSTRUCTION_MALE;
-//        }
-//
-//        @Override
-//        public void handle(KeyEvent keyEvent) {
-//            if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED &&
-//                    (keyEvent.getCode() == KeyCode.SPACE || keyEvent.getCode() == KeyCode.ENTER)) {
-//                goToNextPage();
-//            }
-//        }
-//
-//    }
 
 
     static class FifthInstruction extends RootPage {
@@ -471,9 +403,9 @@ public class InstructionTasks {
 
     static class SeventhInstruction extends RootPage {
         public static final String MAIN_TITLE = "Seventh Instruction";
-        private static final String MAIN_PAGE_INSTRUCTION_FEMALE = "Teraz proszę sobie wyobrazić,\n" +
+        private static final String MAIN_PAGE_INSTRUCTION_FEMALE = "Proszę sobie wyobrazić,\n" +
                 "że kupuje Pani pralkę dla siebie.";
-        private static final String MAIN_PAGE_INSTRUCTION_MALE = "Teraz proszę sobie wyobrazić,\n" +
+        private static final String MAIN_PAGE_INSTRUCTION_MALE = "Proszę sobie wyobrazić,\n" +
                 "że kupuje Pan pralkę dla siebie.";
 
 

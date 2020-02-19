@@ -47,6 +47,7 @@ public class FirstTask extends RootPage {
     public static final int COLUMN_1 = 1;
     public static final int COLUMN_2 = 2;
     public static final int COLUMN_3 = 3;
+    public static final String VALIDATION_ALERT_MESSAGE = "Please select an option!";
 
     private final ToggleGroup toggleGroup = new ToggleGroup();
 
@@ -256,11 +257,11 @@ public class FirstTask extends RootPage {
 
         }
 
-         if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED &&
+        if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED &&
                 (keyEvent.getCode() == KeyCode.SPACE || keyEvent.getCode() == KeyCode.ENTER)) {
             RadioButton radioButton = (RadioButton) toggleGroup.getSelectedToggle();
             if (radioButton == null) {
-                new Alert(Alert.AlertType.INFORMATION, "Please select an option!").show();
+                new Alert(Alert.AlertType.INFORMATION, VALIDATION_ALERT_MESSAGE).show();
             } else {
                 int index = Integer.parseInt(radioButton.getId());
 
@@ -284,12 +285,9 @@ public class FirstTask extends RootPage {
         System.out.println("Question #" + mQuestionNumber + " - Selected Pralka: " + index);//TODO Debug Only
 
 
-//        if (mSceneName == SceneName.FIRST_TASK) {
-            //save value
-            mRepository.saveFirstTask(new QuestionFirstTask(mRepository.getUser().getId(), mAttributeList.get(index - 1).id, mQuestionNumber,  index));
-//        }else{ //FIRST_TASK_EXAMPLE
-//            mRepository.saveFirstTaskExample(new QuestionFirstTask(mRepository.getUser().getId(), mQuestionNumber, index));
-//        }
+        //save value
+        mRepository.saveFirstTask(new QuestionFirstTask(mRepository.getUser().getId(), mAttributeList.get(index - 1).id, mQuestionNumber, index));
+
     }
 
 }

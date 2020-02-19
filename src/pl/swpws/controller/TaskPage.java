@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import pl.swpws.controller.InstructionTasks.*;
@@ -103,8 +104,9 @@ public class TaskPage {
 
     private static StackPane getRectangleNextScreenSign(String title) {
         Text text = new Text(title);
+        text.setFont(new Font(20.0));
         StackPane stack = new StackPane();
-        Rectangle rectangle2D = new Rectangle(70, 70, 450, 50);
+        Rectangle rectangle2D = new Rectangle(70, 70, 500, 50);
         rectangle2D.setArcHeight(10);
         rectangle2D.setArcWidth(10);
         rectangle2D.setFill(Color.FORESTGREEN);
