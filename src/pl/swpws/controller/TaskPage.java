@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class TaskPage {
     public static final String NEXT_SCREEN_SIGN = "Naciśnij spację, aby przejść dalej.";
-    public static final String FINAL_SCREEN_SIGN = "Naciśnij spację, aby zakonczyc (albo naciśnij cos innego).";
+    public static final String FINAL_SCREEN_SIGN = "Naciśnij klawisz ESC, aby zakończyć.";
     private static int FIRST_TASK_TOTAL_ITERATION;
     private static int FIRST_TASK_EXAMPLE_TOTAL_ITERATION;//4
     private final static Map<SceneName, RootPage> scenes = new HashMap<>(); //Holds the various scenes to switch between
@@ -49,7 +49,7 @@ public class TaskPage {
         scenes.put(SceneName.FIRST_INSTR, new FirstInstruction(mStage, mParent, SceneName.FIRST_INSTR, mRepository));
         scenes.put(SceneName.SECOND_INSTR, new SecondInstruction(mStage, mParent, SceneName.SECOND_INSTR, mRepository));
         scenes.put(SceneName.THIRD_INSTR, new ThirdInstruction(mStage, mParent, SceneName.THIRD_INSTR, mRepository));
-        scenes.put(SceneName.FOURTH_INSTR, new FourthInstruction(mStage, mParent, SceneName.FOURTH_INSTR, mRepository));
+//        scenes.put(SceneName.FOURTH_INSTR, new FourthInstruction(mStage, mParent, SceneName.FOURTH_INSTR, mRepository));
         scenes.put(SceneName.FIFTH_INSTR, new FifthInstruction(mStage, mParent, SceneName.FIFTH_INSTR, mRepository));
         scenes.put(SceneName.SIXTH_INSTR, new SixthInstruction(mStage, mParent, SceneName.SIXTH_INSTR, mRepository));
         scenes.put(SceneName.SEVENTH_INSTR, new SeventhInstruction(mStage, mParent, SceneName.SEVENTH_INSTR, mRepository));
@@ -131,9 +131,6 @@ public class TaskPage {
                 navigateTo(SceneName.THIRD_INSTR, ThirdInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
                 break;
             case THIRD_INSTR:
-                navigateTo(SceneName.FOURTH_INSTR, FourthInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
-                break;
-            case FOURTH_INSTR:
                 navigateTo(SceneName.FIFTH_INSTR, FifthInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
                 break;
             case FIFTH_INSTR:
@@ -172,7 +169,7 @@ public class TaskPage {
         }
     }
 
-    //FirstTask only version
+//    //FirstTask only version
 //    public static void navigateTo(SceneName sceneName) {
 //
 //        switch (sceneName) {
@@ -189,9 +186,6 @@ public class TaskPage {
 //                navigateTo(SceneName.THIRD_INSTR, ThirdInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
 //                break;
 //            case THIRD_INSTR:
-//                navigateTo(SceneName.FOURTH_INSTR, FourthInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
-//                break;
-//            case FOURTH_INSTR:
 //                navigateTo(SceneName.FIFTH_INSTR, FifthInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
 //                break;
 //            case FIFTH_INSTR:
@@ -221,7 +215,7 @@ public class TaskPage {
 //        }
 //    }
 
-    //Second and Third version
+//    //Second and Third version
 //    public static void navigateTo(SceneName sceneName) {
 //
 //        switch (sceneName) {
@@ -229,19 +223,7 @@ public class TaskPage {
 //                navigateTo(SceneName.USER_FORM, UserForm.MAIN_TITLE, TaskPageType.TASK);
 //                break;
 //            case USER_FORM:
-//                navigateTo(SceneName.FIRST_INSTR, FirstInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
-//                break;
-//            case FIRST_INSTR:
-//                navigateTo(SceneName.SECOND_INSTR, SecondInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
-//                break;
-//            case SECOND_INSTR:
-//                navigateTo(SceneName.THIRD_INSTR, ThirdInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
-//                break;
-//            case THIRD_INSTR:
-//                navigateTo(SceneName.FOURTH_INSTR, FourthInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
-//                break;
-//            case FOURTH_INSTR:
-//                navigateTo(SceneName.SEVENTH_INSTR, FifthInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
+//                navigateTo(SceneName.SEVENTH_INSTR, SeventhInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
 //                break;
 //            case SEVENTH_INSTR:
 //                navigateTo(SceneName.SECOND_TASK, SecondTask.MAIN_TITLE, TaskPageType.TASK);

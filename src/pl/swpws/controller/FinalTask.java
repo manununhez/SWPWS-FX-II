@@ -34,7 +34,7 @@ public class FinalTask extends RootPage {
             "Przy każdej właściwości prosimy o wybranie wartości, którą uznałaby Pani za wystarczającą " +
             "przy zakupie nowej pralki.";
     private static final String MAIN_PAGE_INSTRUCTION_MALE = "Dodatkowo prosimy o wskazanie akceptowalnego " +
-            "poziomu każdej właściwości pralki, którą kupowłaby Pan dla siebie.\n" +
+            "poziomu każdej właściwości pralki, którą kupowałby Pan dla siebie.\n" +
             "Przy każdej właściwości prosimy o wybranie wartości, którą uznałby Pan za wystarczającą " +
             "przy zakupie nowej pralki.";
     private static final String GRID_CSS_PATH = "pl/swpws/common/grid/grid-with-borders.css";
@@ -198,7 +198,6 @@ public class FinalTask extends RootPage {
         return label;
     }
 
-
     private GridPane gridPanePerAttribute(int rowIndex, AttributesID attributesID, List<String> list,
                                           GridPane gridMainPane) {
 
@@ -283,8 +282,8 @@ public class FinalTask extends RootPage {
         String sufixText = AttributesMeasurementUnit.getAttributeMeasurementUnit(attributesID);
 
         label.setText(prefixText + " " +
-                applianceAttributesNameMap.get(AttributeIndex.getAttributeIndex(attributesID)).get(gridParentRowIndex) +
-                " " + sufixText);
+                applianceAttributesNameMap.get(AttributeIndex.getAttributeIndex(attributesID)).get(gridParentRowIndex)
+                + sufixText);
 
     }
 

@@ -31,9 +31,9 @@ public class FirstTask extends RootPage {
     private static final String GRID_CSS_PATH = "pl/swpws/common/grid/grid-with-borders.css";
     private static final String APPLIANCE_DEFAULT_NAME = "Pralka ";
     private static final String MAIN_PAGE_INSTRUCTION_FEMALE = "Wybierz najlepszą pralkę, naciskając jeden z klawiszy" +
-            " na klawiaturze: 1,2 lub 3.";
+            " na klawiaturze: 1, 2 lub 3.";
     private static final String MAIN_PAGE_INSTRUCTION_MALE = "Wybierz najlepszą pralkę, naciskając jeden z klawiszy" +
-            " na klawiaturze: 1,2 lub 3.";
+            " na klawiaturze: 1, 2 lub 3.";
     private static final String TABLE_TITLE1 = "właściwość";
     private static final String TABLE_TITLE2 = "ważność";
     private static final String GRID_STYLE_CELL_TITLE = "cell-title";

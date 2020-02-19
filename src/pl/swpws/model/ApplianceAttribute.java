@@ -41,7 +41,7 @@ public class ApplianceAttribute {
     }
 
     public enum AttributesName {
-        SPIN_SPEED("max prędkość wirowania(obr/min)"),
+        SPIN_SPEED("max prędkość wirowania (obr/min)"),
         DRUM_CAPACITY("pojemność bębna (kg)"),
         ENERGY_CLASS("klasa energetyczna"),
         NOISE_LEVEL("poziom hałasu (db)"),
@@ -90,8 +90,8 @@ public class ApplianceAttribute {
     }
 
     public enum AttributesMeasurementUnit {
-        SPIN_SPEED("obr/min"),
-        DRUM_CAPACITY("kg"),
+        SPIN_SPEED(" obr/min"),
+        DRUM_CAPACITY(" kg"),
         NOISE_LEVEL("db"),
         WATER_CONSUMPTION("l");
 

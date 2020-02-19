@@ -225,7 +225,6 @@ public class UserForm extends RootPage {
         mRepository.saveUser(user);
     }
 
-
     public boolean isFormValid() {
 
         String numberField = numberTxt.getText().trim();

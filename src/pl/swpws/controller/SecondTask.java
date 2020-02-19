@@ -37,7 +37,7 @@ public class SecondTask extends RootPage {
             "sześć plusów.\n"
             + "Nie ma tu dobrych ani złych odpowiedzi, proszę się kierować własnymi " +
             "preferencjami.";
-    private static final String MAIN_PAGE_INSTRUCTION_MALE = "Jesteśmy ciekawi na co zwróciłaby Pan uwagę przy zakupie pralki.\n\n"
+    private static final String MAIN_PAGE_INSTRUCTION_MALE = "Jesteśmy ciekawi na co zwróciłby Pan uwagę przy zakupie pralki.\n\n"
             + "Prosimy o ocenienie ważności właściwości pralek posługując się plusami. Im " +
             "większa liczba plusów, tym ważniejsza jest dla Pana dana właściwość. Może " +
             "Pan przyznać tę samą liczbę plusów kilku właściwościom. Każda właściwość " +
