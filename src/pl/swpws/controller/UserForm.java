@@ -1,8 +1,8 @@
 package pl.swpws.controller;
 
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -23,16 +23,16 @@ import pl.swpws.data.repository.Repository;
 import pl.swpws.model.SceneName;
 import pl.swpws.model.User;
 
-public class UserForm implements EventHandler<KeyEvent> {
+public class UserForm extends RootPage {
 
     public static final String MAIN_TITLE = "Twoje dane";
+    public static final String SEX_FEMALE_LABEL = "Kobieta";
+    public static final String SEX_MALE_LABEL = "Mężczyzna";
     private static final String NUMBER_LABEL = "Numer:";
     private static final String AGE_LABEL = "Wiek:";
-    private static final String PROFESSION_LABEL = "Zawod:";
+    private static final String PROFESSION_LABEL = "Zawód:";
     private static final String GENDER_LABEL = "Płeć:";
     private static final String EDUCATION_LABEL = "Lata formalnej edukacji:";
-    private static final String SEX_FEMALE_LABEL = "Kobieta";
-    private static final String SEX_MALE_LABEL = "Mężczyzna";
     private static final String FONT_TYPE = "Tahoma";
     private static final String NUMBER_HINT = "number: E.g., 345";
     private static final String AGE_HINT = "age: E.g., 18";
@@ -48,12 +48,8 @@ public class UserForm implements EventHandler<KeyEvent> {
     private static final double PARAM_TEXT_SIZE = 20.0;
     private static final double MAIN_PAGE_INSTRUCTION_TEXT_SIZE = 40.0;
 
-    private final Stage mStage;
-    private final BorderPane mParent;
 
     private ToggleGroup sexToggleGroup;
-    private SceneName mSceneName;
-    private Repository mRepository;
     private TextField numberTxt;
     private TextField ageTxt;
     private TextField professionTxt;
@@ -64,13 +60,12 @@ public class UserForm implements EventHandler<KeyEvent> {
     private Label educationAlert;
 
     public UserForm(Stage stage, BorderPane parent, SceneName sceneName, Repository repository) {
-        mStage = stage;
-        mParent = parent;
-        mSceneName = sceneName;
-        mRepository = repository;
+        super(stage, parent, sceneName, repository);
     }
 
-    public VBox getNodeScene() {
+    @Override
+    public Node getNodeScene() {
+
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(30);
@@ -178,6 +173,7 @@ public class UserForm implements EventHandler<KeyEvent> {
         return vBox;
     }
 
+
     private Label getLabelAlert() {
         Label label = new Label();
         label.setTextFill(Color.RED);
@@ -229,9 +225,6 @@ public class UserForm implements EventHandler<KeyEvent> {
         mRepository.saveUser(user);
     }
 
-    private void goToNextPage() {
-        TaskPage.navigateTo(mSceneName);
-    }
 
     public boolean isFormValid() {
 

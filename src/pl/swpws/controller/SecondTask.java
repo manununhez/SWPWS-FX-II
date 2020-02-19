@@ -1,13 +1,14 @@
 package pl.swpws.controller;
 
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -23,43 +24,43 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static pl.swpws.model.ApplianceAttribute.*;
+import static pl.swpws.model.ApplianceAttribute.AttributesID;
 import static pl.swpws.model.ApplianceAttribute.AttributesName.*;
 
-public class SecondTask implements EventHandler<KeyEvent> {
+public class SecondTask extends RootPage {
     public static final String MAIN_TITLE = "second task";
-    private static final String MAIN_PAGE_INSTRUCTION = "Jesteśmy ciekawi na co zwróciłaby Pani uwagę przy zakupie pralki.\n\n"
-            + "Prosimy o ocenienie ważności właściwości pralek posługując się plusami. Im" +
-            "większa liczba plusów, tym ważniejsza jest dla Pani dana właściwość. Może" +
-            "Pani przyznać tę samą liczbę plusów kilku właściwościom. Każda właściwość" +
-            "musi mieć co najmniej jeden plus i żadna właściwość nie może mieć więcej niż" +
+    private static final String MAIN_PAGE_INSTRUCTION_FEMALE = "Jesteśmy ciekawi na co zwróciłaby Pani uwagę przy zakupie pralki.\n\n"
+            + "Prosimy o ocenienie ważności właściwości pralek posługując się plusami. Im " +
+            "większa liczba plusów, tym ważniejsza jest dla Pani dana właściwość. Może " +
+            "Pani przyznać tę samą liczbę plusów kilku właściwościom. Każda właściwość " +
+            "musi mieć co najmniej jeden plus i żadna właściwość nie może mieć więcej niż " +
             "sześć plusów.\n"
-            + "Nie ma tu dobrych ani złych odpowiedzi, proszę się kierować własnymi" +
+            + "Nie ma tu dobrych ani złych odpowiedzi, proszę się kierować własnymi " +
             "preferencjami.";
-
+    private static final String MAIN_PAGE_INSTRUCTION_MALE = "Jesteśmy ciekawi na co zwróciłaby Pan uwagę przy zakupie pralki.\n\n"
+            + "Prosimy o ocenienie ważności właściwości pralek posługując się plusami. Im " +
+            "większa liczba plusów, tym ważniejsza jest dla Pana dana właściwość. Może " +
+            "Pan przyznać tę samą liczbę plusów kilku właściwościom. Każda właściwość " +
+            "musi mieć co najmniej jeden plus i żadna właściwość nie może mieć więcej niż " +
+            "sześć plusów.\n"
+            + "Nie ma tu dobrych ani złych odpowiedzi, proszę się kierować własnymi " +
+            "preferencjami.";
     private static final int MAX_RATING = 6;
     private static final double PARAM_TEXT_SIZE = 20.0;
     private static final double MAIN_PAGE_INSTRUCTION_TEXT_SIZE_SMALL = 30.0;
     private static final String FONT_TYPE = "Tahoma";
 
-    private final Stage mStage;
-    private final BorderPane mParent;
     private final HashMap<AttributesID, RatingPlus> ratingPlusHashMap = new HashMap<>();
 
-    private SceneName mSceneName;
-    private Repository mRepository;
     private Label labelAlert;
 
     public SecondTask(Stage stage, BorderPane parent, SceneName sceneName, Repository repository) {
-        mStage = stage;
-        mParent = parent;
-        mSceneName = sceneName;
-        mRepository = repository;
+        super(stage, parent, sceneName, repository);
     }
 
+    @Override
     public Node getNodeScene() {
-
-        Label labelMainTitle = new Label(MAIN_PAGE_INSTRUCTION);
+        Label labelMainTitle = new Label(getMainInstruction());
         labelMainTitle.setFont(Font.font(FONT_TYPE, FontWeight.NORMAL, MAIN_PAGE_INSTRUCTION_TEXT_SIZE_SMALL));
         labelMainTitle.setWrapText(true);
 
@@ -78,6 +79,14 @@ public class SecondTask implements EventHandler<KeyEvent> {
         vBox.setOnKeyPressed(this);
 
         return vBox;
+    }
+
+    private String getMainInstruction() {
+        User user = mRepository.getUser();
+        if (user.getSex().equals(UserForm.SEX_FEMALE_LABEL))
+            return MAIN_PAGE_INSTRUCTION_FEMALE;
+        else
+            return MAIN_PAGE_INSTRUCTION_MALE;
     }
 
     private GridPane getGridPaneDescription() {
@@ -167,7 +176,4 @@ public class SecondTask implements EventHandler<KeyEvent> {
         mRepository.saveSecondTask(secondTaskList);
     }
 
-    private void goToNextPage() {
-        TaskPage.navigateTo(mSceneName);
-    }
 }

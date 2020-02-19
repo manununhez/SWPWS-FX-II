@@ -1,6 +1,5 @@
 package pl.swpws.controller;
 
-import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -21,16 +20,19 @@ import pl.swpws.data.repository.Repository;
 import pl.swpws.model.Attribute;
 import pl.swpws.model.QuestionFirstTask;
 import pl.swpws.model.SceneName;
+import pl.swpws.model.User;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class FirstTask implements EventHandler<KeyEvent> {
+public class FirstTask extends RootPage {
 
     public static final String MAIN_TITLE = "first task";
     private static final String GRID_CSS_PATH = "pl/swpws/common/grid/grid-with-borders.css";
     private static final String APPLIANCE_DEFAULT_NAME = "Pralka ";
-    private static final String MAIN_PAGE_INSTRUCTION = "Wybierz najlepszą pralkę, naciskając jeden z klawiszy" +
+    private static final String MAIN_PAGE_INSTRUCTION_FEMALE = "Wybierz najlepszą pralkę, naciskając jeden z klawiszy" +
+            " na klawiaturze: 1,2 lub 3.";
+    private static final String MAIN_PAGE_INSTRUCTION_MALE = "Wybierz najlepszą pralkę, naciskając jeden z klawiszy" +
             " na klawiaturze: 1,2 lub 3.";
     private static final String TABLE_TITLE1 = "właściwość";
     private static final String TABLE_TITLE2 = "ważność";
@@ -46,30 +48,26 @@ public class FirstTask implements EventHandler<KeyEvent> {
     public static final int COLUMN_2 = 2;
     public static final int COLUMN_3 = 3;
 
-    private final Stage mStage;
-    private final BorderPane mParent;
     private final ToggleGroup toggleGroup = new ToggleGroup();
 
     private HashMap<String, RadioButton> radioButtonHashMap = new HashMap<>();
     private List<Attribute> mAttributeList;
     private int mQuestionNumber;
-    private SceneName mSceneName;
-    private Repository mRepository;
 
-    public FirstTask(Stage stage, BorderPane parent, SceneName sceneName, int questionNumber, Repository repository) {
-        mStage = stage;
-        mParent = parent;
-        mSceneName = sceneName;
-        mRepository = repository;
-        mQuestionNumber = questionNumber;
-
-        mAttributeList = mRepository.getAttributeList(sceneName, questionNumber);
+    public FirstTask(Stage stage, BorderPane parent, SceneName sceneName, Repository repository) {
+        super(stage, parent, sceneName, repository);
     }
 
+    public void setQuestionNumber(int questionNumber) {
+        mQuestionNumber = questionNumber;
+        mAttributeList = mRepository.getAttributeList(mSceneName, questionNumber);
+    }
+
+    @Override
     public Node getNodeScene() {
         mParent.getStylesheets().add(GRID_CSS_PATH);
 
-        Label labelMainTitle = new Label(MAIN_PAGE_INSTRUCTION);
+        Label labelMainTitle = new Label(getMainInstruction());
         labelMainTitle.setFont(Font.font(FONT_TYPE, FontWeight.NORMAL, MAIN_PAGE_INSTRUCTION_TEXT_SIZE));
         labelMainTitle.setWrapText(true);
 
@@ -124,6 +122,14 @@ public class FirstTask implements EventHandler<KeyEvent> {
         vBox.requestFocus();
 
         return vBox;
+    }
+
+    private String getMainInstruction() {
+        User user = mRepository.getUser();
+        if (user.getSex().equals(UserForm.SEX_FEMALE_LABEL))
+            return MAIN_PAGE_INSTRUCTION_FEMALE;
+        else
+            return MAIN_PAGE_INSTRUCTION_MALE;
     }
 
     private GridPane getGridPaneAttrValues() {
@@ -281,8 +287,4 @@ public class FirstTask implements EventHandler<KeyEvent> {
         mRepository.saveFirstTask(new QuestionFirstTask(mRepository.getUser().getId(), mQuestionNumber, index));
     }
 
-    private void goToNextPage() {
-        TaskPage.navigateTo(mSceneName);
-
-    }
 }

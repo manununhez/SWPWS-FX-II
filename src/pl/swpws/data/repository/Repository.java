@@ -1,5 +1,6 @@
 package pl.swpws.data.repository;
 
+import javafx.scene.control.Alert;
 import pl.swpws.model.*;
 import pl.swpws.model.ApplianceAttribute.EnergyClass;
 import pl.swpws.data.local.FileDataSource;
@@ -20,6 +21,9 @@ public class Repository {
         getExampleListOfAttributes();//init example list
 
         attributeList = dataSource.loadAttributeListsFromCSV();//init task list
+
+        if(attributeList.isEmpty())
+            new Alert(Alert.AlertType.INFORMATION, "The list of attributes was not selected. Please try again.").show();
     }
 
 

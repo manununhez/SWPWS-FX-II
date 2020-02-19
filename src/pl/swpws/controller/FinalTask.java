@@ -1,7 +1,6 @@
 package pl.swpws.controller;
 
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -14,10 +13,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import pl.swpws.data.repository.Repository;
 import pl.swpws.model.ApplianceAttribute.AttributeIndex;
 import pl.swpws.model.ApplianceAttribute.AttributesID;
 import pl.swpws.model.ApplianceAttribute.AttributesMeasurementUnit;
-import pl.swpws.data.repository.Repository;
 import pl.swpws.model.QuestionFinalTask;
 import pl.swpws.model.SceneName;
 import pl.swpws.model.User;
@@ -28,11 +27,15 @@ import java.util.List;
 import static pl.swpws.model.ApplianceAttribute.APPLIANCE_ATTRIBUTES_COUNT;
 import static pl.swpws.model.ApplianceAttribute.AttributesName.*;
 
-public class FinalTask implements EventHandler<KeyEvent> {
+public class FinalTask extends RootPage {
     public static final String MAIN_TITLE = "final task";
-    private static final String MAIN_PAGE_INSTRUCTION = "Dodatkowo prosimy o wskazanie akceptowalnego " +
+    private static final String MAIN_PAGE_INSTRUCTION_FEMALE = "Dodatkowo prosimy o wskazanie akceptowalnego " +
             "poziomu każdej właściwości pralki, którą kupowałaby Pani dla siebie.\n" +
             "Przy każdej właściwości prosimy o wybranie wartości, którą uznałaby Pani za wystarczającą " +
+            "przy zakupie nowej pralki.";
+    private static final String MAIN_PAGE_INSTRUCTION_MALE = "Dodatkowo prosimy o wskazanie akceptowalnego " +
+            "poziomu każdej właściwości pralki, którą kupowłaby Pan dla siebie.\n" +
+            "Przy każdej właściwości prosimy o wybranie wartości, którą uznałby Pan za wystarczającą " +
             "przy zakupie nowej pralki.";
     private static final String GRID_CSS_PATH = "pl/swpws/common/grid/grid-with-borders.css";
     private static final String EMPTY_CELL = "-";
@@ -49,19 +52,12 @@ public class FinalTask implements EventHandler<KeyEvent> {
     private static final double TABLE_CELL_VALUE_TEXT_SIZE = 15.0;
 
     private final Integer[] selectedValues = new Integer[APPLIANCE_ATTRIBUTES_COUNT];
-    private final Stage mStage;
-    private final BorderPane mParent;
 
-    private SceneName mSceneName;
-    private Repository mRepository;
     private List<List<String>> applianceAttributesNameMap;
 
 
     public FinalTask(Stage stage, BorderPane parent, SceneName sceneName, Repository repository) {
-        mStage = stage;
-        mParent = parent;
-        mSceneName = sceneName;
-        mRepository = repository;
+        super(stage, parent, sceneName, repository);
 
         applianceAttributesNameMap = mRepository.getApplianceAttributesNameMap();
 
@@ -74,11 +70,12 @@ public class FinalTask implements EventHandler<KeyEvent> {
         }
     }
 
+    @Override
     public Node getNodeScene() {
 
         mParent.getStylesheets().add(GRID_CSS_PATH);
 
-        Label labelMainTitle = new Label(MAIN_PAGE_INSTRUCTION);
+        Label labelMainTitle = new Label(getMainInstruction());
         labelMainTitle.setFont(Font.font(FONT_TYPE, FontWeight.NORMAL, MAIN_PAGE_INSTRUCTION_TEXT_SIZE));
         labelMainTitle.setWrapText(true);
 
@@ -162,6 +159,13 @@ public class FinalTask implements EventHandler<KeyEvent> {
         return vBox;
     }
 
+    private String getMainInstruction() {
+        User user = mRepository.getUser();
+        if (user.getSex().equals(UserForm.SEX_FEMALE_LABEL))
+            return MAIN_PAGE_INSTRUCTION_FEMALE;
+        else
+            return MAIN_PAGE_INSTRUCTION_MALE;
+    }
 
     private Label getTableTitleLabel(String name) {
         Label titleLabel = new Label(name);
@@ -328,10 +332,6 @@ public class FinalTask implements EventHandler<KeyEvent> {
         }
 
         mRepository.saveFinalTask(finalTaskList);
-    }
-
-    private void goToNextPage() {
-        TaskPage.navigateTo(mSceneName);
     }
 
     private boolean isFormValid() {

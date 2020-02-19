@@ -1,12 +1,10 @@
 package pl.swpws.controller;
 
 import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import pl.swpws.controller.InstructionTasks.*;
 import pl.swpws.data.repository.Repository;
@@ -16,9 +14,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TaskPage {
+    public static final String NEXT_SCREEN_SIGN = "Naciśnij spację, aby przejść dalej.";
+    public static final String FINAL_SCREEN_SIGN = "Naciśnij spację, aby zakonczyc (albo naciśnij cos innego).";
     private static int FIRST_TASK_TOTAL_ITERATION;
     private static int FIRST_TASK_EXAMPLE_TOTAL_ITERATION;//4
-    private final static Map<SceneName, Node> scenes = new HashMap<>(); //Holds the various scenes to switch between
+    private final static Map<SceneName, RootPage> scenes = new HashMap<>(); //Holds the various scenes to switch between
 
     private static int firstTaskExampleTotalIteration;
     private static int firstTaskTotalIteration;
@@ -40,29 +40,36 @@ public class TaskPage {
     }
 
     public void initScenes() {
-        scenes.put(SceneName.USER_FORM, new UserForm(mStage, mParent, SceneName.USER_FORM, mRepository).getNodeScene());
-        scenes.put(SceneName.SECOND_TASK, new SecondTask(mStage, mParent, SceneName.SECOND_TASK, mRepository).getNodeScene());
-        scenes.put(SceneName.FINAL_TASK, new FinalTask(mStage, mParent, SceneName.FINAL_TASK, mRepository).getNodeScene());
+        scenes.put(SceneName.USER_FORM, new UserForm(mStage, mParent, SceneName.USER_FORM, mRepository));
+        scenes.put(SceneName.FIRST_TASK_EXAMPLE, new FirstTask(mStage, mParent, SceneName.FIRST_TASK_EXAMPLE, mRepository));
+        scenes.put(SceneName.FIRST_TASK, new FirstTask(mStage, mParent, SceneName.FIRST_TASK, mRepository));
+        scenes.put(SceneName.SECOND_TASK, new SecondTask(mStage, mParent, SceneName.SECOND_TASK, mRepository));
+        scenes.put(SceneName.FINAL_TASK, new FinalTask(mStage, mParent, SceneName.FINAL_TASK, mRepository));
 
-        scenes.put(SceneName.FIRST_INSTR, new FirstInstruction(mStage, mParent, SceneName.FIRST_INSTR).getNodeScene());
-        scenes.put(SceneName.SECOND_INSTR, new SecondInstruction(mStage, mParent, SceneName.SECOND_INSTR).getNodeScene());
-        scenes.put(SceneName.THIRD_INSTR, new ThirdInstruction(mStage, mParent, SceneName.THIRD_INSTR).getNodeScene());
-        scenes.put(SceneName.FOURTH_INSTR, new FourthInstruction(mStage, mParent, SceneName.FOURTH_INSTR).getNodeScene());
-        scenes.put(SceneName.FIFTH_INSTR, new FifthInstruction(mStage, mParent, SceneName.FIFTH_INSTR).getNodeScene());
-        scenes.put(SceneName.SIXTH_INSTR, new SixthInstruction(mStage, mParent, SceneName.SIXTH_INSTR).getNodeScene());
-        scenes.put(SceneName.SEVENTH_INSTR, new SeventhInstruction(mStage, mParent, SceneName.SEVENTH_INSTR).getNodeScene());
+        scenes.put(SceneName.FIRST_INSTR, new FirstInstruction(mStage, mParent, SceneName.FIRST_INSTR, mRepository));
+        scenes.put(SceneName.SECOND_INSTR, new SecondInstruction(mStage, mParent, SceneName.SECOND_INSTR, mRepository));
+        scenes.put(SceneName.THIRD_INSTR, new ThirdInstruction(mStage, mParent, SceneName.THIRD_INSTR, mRepository));
+        scenes.put(SceneName.FOURTH_INSTR, new FourthInstruction(mStage, mParent, SceneName.FOURTH_INSTR, mRepository));
+        scenes.put(SceneName.FIFTH_INSTR, new FifthInstruction(mStage, mParent, SceneName.FIFTH_INSTR, mRepository));
+        scenes.put(SceneName.SIXTH_INSTR, new SixthInstruction(mStage, mParent, SceneName.SIXTH_INSTR, mRepository));
+        scenes.put(SceneName.SEVENTH_INSTR, new SeventhInstruction(mStage, mParent, SceneName.SEVENTH_INSTR, mRepository));
 
 
-        scenes.put(SceneName.FINAL_INSTR, new FinalInstruction(mStage, mParent, SceneName.FINAL_INSTR).getNodeScene());
+        scenes.put(SceneName.FINAL_INSTR, new FinalInstruction(mStage, mParent, SceneName.FINAL_INSTR, mRepository));
 
     }
 
     private static void navigateTo(SceneName sceneName, String title, TaskPageType taskPageType) {
+        mStage.setTitle(title);
 
         //Set first scene/page -- UserForm
-        mParent.setCenter(scenes.get(sceneName));
+        mParent.setCenter(scenes.get(sceneName).getNodeScene());
 
-        mStage.setTitle(title);
+        if (sceneName == SceneName.FINAL_INSTR)
+            mParent.setBottom(getRectangleNextScreenSign(FINAL_SCREEN_SIGN));
+        else
+            mParent.setBottom(getRectangleNextScreenSign(NEXT_SCREEN_SIGN));
+
 
         if (taskPageType == TaskPageType.TASK)
             //BackgroundColor
@@ -73,14 +80,17 @@ public class TaskPage {
     }
 
 
-    private static void navigateToFirstTaskExample(SceneName sceneName, int iteration, int totalIteration, TaskPageType taskPageType) {
+    private static void navigateToFirstTask(SceneName sceneName, int iteration, int totalIteration, TaskPageType taskPageType) {
 
         String title = FirstTask.MAIN_TITLE + " " + iteration + "/" + totalIteration;
 
-        mParent.setCenter(new FirstTask(mStage, mParent, sceneName, iteration, mRepository).getNodeScene());
-
         mStage.setTitle(title);
 
+        FirstTask firstTask = (FirstTask) scenes.get(sceneName);
+        firstTask.setQuestionNumber(iteration);
+        mParent.setCenter(firstTask.getNodeScene());
+
+        mParent.setBottom(getRectangleNextScreenSign(NEXT_SCREEN_SIGN));
 
         if (taskPageType == TaskPageType.TASK)
             //BackgroundColor
@@ -89,6 +99,19 @@ public class TaskPage {
             //BackgroundColor
             mParent.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 
+    }
+
+    private static StackPane getRectangleNextScreenSign(String title) {
+        Text text = new Text(title);
+        StackPane stack = new StackPane();
+        Rectangle rectangle2D = new Rectangle(70, 70, 450, 50);
+        rectangle2D.setArcHeight(10);
+        rectangle2D.setArcWidth(10);
+        rectangle2D.setFill(Color.FORESTGREEN);
+        stack.getChildren().addAll(rectangle2D, text);
+
+        stack.setPadding(new Insets(10, 0, 10, 0));
+        return stack;
     }
 
     //Completed version
@@ -115,26 +138,26 @@ public class TaskPage {
                 break;
             case FIFTH_INSTR:
                 firstTaskExampleTotalIteration++;
-                navigateToFirstTaskExample(SceneName.FIRST_TASK_EXAMPLE, firstTaskExampleTotalIteration, FIRST_TASK_EXAMPLE_TOTAL_ITERATION, TaskPageType.INSTRUCTION);
+                navigateToFirstTask(SceneName.FIRST_TASK_EXAMPLE, firstTaskExampleTotalIteration, FIRST_TASK_EXAMPLE_TOTAL_ITERATION, TaskPageType.INSTRUCTION);
                 break;
             case FIRST_TASK_EXAMPLE:
                 if (firstTaskExampleTotalIteration == FIRST_TASK_EXAMPLE_TOTAL_ITERATION)
                     navigateTo(SceneName.SIXTH_INSTR, SixthInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
                 else {
                     firstTaskExampleTotalIteration++;
-                    navigateToFirstTaskExample(SceneName.FIRST_TASK_EXAMPLE, firstTaskExampleTotalIteration, FIRST_TASK_EXAMPLE_TOTAL_ITERATION, TaskPageType.INSTRUCTION);
+                    navigateToFirstTask(SceneName.FIRST_TASK_EXAMPLE, firstTaskExampleTotalIteration, FIRST_TASK_EXAMPLE_TOTAL_ITERATION, TaskPageType.INSTRUCTION);
                 }
                 break;
             case SIXTH_INSTR:
                 firstTaskTotalIteration++;
-                navigateToFirstTaskExample(SceneName.FIRST_TASK, firstTaskTotalIteration, FIRST_TASK_TOTAL_ITERATION, TaskPageType.TASK);
+                navigateToFirstTask(SceneName.FIRST_TASK, firstTaskTotalIteration, FIRST_TASK_TOTAL_ITERATION, TaskPageType.TASK);
                 break;
             case FIRST_TASK:
                 if (firstTaskTotalIteration == FIRST_TASK_TOTAL_ITERATION)//should be 60
                     navigateTo(SceneName.SEVENTH_INSTR, SeventhInstruction.MAIN_TITLE, TaskPageType.INSTRUCTION);
                 else {
                     firstTaskTotalIteration++;
-                    navigateToFirstTaskExample(SceneName.FIRST_TASK, firstTaskTotalIteration, FIRST_TASK_TOTAL_ITERATION, TaskPageType.TASK);
+                    navigateToFirstTask(SceneName.FIRST_TASK, firstTaskTotalIteration, FIRST_TASK_TOTAL_ITERATION, TaskPageType.TASK);
                 }
                 break;
             case SEVENTH_INSTR:

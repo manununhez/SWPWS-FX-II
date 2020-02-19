@@ -1,6 +1,5 @@
 package pl.swpws.controller;
 
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -14,35 +13,37 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import pl.swpws.common.rating.RatingPlus;
+import pl.swpws.data.repository.Repository;
 import pl.swpws.model.ApplianceAttribute.AttributesName;
 import pl.swpws.model.SceneName;
+import pl.swpws.model.User;
 
 import static pl.swpws.model.ApplianceAttribute.AttributeImportanceLevel.getAttributeImportanceLevel;
 import static pl.swpws.model.ApplianceAttribute.AttributesID.*;
 
 public class InstructionTasks {
 
-    static class FirstInstruction implements EventHandler<KeyEvent> {
+    static class FirstInstruction extends RootPage {
         public static final String MAIN_TITLE = "First instruction";
-        private static final String TEXT = "Za chwilę zobaczy Pani zadanie, którego celem będzie wybranie" +
-                "najlepszej pralki spośród 3 przedstawionych modeli. Będzie Pani" +
+        private static final String MAIN_PAGE_INSTRUCTION_FEMALE = "Za chwilę zobaczy Pani zadanie, którego celem będzie wybranie " +
+                "najlepszej pralki spośród 3 przedstawionych modeli. Będzie Pani " +
                 "proszona o dokonanie wielu takich wyborów.\n\n" +
-                "Zależy nam, aby za każdym razem wybrała Pani najlepszą z trzech" +
+                "Zależy nam, aby za każdym razem wybrała Pani najlepszą z trzech " +
                 "pralek.";
 
-        private final Stage mStage;
-        private final BorderPane mParent;
+        private static final String MAIN_PAGE_INSTRUCTION_MALE = "Za chwilę zobaczy Pan zadanie, którego celem będzie wybranie " +
+                "najlepszej pralki spośród 3 przedstawionych modeli. Będzie Pan " +
+                "proszony o dokonanie wielu takich wyborów.\n\n" +
+                "Zależy nam, aby za każdym razem wybrał Pan najlepszą z trzech " +
+                "pralek.";
 
-        private SceneName mSceneName;
-
-        public FirstInstruction(Stage stage, BorderPane parent, SceneName sceneName) {
-            mStage = stage;
-            mParent = parent;
-            mSceneName = sceneName;
+        public FirstInstruction(Stage stage, BorderPane parent, SceneName sceneName, Repository repository) {
+            super(stage, parent, sceneName, repository);
         }
 
+        @Override
         public Node getNodeScene() {
-            Label labelMainTitle = new Label(TEXT);
+            Label labelMainTitle = new Label(getMainInstruction());
             labelMainTitle.setFont(new Font(30.0));
             labelMainTitle.setWrapText(true);
             labelMainTitle.setAlignment(Pos.TOP_CENTER);
@@ -61,8 +62,12 @@ public class InstructionTasks {
             return vBox;
         }
 
-        public void goToNextPage() {
-            TaskPage.navigateTo(mSceneName);
+        private String getMainInstruction() {
+            User user = mRepository.getUser();
+            if (user.getSex().equals(UserForm.SEX_FEMALE_LABEL))
+                return MAIN_PAGE_INSTRUCTION_FEMALE;
+            else
+                return MAIN_PAGE_INSTRUCTION_MALE;
         }
 
         @Override
@@ -75,29 +80,29 @@ public class InstructionTasks {
 
     }
 
-    static class SecondInstruction implements EventHandler<KeyEvent> {
+    static class SecondInstruction extends RootPage {
         public static final String MAIN_TITLE = "Second instruction";
 
-        public static final String TEXT = "Zgodnie z badaniami marketingowymi przyznaliśmy plusy właściwościom pralek. Im" +
-                "wyższa liczba plusów, tym ważniejsza dla przeciętnego użytkownika jest dana" +
-                "właściwość. Prosimy, aby dokonując wyboru produktu kierowała się Pani" +
+        public static final String MAIN_PAGE_INSTRUCTION_FEMALE = "Zgodnie z badaniami marketingowymi przyznaliśmy plusy właściwościom pralek. Im " +
+                "wyższa liczba plusów, tym ważniejsza dla przeciętnego użytkownika jest dana " +
+                "właściwość. Prosimy, aby dokonując wyboru produktu kierowała się Pani " +
+                "ważnością podanych właściwości.";
+        public static final String MAIN_PAGE_INSTRUCTION_MALE = "Zgodnie z badaniami marketingowymi przyznaliśmy plusy właściwościom pralek. Im " +
+                "wyższa liczba plusów, tym ważniejsza dla przeciętnego użytkownika jest dana " +
+                "właściwość. Prosimy, aby dokonując wyboru produktu kierował się Pan " +
                 "ważnością podanych właściwości.";
         private static final String TABLE_TITLE1 = "właściwość";
         private static final String TABLE_TITLE2 = "ważność";
         private static final double MAIN_PAGE_INSTRUCTION_TEXT_SIZE_SMALL = 30.0;
 
-        private final Stage mStage;
-        private final BorderPane mParent;
-        private final SceneName mSceneName;
 
-        public SecondInstruction(Stage stage, BorderPane parent, SceneName sceneName) {
-            mStage = stage;
-            mParent = parent;
-            mSceneName = sceneName;
+        public SecondInstruction(Stage stage, BorderPane parent, SceneName sceneName, Repository repository) {
+            super(stage, parent, sceneName, repository);
         }
 
+        @Override
         public Node getNodeScene() {
-            Label labelMainTitle = new Label(TEXT);
+            Label labelMainTitle = new Label(getMainInstruction());
             labelMainTitle.setFont(new Font(MAIN_PAGE_INSTRUCTION_TEXT_SIZE_SMALL));
             labelMainTitle.setWrapText(true);
             labelMainTitle.setAlignment(Pos.TOP_CENTER);
@@ -115,6 +120,14 @@ public class InstructionTasks {
             vBox.setOnKeyReleased(this);
 
             return vBox;
+        }
+
+        private String getMainInstruction() {
+            User user = mRepository.getUser();
+            if (user.getSex().equals(UserForm.SEX_FEMALE_LABEL))
+                return MAIN_PAGE_INSTRUCTION_FEMALE;
+            else
+                return MAIN_PAGE_INSTRUCTION_MALE;
         }
 
         private GridPane getGridPaneDescription() {
@@ -180,14 +193,11 @@ public class InstructionTasks {
             }
         }
 
-        private void goToNextPage() {
-            TaskPage.navigateTo(mSceneName);
-        }
     }
 
-    static class ThirdInstruction implements EventHandler<KeyEvent> {
+    static class ThirdInstruction extends RootPage {
         public static final String MAIN_TITLE = "Third Instruction";
-        private static final String TEXT = "Dla przeciętnego konsumenta najważniejszą właściwością jest maksymalna" +
+        private static final String MAIN_PAGE_INSTRUCTION_FEMALE = "Dla przeciętnego konsumenta najważniejszą właściwością jest maksymalna " +
                 "prędkość wirowania, wyrażana w liczbie obrotów na minutę i stąd sześć" +
                 "plusów. Pralki, które będzie Pani porównywała, mają maksymalną prędkość" +
                 "wirowania od 800 do 1600 obrotów. Im większa prędkość wirowania, tym w" +
@@ -199,20 +209,27 @@ public class InstructionTasks {
                 "Następną istotną właściwością (cztery plusy) jest klasa energetyczna" +
                 "wyrażona w symbolach od A do A+++, gdzie większa liczba plusów przy" +
                 "literze „A” wskazuje na wyższą klasę energetyczną.";
+        private static final String MAIN_PAGE_INSTRUCTION_MALE = "Dla przeciętnego konsumenta najważniejszą właściwością jest maksymalna " +
+                "prędkość wirowania, wyrażana w liczbie obrotów na minutę i stąd sześć " +
+                "plusów. Pralki, które będzie Pan porównywał, mają maksymalną prędkość " +
+                "wirowania od 800 do 1600 obrotów. Im większa prędkość wirowania, tym w " +
+                "ocenie konsumentów lepiej.\n\n" +
+                "Kolejną ważną właściwością (pięć plusów) jest pojemność bębna pralki w " +
+                "kilogramach. Pralki, które będzie Pan miał do porównania, mają pojemność " +
+                "od 4 kg do 10 kg. Im większa pojemność bębna, tym zdaniem konsumentów " +
+                "lepiej.\n\n" +
+                "Następną istotną właściwością (cztery plusy) jest klasa energetyczna" +
+                "wyrażona w symbolach od A do A+++, gdzie większa liczba plusów przy" +
+                "literze „A” wskazuje na wyższą klasę energetyczną.";
 
-        private final Stage mStage;
-        private final BorderPane mParent;
-        private SceneName mSceneName;
 
-        public ThirdInstruction(Stage stage, BorderPane parent, SceneName sceneName) {
-            mStage = stage;
-            mParent = parent;
-
-            mSceneName = sceneName;
+        public ThirdInstruction(Stage stage, BorderPane parent, SceneName sceneName, Repository repository) {
+            super(stage, parent, sceneName, repository);
         }
 
+        @Override
         public Node getNodeScene() {
-            Label labelMainTitle = new Label(TEXT);
+            Label labelMainTitle = new Label(getMainInstruction());
             labelMainTitle.setFont(new Font(30.0));
             labelMainTitle.setWrapText(true);
             labelMainTitle.setAlignment(Pos.TOP_CENTER);
@@ -229,6 +246,14 @@ public class InstructionTasks {
             return vBox;
         }
 
+        private String getMainInstruction() {
+            User user = mRepository.getUser();
+            if (user.getSex().equals(UserForm.SEX_FEMALE_LABEL))
+                return MAIN_PAGE_INSTRUCTION_FEMALE;
+            else
+                return MAIN_PAGE_INSTRUCTION_MALE;
+        }
+
         @Override
         public void handle(KeyEvent keyEvent) {
             if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED &&
@@ -237,38 +262,41 @@ public class InstructionTasks {
             }
         }
 
-        private void goToNextPage() {
-            TaskPage.navigateTo(mSceneName);
-        }
     }
 
-    static class FourthInstruction implements EventHandler<KeyEvent> {
+    static class FourthInstruction extends RootPage {
         public static final String MAIN_TITLE = "Fourth Instruction";
-        private static final String TEXT = "Kolejna właściwość, oceniana przez konsumentów na trzy plusy, to" +
-                "poziom hałasu w decybelach (db). Prezentowane pralki będą miały" +
-                "poziom hałasu od 70db do 40db, gdzie mniejsza wartość oznacza" +
-                "cichszą pralkę. Cicha praca jest preferowana przez większość" +
+        private static final String MAIN_PAGE_INSTRUCTION_MALE = "Kolejna właściwość, oceniana przez konsumentów na trzy plusy, to " +
+                "poziom hałasu w decybelach (db). Prezentowane pralki będą miały " +
+                "poziom hałasu od 70db do 40db, gdzie mniejsza wartość oznacza " +
+                "cichszą pralkę. Cicha praca jest preferowana przez większość " +
                 "użytkowników.\n\n" +
-                "Następna właściwość, to zużycie wody w litrach (dwa plusy)." +
-                "Porównywane pralki będą zużywały od 70l do 30l na cykl prania." +
+                "Następna właściwość, to zużycie wody w litrach (dwa plusy). " +
+                "Porównywane pralki będą zużywały od 70l do 30l na cykl prania. " +
                 "Konsumenci preferują pralki zużywające mniejszą ilość wody.\n\n" +
-                "Ostatnia właściwość (jeden plus) to obecność lub brak programu" +
+                "Ostatnia właściwość (jeden plus) to obecność lub brak programu " +
+                "szybkiego prania. Przeciętny konsument chce mieć możliwość" +
+                "ustawienia szybkiego prania.";
+        private static final String MAIN_PAGE_INSTRUCTION_FEMALE = "Kolejna właściwość, oceniana przez konsumentów na trzy plusy, to " +
+                "poziom hałasu w decybelach (db). Prezentowane pralki będą miały " +
+                "poziom hałasu od 70db do 40db, gdzie mniejsza wartość oznacza " +
+                "cichszą pralkę. Cicha praca jest preferowana przez większość " +
+                "użytkowników.\n\n" +
+                "Następna właściwość, to zużycie wody w litrach (dwa plusy). " +
+                "Porównywane pralki będą zużywały od 70l do 30l na cykl prania. " +
+                "Konsumenci preferują pralki zużywające mniejszą ilość wody.\n\n" +
+                "Ostatnia właściwość (jeden plus) to obecność lub brak programu " +
                 "szybkiego prania. Przeciętny konsument chce mieć możliwość" +
                 "ustawienia szybkiego prania.";
 
-        private final Stage mStage;
-        private final BorderPane mParent;
-        private SceneName mSceneName;
 
-        public FourthInstruction(Stage stage, BorderPane parent, SceneName sceneName) {
-            mStage = stage;
-            mParent = parent;
-
-            mSceneName = sceneName;
+        public FourthInstruction(Stage stage, BorderPane parent, SceneName sceneName, Repository repository) {
+            super(stage, parent, sceneName, repository);
         }
 
+        @Override
         public Node getNodeScene() {
-            Label labelMainTitle = new Label(TEXT);
+            Label labelMainTitle = new Label(getMainInstruction());
             labelMainTitle.setFont(new Font(30.0));
             labelMainTitle.setWrapText(true);
             labelMainTitle.setAlignment(Pos.TOP_CENTER);
@@ -286,6 +314,14 @@ public class InstructionTasks {
             return vBox;
         }
 
+        private String getMainInstruction() {
+            User user = mRepository.getUser();
+            if (user.getSex().equals(UserForm.SEX_FEMALE_LABEL))
+                return MAIN_PAGE_INSTRUCTION_FEMALE;
+            else
+                return MAIN_PAGE_INSTRUCTION_MALE;
+        }
+
         @Override
         public void handle(KeyEvent keyEvent) {
             if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED &&
@@ -294,33 +330,32 @@ public class InstructionTasks {
             }
         }
 
-        private void goToNextPage() {
-            TaskPage.navigateTo(mSceneName);
-        }
     }
 
 
-    static class FifthInstruction implements EventHandler<KeyEvent> {
+    static class FifthInstruction extends RootPage {
         public static final String MAIN_TITLE = "Fifth Instruction";
-        private static final String TEXT = "Za chwilę zobaczy Pani cztery\n" +
+        private static final String MAIN_PAGE_INSTRUCTION_FEMALE = "Za chwilę zobaczy Pani cztery\n" +
+                "przykładowe zadania dotyczące\n" +
+                "wyboru pralek. W każdym\n" +
+                "zadaniu proszę wybrać\n" +
+                "najlepszą pralkę, kierując się ich\n" +
+                "właściwościami.";
+        private static final String MAIN_PAGE_INSTRUCTION_MALE = "Za chwilę zobaczy Pan cztery\n" +
                 "przykładowe zadania dotyczące\n" +
                 "wyboru pralek. W każdym\n" +
                 "zadaniu proszę wybrać\n" +
                 "najlepszą pralkę, kierując się ich\n" +
                 "właściwościami.";
 
-        private final Stage mStage;
-        private final BorderPane mParent;
-        private SceneName mSceneName;
 
-        public FifthInstruction(Stage stage, BorderPane parent, SceneName sceneName) {
-            mStage = stage;
-            mParent = parent;
-            mSceneName = sceneName;
+        public FifthInstruction(Stage stage, BorderPane parent, SceneName sceneName, Repository repository) {
+            super(stage, parent, sceneName, repository);
         }
 
+        @Override
         public Node getNodeScene() {
-            Label labelMainTitle = new Label(TEXT);
+            Label labelMainTitle = new Label(getMainInstruction());
             labelMainTitle.setFont(new Font(50.0));
             labelMainTitle.setWrapText(true);
             labelMainTitle.setTextAlignment(TextAlignment.CENTER);
@@ -339,6 +374,14 @@ public class InstructionTasks {
             return vBox;
         }
 
+        private String getMainInstruction() {
+            User user = mRepository.getUser();
+            if (user.getSex().equals(UserForm.SEX_FEMALE_LABEL))
+                return MAIN_PAGE_INSTRUCTION_FEMALE;
+            else
+                return MAIN_PAGE_INSTRUCTION_MALE;
+        }
+
         @Override
         public void handle(KeyEvent keyEvent) {
             if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED &&
@@ -347,32 +390,29 @@ public class InstructionTasks {
             }
         }
 
-        private void goToNextPage() {
-            TaskPage.navigateTo(mSceneName);
-
-        }
     }
 
-    static class SixthInstruction implements EventHandler<KeyEvent> {
+    static class SixthInstruction extends RootPage {
         public static final String MAIN_TITLE = "Sixth Instruction";
-        private static final String TEXT = "To już koniec przykładowych\n" +
+        private static final String MAIN_PAGE_INSTRUCTION_FEMALE = "To już koniec przykładowych\n" +
                 "zadań. Za chwilę przejdzie Pani\n" +
                 "do zadań właściwych. W razie\n" +
                 "pytań, proszę dać znać osobie\n" +
                 "prowadzącej badanie.";
+        private static final String MAIN_PAGE_INSTRUCTION_MALE = "To już koniec przykładowych\n" +
+                "zadań. Za chwilę przejdzie Pan\n" +
+                "do zadań właściwych. W razie\n" +
+                "pytań, proszę dać znać osobie\n" +
+                "prowadzącej badanie.";
 
-        private final Stage mStage;
-        private final BorderPane mParent;
-        private SceneName mSceneName;
 
-        public SixthInstruction(Stage stage, BorderPane parent, SceneName sceneName) {
-            mStage = stage;
-            mParent = parent;
-            mSceneName = sceneName;
+        public SixthInstruction(Stage stage, BorderPane parent, SceneName sceneName, Repository repository) {
+            super(stage, parent, sceneName, repository);
         }
 
+        @Override
         public Node getNodeScene() {
-            Label labelMainTitle = new Label(TEXT);
+            Label labelMainTitle = new Label(getMainInstruction());
             labelMainTitle.setFont(new Font(50.0));
             labelMainTitle.setWrapText(true);
             labelMainTitle.setTextAlignment(TextAlignment.CENTER);
@@ -390,6 +430,14 @@ public class InstructionTasks {
             return vBox;
         }
 
+        private String getMainInstruction() {
+            User user = mRepository.getUser();
+            if (user.getSex().equals(UserForm.SEX_FEMALE_LABEL))
+                return MAIN_PAGE_INSTRUCTION_FEMALE;
+            else
+                return MAIN_PAGE_INSTRUCTION_MALE;
+        }
+
         @Override
         public void handle(KeyEvent keyEvent) {
             if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED &&
@@ -397,30 +445,23 @@ public class InstructionTasks {
                 goToNextPage();
             }
         }
-
-        private void goToNextPage() {
-            TaskPage.navigateTo(mSceneName);
-
-        }
     }
 
-    static class SeventhInstruction implements EventHandler<KeyEvent> {
+    static class SeventhInstruction extends RootPage {
         public static final String MAIN_TITLE = "Seventh Instruction";
-        private static final String TEXT = "Teraz proszę sobie wyobrazić,\n" +
+        private static final String MAIN_PAGE_INSTRUCTION_FEMALE = "Teraz proszę sobie wyobrazić,\n" +
                 "że kupuje Pani pralkę dla siebie.";
+        private static final String MAIN_PAGE_INSTRUCTION_MALE = "Teraz proszę sobie wyobrazić,\n" +
+                "że kupuje Pan pralkę dla siebie.";
 
-        private final Stage mStage;
-        private final BorderPane mParent;
-        private SceneName mSceneName;
 
-        public SeventhInstruction(Stage stage, BorderPane parent, SceneName sceneName) {
-            mStage = stage;
-            mParent = parent;
-            mSceneName = sceneName;
+        public SeventhInstruction(Stage stage, BorderPane parent, SceneName sceneName, Repository repository) {
+            super(stage, parent, sceneName, repository);
         }
 
+        @Override
         public Node getNodeScene() {
-            Label labelMainTitle = new Label(TEXT);
+            Label labelMainTitle = new Label(getMainInstruction());
             labelMainTitle.setFont(new Font(50.0));
             labelMainTitle.setWrapText(true);
             labelMainTitle.setTextAlignment(TextAlignment.CENTER);
@@ -439,6 +480,14 @@ public class InstructionTasks {
             return vBox;
         }
 
+        private String getMainInstruction() {
+            User user = mRepository.getUser();
+            if (user.getSex().equals(UserForm.SEX_FEMALE_LABEL))
+                return MAIN_PAGE_INSTRUCTION_FEMALE;
+            else
+                return MAIN_PAGE_INSTRUCTION_MALE;
+        }
+
         @Override
         public void handle(KeyEvent keyEvent) {
             if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED &&
@@ -447,29 +496,22 @@ public class InstructionTasks {
             }
         }
 
-        private void goToNextPage() {
-            TaskPage.navigateTo(mSceneName);
-
-        }
     }
 
-    static class FinalInstruction implements EventHandler<KeyEvent> {
+    static class FinalInstruction extends RootPage {
         public static final String MAIN_TITLE = "Final Instruction";
-        private static final String TEXT = "To już koniec tego zadania.\n" +
+        private static final String MAIN_PAGE_INSTRUCTION_FEMALE = "To już koniec tego zadania.\n" +
+                "Dziękujemy!";
+        private static final String MAIN_PAGE_INSTRUCTION_MALE = "To już koniec tego zadania.\n" +
                 "Dziękujemy!";
 
-        private final Stage mStage;
-        private final BorderPane mParent;
-        private SceneName mSceneName;
-
-        public FinalInstruction(Stage stage, BorderPane parent, SceneName sceneName) {
-            mStage = stage;
-            mParent = parent;
-            mSceneName = sceneName;
+        public FinalInstruction(Stage stage, BorderPane parent, SceneName sceneName, Repository repository) {
+            super(stage, parent, sceneName, repository);
         }
 
+        @Override
         public Node getNodeScene() {
-            Label labelMainTitle = new Label(TEXT);
+            Label labelMainTitle = new Label(getMainInstruction());
             labelMainTitle.setFont(new Font(50.0));
             labelMainTitle.setWrapText(true);
             labelMainTitle.setTextAlignment(TextAlignment.CENTER);
@@ -487,6 +529,14 @@ public class InstructionTasks {
             vBox.setOnKeyReleased(this);
 
             return vBox;
+        }
+
+        private String getMainInstruction() {
+            User user = mRepository.getUser();
+            if (user.getSex().equals(UserForm.SEX_FEMALE_LABEL))
+                return MAIN_PAGE_INSTRUCTION_FEMALE;
+            else
+                return MAIN_PAGE_INSTRUCTION_MALE;
         }
 
         @Override
