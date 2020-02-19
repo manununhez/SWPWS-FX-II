@@ -4,11 +4,22 @@ import java.util.List;
 
 public class QuestionFirstTask {
     private int userId;
+
+    public int getQuestionID() {
+        return mQuestionID;
+    }
+
+    public void setQuestionID(int mQuestionID) {
+        this.mQuestionID = mQuestionID;
+    }
+
+    private int mQuestionID;
     private int questionNumber;
     private int selectedAnswer;
 
-    public QuestionFirstTask(int userId, int questionNumber, int selectedAnswer) {
+    public QuestionFirstTask(int userId, int questionID, int questionNumber, int selectedAnswer) {
         this.userId = userId;
+        mQuestionID = questionID;
         this.questionNumber = questionNumber;
         this.selectedAnswer = selectedAnswer;
     }

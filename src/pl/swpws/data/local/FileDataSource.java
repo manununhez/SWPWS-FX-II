@@ -1,7 +1,6 @@
 package pl.swpws.data.local;
 
 import javafx.scene.control.Alert;
-import javafx.stage.FileChooser;
 import pl.swpws.Main;
 import pl.swpws.data.local.model.AttributeListCSVWrapper;
 import pl.swpws.model.*;
@@ -16,17 +15,13 @@ import java.util.prefs.Preferences;
 
 public class FileDataSource {
     private static FileDataSource INSTANCE;
+    private static final String WARM_UP_EXERCISE_FILE_TO_OPEN = "input_all_warmup.csv";
+    private static final String EXERCISE_FILE_TO_OPEN = "input_all_main.csv";
     private static final String RESULT_FILE_CSV_USER = "Users.csv";
     private static final String RESULT_FILE_CSV_FIRST_TASK = "FirstTask.csv";
-    private static final String RESULT_FILE_CSV_FIRST_TASK_EXAMPLE = "FirstTaskExample.csv";
     private static final String RESULT_FILE_CSV_SECOND_TASK = "SecondTask.csv";
     private static final String RESULT_FILE_CSV_FINAL_TASK = "FinalTask.csv";
     private static final String FILE_PATH = "filePath";
-    public static final String FILE_EXTENSION_FILTER = "*";
-    public static final String FILE_EXTENSION_TITLE = "CSV files (*.csv)";
-    public static final String OPEN_FILE = "Open file...";
-    public static final String SAVE_FILE = "Save file...";
-    public static final String CSV_FILE_EXTENSION = ".csv";
     public static final String ERROR_WARNING = "Error";
     public static final String SAVE_ERROR_WARNING = "Could not save data";
     public static final String SAVE_ERROR_WARNING_PATH = "Could not save data to file:\n";
@@ -46,40 +41,75 @@ public class FileDataSource {
     }
 
     public List<Attribute> loadAttributeListsFromCSV() {
+        //File directory = new File("./");
+//        System.out.println(directory.getAbsolutePath());
+
         List<Attribute> resultAttributeList = new ArrayList<>();
 
-        //Try to load last opened person file
-        //File file = getFilePath();
+        File file = new File(EXERCISE_FILE_TO_OPEN);
+        System.out.println(file.getAbsolutePath());
 
-        //if (file == null || file.getName().equals(RESULTS_FILE_CSV_NAME)) //if file not found, the user should choose another file
-        File file = chooserFile(OPEN_FILE);
+        if (file.exists()) {
+            BufferedReader br;
+            try {
+                //Create the file reader
 
-        if (file != null) {
-            if (file.getPath().endsWith(CSV_FILE_EXTENSION)) {
-                BufferedReader br;
-                try {
-                    //Create the file reader
+                br = new BufferedReader(new InputStreamReader(new FileInputStream(file),
+                        StandardCharsets.UTF_8));
+                CSVReader csvReader = new CSVReader(br);
 
-                    br = new BufferedReader(new InputStreamReader(new FileInputStream(file),
-                            StandardCharsets.UTF_8));
-                    CSVReader csvReader = new CSVReader(br);
+                AttributeListCSVWrapper wordListCSVWrapper = new AttributeListCSVWrapper(csvReader.readAll());
 
-                    AttributeListCSVWrapper wordListCSVWrapper = new AttributeListCSVWrapper(csvReader.readAll());
+                resultAttributeList = wordListCSVWrapper.getListFromCSV();
 
-                    resultAttributeList = wordListCSVWrapper.getListFromCSV();
+                csvReader.close();
 
-                    csvReader.close();
+                // Save the file path to the registry.
+                setFilePath(file);
 
-                    // Save the file path to the registry.
-                    setFilePath(file);
-
-                    return resultAttributeList;
+                return resultAttributeList;
 
 
-                } catch (Exception e) { // catches ANY exception
-                    showAlert(LOAD_ERROR_WARNING, LOAD_ERROR_WARNING_PATH, file.getPath());
-                }
+            } catch (Exception e) { // catches ANY exception
+                showAlert(LOAD_ERROR_WARNING, LOAD_ERROR_WARNING_PATH, file.getPath());
             }
+        } else {
+            showAlert(LOAD_ERROR_WARNING, LOAD_ERROR_WARNING_PATH, file.getPath());
+        }
+        return resultAttributeList;
+    }
+
+    public List<Attribute> loadAttributeListsWarmUpFromCSV() {
+        List<Attribute> resultAttributeList = new ArrayList<>();
+
+        File file = new File(WARM_UP_EXERCISE_FILE_TO_OPEN);
+
+        if (file.exists()) {
+            BufferedReader br;
+            try {
+                //Create the file reader
+
+                br = new BufferedReader(new InputStreamReader(new FileInputStream(file),
+                        StandardCharsets.UTF_8));
+                CSVReader csvReader = new CSVReader(br);
+
+                AttributeListCSVWrapper wordListCSVWrapper = new AttributeListCSVWrapper(csvReader.readAll());
+
+                resultAttributeList = wordListCSVWrapper.getListFromCSV();
+
+                csvReader.close();
+
+                // Save the file path to the registry.
+                setFilePath(file);
+
+                return resultAttributeList;
+
+
+            } catch (Exception e) { // catches ANY exception
+                showAlert(LOAD_ERROR_WARNING, LOAD_ERROR_WARNING_PATH, file.getPath());
+            }
+        } else {
+            showAlert(LOAD_ERROR_WARNING, LOAD_ERROR_WARNING_PATH, file.getPath());
         }
         return resultAttributeList;
     }
@@ -127,23 +157,6 @@ public class FileDataSource {
         }
     }
 
-
-
-    public File chooserFile(String title) {
-        FileChooser fileChooser = new FileChooser();
-
-        // Set extension filter
-        FileChooser.ExtensionFilter extFilterCSV = new FileChooser.ExtensionFilter(
-                FILE_EXTENSION_TITLE, FILE_EXTENSION_FILTER.concat(CSV_FILE_EXTENSION));
-        fileChooser.getExtensionFilters().add(extFilterCSV);
-        fileChooser.setTitle(title);
-
-        if (title.equals(OPEN_FILE))
-            return fileChooser.showOpenDialog(null);
-        else
-            return fileChooser.showSaveDialog(null);
-
-    }
 
     public void saveUser(User user) {
         CSVWriter csvWriter;
@@ -208,11 +221,12 @@ public class FileDataSource {
         if (!file.exists()) {
             try {
                 csvWriter = new CSVWriter(file, null);
-                csvWriter.writeHeader(new String[]{"UserID", "QuestionNumber", "SelectedAnswer"});
+                csvWriter.writeHeader(new String[]{"UserID", "QuestionID", "QuestionNumber", "SelectedAnswer"});
 
 
                 csvWriter.writeData(new String[]{
                         String.valueOf(questionFirstTask.getUserId()),
+                        String.valueOf(questionFirstTask.getQuestionID()),
                         String.valueOf(questionFirstTask.getQuestionNumber()),
                         String.valueOf(questionFirstTask.getSelectedAnswer()),
                 });
@@ -232,6 +246,7 @@ public class FileDataSource {
 
                 csvWriter.writeData(new String[]{
                         String.valueOf(questionFirstTask.getUserId()),
+                        String.valueOf(questionFirstTask.getQuestionID()),
                         String.valueOf(questionFirstTask.getQuestionNumber()),
                         String.valueOf(questionFirstTask.getSelectedAnswer()),
                 });
@@ -250,55 +265,6 @@ public class FileDataSource {
 
     }
 
-    public void questionFirstTaskExample(QuestionFirstTask questionFirstTaskExample) {
-        CSVWriter csvWriter;
-
-        File file = new File(RESULT_FILE_CSV_FIRST_TASK_EXAMPLE);
-
-        if (!file.exists()) {
-            try {
-                csvWriter = new CSVWriter(file, null);
-                csvWriter.writeHeader(new String[]{"UserID", "QuestionNumber", "SelectedAnswer"});
-
-
-                csvWriter.writeData(new String[]{
-                        String.valueOf(questionFirstTaskExample.getUserId()),
-                        String.valueOf(questionFirstTaskExample.getQuestionNumber()),
-                        String.valueOf(questionFirstTaskExample.getSelectedAnswer()),
-                });
-
-
-                csvWriter.close();
-                // Save the file path to the registry.
-                setFilePath(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-
-                showAlert(SAVE_ERROR_WARNING, SAVE_ERROR_WARNING_PATH, file.getPath());
-            }
-        } else {
-            try {
-                csvWriter = new CSVWriter(file, null, true);
-
-                csvWriter.writeData(new String[]{
-                        String.valueOf(questionFirstTaskExample.getUserId()),
-                        String.valueOf(questionFirstTaskExample.getQuestionNumber()),
-                        String.valueOf(questionFirstTaskExample.getSelectedAnswer()),
-                });
-
-
-                csvWriter.close();
-                // Save the file path to the registry.
-                setFilePath(file);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-
-                showAlert(SAVE_ERROR_WARNING, SAVE_ERROR_WARNING_PATH, file.getPath());
-            }
-        }
-
-    }
 
     public void saveSecondTask(List<QuestionSecondTask> secondTaskList) {
         CSVWriter csvWriter;

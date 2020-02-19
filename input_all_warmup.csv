@@ -1,0 +1,25 @@
+ID,Attribute_ID,P1,P2,P3,w�a�ciwo��,Pralka 1,Pralka 2,Pralka 3
+101,A1,0,0,1,max pr�dko�� wirowania,1000,1000,1200
+101,A2,0,1,0,pojemnosc b�bna,4,6,4
+101,A3,0,0,1,klasa energetyczna,A,A,A+
+101,A4,1,0,0,poziom ha�asu,65,70,70
+101,A5,0,0,1,zu�ycie wody,65,65,55
+101,A6,1,1,0,program szybki,jest,jest,brak
+102,A1,1,0,0,max pr�dko�� wirowania,1600,1200,1200
+102,A2,0,0,0,pojemnosc b�bna,6,6,6
+102,A3,0,1,1,klasa energetyczna,A+,A+++,A+++
+102,A4,0,0,0,poziom ha�asu,50,50,50
+102,A5,1,0,0,zu�ycie wody,30,50,30
+102,A6,1,1,0,program szybki,jest,jest,brak
+103,A1,1,0,0,max pr�dko�� wirowania,1400,1200,1200
+103,A2,0,1,0,pojemnosc b�bna,6,8,6
+103,A3,0,0,0,klasa energetyczna,A+,A+,A+
+103,A4,0,0,1,poziom ha�asu,50,50,45
+103,A5,0,1,1,zu�ycie wody,50,40,40
+103,A6,0,0,1,program szybki,brak,brak,jest
+104,A1,0,0,0,max pr�dko�� wirowania,1000,1000,1000
+104,A2,0,1,0,pojemnosc b�bna,4,8,4
+104,A3,1,0,0,klasa energetyczna,A++,A,A
+104,A4,1,0,1,poziom ha�asu,60,70,60
+104,A5,0,0,1,zu�ycie wody,65,65,45
+104,A6,0,0,1,program szybki,brak,brak,jest

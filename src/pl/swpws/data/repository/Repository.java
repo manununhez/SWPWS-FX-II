@@ -18,12 +18,13 @@ public class Repository {
     public Repository() {
         dataSource = FileDataSource.getInstance();
 
-        getExampleListOfAttributes();//init example list
+//        getExampleListOfAttributes();//init example list
 
         attributeList = dataSource.loadAttributeListsFromCSV();//init task list
+        exampleList = dataSource.loadAttributeListsWarmUpFromCSV();//init task list example
 
-        if(attributeList.isEmpty())
-            new Alert(Alert.AlertType.INFORMATION, "The list of attributes was not selected. Please try again.").show();
+//        if(attributeList.isEmpty())
+//            new Alert(Alert.AlertType.INFORMATION, "The list of attributes was not selected. Please try again.").show();
     }
 
 
@@ -132,9 +133,9 @@ public class Repository {
         dataSource.saveUser(user);
     }
 
-    public void saveFirstTaskExample(QuestionFirstTask questionFirstTaskExample) {
-        dataSource.questionFirstTaskExample(questionFirstTaskExample);
-    }
+//    public void saveFirstTaskExample(QuestionFirstTask questionFirstTaskExample) {
+//        dataSource.questionFirstTaskExample(questionFirstTaskExample);
+//    }
 
     public void saveFirstTask(QuestionFirstTask questionFirstTask) {
         dataSource.saveFirstTask(questionFirstTask);

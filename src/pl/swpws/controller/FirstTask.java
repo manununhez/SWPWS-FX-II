@@ -256,7 +256,7 @@ public class FirstTask extends RootPage {
 
         }
 
-        if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED &&
+         if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED &&
                 (keyEvent.getCode() == KeyCode.SPACE || keyEvent.getCode() == KeyCode.ENTER)) {
             RadioButton radioButton = (RadioButton) toggleGroup.getSelectedToggle();
             if (radioButton == null) {
@@ -284,12 +284,12 @@ public class FirstTask extends RootPage {
         System.out.println("Question #" + mQuestionNumber + " - Selected Pralka: " + index);//TODO Debug Only
 
 
-        if (mSceneName == SceneName.FIRST_TASK) {
+//        if (mSceneName == SceneName.FIRST_TASK) {
             //save value
-            mRepository.saveFirstTask(new QuestionFirstTask(mRepository.getUser().getId(), mQuestionNumber, index));
-        }else{ //FIRST_TASK_EXAMPLE
-            mRepository.saveFirstTaskExample(new QuestionFirstTask(mRepository.getUser().getId(), mQuestionNumber, index));
-        }
+            mRepository.saveFirstTask(new QuestionFirstTask(mRepository.getUser().getId(), mAttributeList.get(index - 1).id, mQuestionNumber,  index));
+//        }else{ //FIRST_TASK_EXAMPLE
+//            mRepository.saveFirstTaskExample(new QuestionFirstTask(mRepository.getUser().getId(), mQuestionNumber, index));
+//        }
     }
 
 }
