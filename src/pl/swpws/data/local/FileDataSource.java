@@ -18,6 +18,7 @@ public class FileDataSource {
     private static FileDataSource INSTANCE;
     private static final String RESULT_FILE_CSV_USER = "Users.csv";
     private static final String RESULT_FILE_CSV_FIRST_TASK = "FirstTask.csv";
+    private static final String RESULT_FILE_CSV_FIRST_TASK_EXAMPLE = "FirstTaskExample.csv";
     private static final String RESULT_FILE_CSV_SECOND_TASK = "SecondTask.csv";
     private static final String RESULT_FILE_CSV_FINAL_TASK = "FinalTask.csv";
     private static final String FILE_PATH = "filePath";
@@ -127,19 +128,6 @@ public class FileDataSource {
     }
 
 
-//    public void saveResults(boolean chooseSource, ObservableList<Participant> participants) {
-//        if (!chooseSource)
-//            saveResultsToFileCSV(new File(RESULTS_FILE_CSV_NAME), participants);
-//        else {
-//            File chosenFile = chooserFile(SAVE_FILE);
-//            if (chosenFile != null) {
-//                if (chosenFile.getPath().endsWith(CSV_FILE_EXTENSION)) {
-//                    saveResultsToFileCSV(chosenFile, participants);
-//                }
-//            }
-//        }
-//    }
-
 
     public File chooserFile(String title) {
         FileChooser fileChooser = new FileChooser();
@@ -246,6 +234,56 @@ public class FileDataSource {
                         String.valueOf(questionFirstTask.getUserId()),
                         String.valueOf(questionFirstTask.getQuestionNumber()),
                         String.valueOf(questionFirstTask.getSelectedAnswer()),
+                });
+
+
+                csvWriter.close();
+                // Save the file path to the registry.
+                setFilePath(file);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+
+                showAlert(SAVE_ERROR_WARNING, SAVE_ERROR_WARNING_PATH, file.getPath());
+            }
+        }
+
+    }
+
+    public void questionFirstTaskExample(QuestionFirstTask questionFirstTaskExample) {
+        CSVWriter csvWriter;
+
+        File file = new File(RESULT_FILE_CSV_FIRST_TASK_EXAMPLE);
+
+        if (!file.exists()) {
+            try {
+                csvWriter = new CSVWriter(file, null);
+                csvWriter.writeHeader(new String[]{"UserID", "QuestionNumber", "SelectedAnswer"});
+
+
+                csvWriter.writeData(new String[]{
+                        String.valueOf(questionFirstTaskExample.getUserId()),
+                        String.valueOf(questionFirstTaskExample.getQuestionNumber()),
+                        String.valueOf(questionFirstTaskExample.getSelectedAnswer()),
+                });
+
+
+                csvWriter.close();
+                // Save the file path to the registry.
+                setFilePath(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+
+                showAlert(SAVE_ERROR_WARNING, SAVE_ERROR_WARNING_PATH, file.getPath());
+            }
+        } else {
+            try {
+                csvWriter = new CSVWriter(file, null, true);
+
+                csvWriter.writeData(new String[]{
+                        String.valueOf(questionFirstTaskExample.getUserId()),
+                        String.valueOf(questionFirstTaskExample.getQuestionNumber()),
+                        String.valueOf(questionFirstTaskExample.getSelectedAnswer()),
                 });
 
 

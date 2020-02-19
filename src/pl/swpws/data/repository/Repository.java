@@ -132,6 +132,10 @@ public class Repository {
         dataSource.saveUser(user);
     }
 
+    public void saveFirstTaskExample(QuestionFirstTask questionFirstTaskExample) {
+        dataSource.questionFirstTaskExample(questionFirstTaskExample);
+    }
+
     public void saveFirstTask(QuestionFirstTask questionFirstTask) {
         dataSource.saveFirstTask(questionFirstTask);
     }

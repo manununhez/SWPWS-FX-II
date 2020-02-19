@@ -268,10 +268,9 @@ public class FirstTask extends RootPage {
                 radioButton.setSelected(false); //to clean the selected value after every page iteration (reset radio-buttons)
 
 
-                if (mSceneName == SceneName.FIRST_TASK) {
-                    //save value
-                    saveTask(index);
-                }
+                //save value
+                saveTask(index);
+
 
                 goToNextPage();
 
@@ -284,7 +283,13 @@ public class FirstTask extends RootPage {
         System.out.println("First Task");
         System.out.println("Question #" + mQuestionNumber + " - Selected Pralka: " + index);//TODO Debug Only
 
-        mRepository.saveFirstTask(new QuestionFirstTask(mRepository.getUser().getId(), mQuestionNumber, index));
+
+        if (mSceneName == SceneName.FIRST_TASK) {
+            //save value
+            mRepository.saveFirstTask(new QuestionFirstTask(mRepository.getUser().getId(), mQuestionNumber, index));
+        }else{ //FIRST_TASK_EXAMPLE
+            mRepository.saveFirstTaskExample(new QuestionFirstTask(mRepository.getUser().getId(), mQuestionNumber, index));
+        }
     }
 
 }
