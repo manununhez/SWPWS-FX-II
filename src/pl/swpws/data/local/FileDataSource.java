@@ -9,12 +9,14 @@ import pl.swpws.util.CSVWriter;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.prefs.Preferences;
 
 public class FileDataSource {
-    private static FileDataSource INSTANCE;
+    private static final String TIMESTAMP_HEADER = "Timestamp";
     private static final String WARM_UP_EXERCISE_FILE_TO_OPEN = "input_all_warmup.csv";
     private static final String EXERCISE_FILE_TO_OPEN = "input_all_main.csv";
     private static final String RESULT_FILE_CSV_USER = "Users.csv";
@@ -22,11 +24,12 @@ public class FileDataSource {
     private static final String RESULT_FILE_CSV_SECOND_TASK = "SecondTask.csv";
     private static final String RESULT_FILE_CSV_FINAL_TASK = "FinalTask.csv";
     private static final String FILE_PATH = "filePath";
-    public static final String ERROR_WARNING = "Error";
-    public static final String SAVE_ERROR_WARNING = "Could not save data";
-    public static final String SAVE_ERROR_WARNING_PATH = "Could not save data to file:\n";
-    public static final String LOAD_ERROR_WARNING = "Could not load data";
-    public static final String LOAD_ERROR_WARNING_PATH = "Could not load data from file:\n";
+    private static final String ERROR_WARNING = "Error";
+    private static final String SAVE_ERROR_WARNING = "Could not save data";
+    private static final String SAVE_ERROR_WARNING_PATH = "Could not save data to file:\n";
+    private static final String LOAD_ERROR_WARNING = "Could not load data";
+    private static final String LOAD_ERROR_WARNING_PATH = "Could not load data from file:\n";
+    private static FileDataSource INSTANCE;
 
     private FileDataSource() {
     }
@@ -165,9 +168,14 @@ public class FileDataSource {
 
         if (!file.exists()) {
             try {
-                csvWriter = new CSVWriter(file, null);
-                csvWriter.writeHeader(new String[]{"UserID", "Number", "Sex", "Age", "Profession", "YearsEducation"});
 
+                Date date = new Date();
+                long time = date.getTime();
+                Timestamp ts = new Timestamp(time);
+
+                csvWriter = new CSVWriter(file, null);
+                csvWriter.writeHeader(new String[]{"UserID", "Number", "Sex", "Age", "Profession",
+                        "YearsEducation", TIMESTAMP_HEADER});
 
                 csvWriter.writeData(new String[]{
                         String.valueOf(user.getId()),
@@ -175,7 +183,8 @@ public class FileDataSource {
                         user.getSex(),
                         String.valueOf(user.getAge()),
                         user.getProfession(),
-                        String.valueOf(user.getYearsEducation())
+                        String.valueOf(user.getYearsEducation()),
+                        String.valueOf(ts)
                 });
 
 
@@ -189,6 +198,10 @@ public class FileDataSource {
             }
         } else {
             try {
+                Date date = new Date();
+                long time = date.getTime();
+                Timestamp ts = new Timestamp(time);
+
                 csvWriter = new CSVWriter(file, null, true);
 
                 csvWriter.writeData(new String[]{
@@ -197,7 +210,8 @@ public class FileDataSource {
                         user.getSex(),
                         String.valueOf(user.getAge()),
                         user.getProfession(),
-                        String.valueOf(user.getYearsEducation())
+                        String.valueOf(user.getYearsEducation()),
+                        String.valueOf(ts)
                 });
 
 
@@ -220,8 +234,13 @@ public class FileDataSource {
 
         if (!file.exists()) {
             try {
+                Date date = new Date();
+                long time = date.getTime();
+                Timestamp ts = new Timestamp(time);
+
                 csvWriter = new CSVWriter(file, null);
-                csvWriter.writeHeader(new String[]{"UserID", "QuestionID", "QuestionNumber", "SelectedAnswer"});
+                csvWriter.writeHeader(new String[]{"UserID", "QuestionID", "QuestionNumber", "SelectedAnswer",
+                        TIMESTAMP_HEADER});
 
 
                 csvWriter.writeData(new String[]{
@@ -229,6 +248,7 @@ public class FileDataSource {
                         String.valueOf(questionFirstTask.getQuestionID()),
                         String.valueOf(questionFirstTask.getQuestionNumber()),
                         String.valueOf(questionFirstTask.getSelectedAnswer()),
+                        String.valueOf(ts)
                 });
 
 
@@ -242,6 +262,10 @@ public class FileDataSource {
             }
         } else {
             try {
+                Date date = new Date();
+                long time = date.getTime();
+                Timestamp ts = new Timestamp(time);
+
                 csvWriter = new CSVWriter(file, null, true);
 
                 csvWriter.writeData(new String[]{
@@ -249,6 +273,7 @@ public class FileDataSource {
                         String.valueOf(questionFirstTask.getQuestionID()),
                         String.valueOf(questionFirstTask.getQuestionNumber()),
                         String.valueOf(questionFirstTask.getSelectedAnswer()),
+                        String.valueOf(ts)
                 });
 
 
@@ -274,13 +299,18 @@ public class FileDataSource {
         if (!file.exists()) {
             try {
                 csvWriter = new CSVWriter(file, null);
-                csvWriter.writeHeader(new String[]{"UserID", "AttributeCode", "Rating"});
+                csvWriter.writeHeader(new String[]{"UserID", "AttributeCode", "Rating", TIMESTAMP_HEADER});
+
+                Date date = new Date();
+                long time = date.getTime();
+                Timestamp ts = new Timestamp(time);
 
                 for (QuestionSecondTask questionSecondTask : secondTaskList) {
                     csvWriter.writeData(new String[]{
                             String.valueOf(questionSecondTask.getUserId()),
                             questionSecondTask.getAttributeCode(),
                             String.valueOf(questionSecondTask.getRating()),
+                            String.valueOf(ts)
                     });
                 }
 
@@ -296,11 +326,16 @@ public class FileDataSource {
             try {
                 csvWriter = new CSVWriter(file, null, true);
 
+                Date date = new Date();
+                long time = date.getTime();
+                Timestamp ts = new Timestamp(time);
+
                 for (QuestionSecondTask questionSecondTask : secondTaskList) {
                     csvWriter.writeData(new String[]{
                             String.valueOf(questionSecondTask.getUserId()),
                             questionSecondTask.getAttributeCode(),
                             String.valueOf(questionSecondTask.getRating()),
+                            String.valueOf(ts)
                     });
                 }
 
@@ -325,13 +360,18 @@ public class FileDataSource {
         if (!file.exists()) {
             try {
                 csvWriter = new CSVWriter(file, null);
-                csvWriter.writeHeader(new String[]{"UserID", "AttributeCode", "SelectedValue"});
+                csvWriter.writeHeader(new String[]{"UserID", "AttributeCode", "SelectedValue", TIMESTAMP_HEADER});
+
+                Date date = new Date();
+                long time = date.getTime();
+                Timestamp ts = new Timestamp(time);
 
                 for (QuestionFinalTask questionSecondTask : finalTaskList) {
                     csvWriter.writeData(new String[]{
                             String.valueOf(questionSecondTask.getUserId()),
                             questionSecondTask.getAttributeCode(),
                             questionSecondTask.getSelectedValue(),
+                            String.valueOf(ts)
                     });
                 }
 
@@ -347,11 +387,16 @@ public class FileDataSource {
             try {
                 csvWriter = new CSVWriter(file, null, true);
 
+                Date date = new Date();
+                long time = date.getTime();
+                Timestamp ts = new Timestamp(time);
+
                 for (QuestionFinalTask questionSecondTask : finalTaskList) {
                     csvWriter.writeData(new String[]{
                             String.valueOf(questionSecondTask.getUserId()),
                             questionSecondTask.getAttributeCode(),
                             questionSecondTask.getSelectedValue(),
+                            String.valueOf(ts)
                     });
                 }
 
